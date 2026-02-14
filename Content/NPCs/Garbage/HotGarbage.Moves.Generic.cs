@@ -1,3 +1,4 @@
+using System;
 using EbonianMod.Content.NPCs.Garbage.Projectiles;
 using EbonianMod.Content.Projectiles.VFXProjectiles;
 using EbonianMod.Core.Systems.Cinematic;
@@ -51,6 +52,8 @@ public partial class HotGarbage : ModNPC
             AITimer += 1;
         if (player.Distance(NPC.Center) < 40)
             AITimer += 1;
+        if (MathF.Abs(player.Center.X - NPC.Center.X) < 50 && player.Center.Y < NPC.Center.Y - 100)
+            AITimer += 2;
         if (AITimer >= 150)
         {
             NPC.netUpdate = true;
@@ -251,7 +254,7 @@ public partial class HotGarbage : ModNPC
                     AIState = State.Idle;
                     AITimer = 0;
                     AITimer2 = 0;
-                    NextAttack = State.SummonDrones;
+                    NextAttack = State.WarningForDash;
 
                     NPC.netUpdate = true;
                 }

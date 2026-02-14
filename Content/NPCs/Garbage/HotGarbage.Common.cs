@@ -27,6 +27,32 @@ namespace EbonianMod.Content.NPCs.Garbage;
 public partial class HotGarbage : ModNPC
 {
     public override string Texture => Helper.AssetPath + "NPCs/Garbage/"+Name;
+    public enum State 
+    {
+        Death = -1, 
+        Intro,
+        Idle, 
+        WarningForDash, 
+        Dash,
+        SlamPreperation,
+        SlamSlamSlam,
+        WarningForBigDash,
+        BigDash,
+        OpenLid,
+        SpewFire,
+        CloseLid,
+        FallOver,
+        SpewFire2, 
+        BouncingBarrels,
+        TrashBags,
+        SodaMissiles,
+        PipeBombAirstrike,
+        SateliteLightning,
+        MassiveLaser,
+        MailBoxes,
+        GiantFireball,
+        SummonDrones,
+    }
     public override void SetStaticDefaults()
     {
         Main.npcFrameCount[Type] = 13;

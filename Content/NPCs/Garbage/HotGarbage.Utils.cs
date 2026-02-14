@@ -93,14 +93,7 @@ public partial class HotGarbage : ModNPC
     void JumpCheck()
     {
         Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.stepSpeed, ref NPC.gfxOffY, 1, false, 0);
-        if (NPC.Grounded(offsetX: 0.5f) && (NPC.collideX || Helper.Raycast(NPC.Center, Vector2.UnitX, 1000).RayLength < NPC.width*0.5f || Helper.Raycast(NPC.Center, -Vector2.UnitX,  NPC.width).RayLength < NPC.width*0.5f))
-            NPC.velocity.Y = -10;
-        if (NPC.Grounded(offsetX: 0.5f) && player.Center.Y < NPC.Center.Y - 300)
-            NPC.velocity.Y = -20;
-        else if (NPC.Grounded(offsetX: 0.5f) && player.Center.Y < NPC.Center.Y - 200)
-            NPC.velocity.Y = -15;
-        else if (NPC.Grounded(offsetX: 0.5f) && player.Center.Y < NPC.Center.Y - 100)
-            NPC.velocity.Y = -10;
+
         if (AIState == State.Idle)
         {
             if (Helper.Raycast(NPC.Center, -Vector2.UnitY, NPC.height).RayLength < NPC.height - 1 && !Collision.CanHit(NPC, player))

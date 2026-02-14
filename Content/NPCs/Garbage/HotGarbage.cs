@@ -29,33 +29,6 @@ namespace EbonianMod.Content.NPCs.Garbage;
 public partial class HotGarbage : ModNPC
 {
     public Player player => Main.player[NPC.target];
-
-    public enum State 
-    {
-        Death = -1, 
-        Intro,
-        Idle, 
-        WarningForDash, 
-        Dash,
-        SlamPreperation,
-        SlamSlamSlam,
-        WarningForBigDash,
-        BigDash,
-        OpenLid,
-        SpewFire,
-        CloseLid,
-        FallOver,
-        SpewFire2, 
-        BouncingBarrels,
-        TrashBags,
-        SodaMissiles,
-        PipeBombAirstrike,
-        SateliteLightning,
-        MassiveLaser,
-        MailBoxes,
-        GiantFireball,
-        SummonDrones,
-    }
     public State NextAttack = State.OpenLid;
     public State NextAttack2 = State.TrashBags;
     public override void PostAI() => NPC.spriteDirection = NPC.direction;
