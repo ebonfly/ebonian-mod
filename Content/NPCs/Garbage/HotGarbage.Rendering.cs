@@ -47,19 +47,19 @@ public partial class HotGarbage : ModNPC
         spriteBatch.End();
         spriteBatch.ApplySaved(sbParams);
     }
+
     public override void FindFrame(int f)
     {
         int frameHeight = 76;
         NPC.frame.Width = 80;
         NPC.frame.Height = 76;
-        //NPC.frame.X = AIState == State.Intro && !NPC.IsABestiaryIconDummy ? 0 : 80;
         NPC.frameCounter++;
 
-        if (NPC.IsABestiaryIconDummy)
+        if (NPC.frameCounter % 5 == 0)
         {
-            NPC.frame.X = 80;
-            if (NPC.frameCounter % 5 == 0)
+            if (NPC.IsABestiaryIconDummy)
             {
+                NPC.frame.X = 80;
                 if (NPC.frame.Y < 2 * frameHeight)
                 {
                     NPC.frame.Y += frameHeight;
@@ -68,77 +68,31 @@ public partial class HotGarbage : ModNPC
                 {
                     NPC.frame.Y = 0;
                 }
+                return;
             }
-        }
 
-        if (AIState == State.Intro && !NPC.IsABestiaryIconDummy)
-        {
-            NPC.frame.X = 0;
-            if (NPC.frameCounter < 5)
+            switch (AnimationStyle)
             {
-                NPC.frame.Y = 0 * frameHeight;
-            }
-            else
-            {
-                if (NPC.frameCounter % 5 == 0)
-                {
+                case AnimationStyles.Still:
+                    NPC.frame.X = 0;
+                    NPC.frame.Y = 0;
+                    break;
+                case AnimationStyles.Intro:
+                    NPC.frame.X = 0;
                     if (NPC.frame.Y < frameHeight * 12)
                         NPC.frame.Y += frameHeight;
-                }
-            }
-        }
-        else if (AIState == State.Idle || (AIState == State.TrashBags && AITimer > 120))
-        {
-            NPC.frame.X = 80;
-            if (NPC.frameCounter % 5 == 0)
-            {
-                if (NPC.frame.Y < 2 * frameHeight)
-                {
-                    NPC.frame.Y += frameHeight;
-                }
-                else
-                {
-                    NPC.frame.Y = 0;
-                }
-            }
-        }
-        else if (AIState == State.WarningForDash || (AIState == State.Dash && (AITimer3 >= 22)) || AIState == State.SlamPreperation || AIState == State.WarningForBigDash || (AIState == State.PipeBombAirstrike && AITimer <= 25) || (AIState == State.MassiveLaser && AITimer <= 25))
-        {
-            NPC.frame.X = 80;
-            if (NPC.frameCounter % 5 == 0)
-            {
-                if (NPC.frame.Y < 5 * frameHeight)
-                {
-                    NPC.frame.Y += frameHeight;
-                }
-                else if (NPC.frame.Y >= 5 * frameHeight || NPC.frame.Y < 3 * frameHeight)
-                {
-                    NPC.frame.Y = 3 * frameHeight;
-                }
-            }
-        }
-        else if ((AIState == State.Death && AITimer > 40) || AIState == State.SlamSlamSlam || (AIState == State.Dash && !(AITimer3 >= 22)) || AIState == State.BigDash || (AIState == State.PipeBombAirstrike && AITimer > 25) || (AIState == State.MassiveLaser && AITimer > 25))
-        {
-            if ((AIState == State.PipeBombAirstrike || AIState == State.SlamSlamSlam ? AITimer > 200 : NPC.velocity.Length() > 4))
-            {
-                NPC.frame.X = 80;
-                if (NPC.frameCounter % 5 == 0)
-                {
-                    if (NPC.frame.Y < 9 * frameHeight)
-                    {
+                    break;
+
+                case AnimationStyles.Idle:
+                    NPC.frame.X = 80;
+                    if (NPC.frame.Y < 2 * frameHeight)
                         NPC.frame.Y += frameHeight;
-                    }
-                    else if (NPC.frame.Y >= 9 * frameHeight || NPC.frame.Y < 6 * frameHeight)
-                    {
-                        NPC.frame.Y = 6 * frameHeight;
-                    }
-                }
-            }
-            else
-            {
-                NPC.frame.X = 80;
-                if (NPC.frameCounter % 5 == 0)
-                {
+                    else
+                        NPC.frame.Y = 0;
+                    break;
+
+                case AnimationStyles.BoostWarning:
+                    NPC.frame.X = 80;
                     if (NPC.frame.Y < 5 * frameHeight)
                     {
                         NPC.frame.Y += frameHeight;
@@ -147,31 +101,37 @@ public partial class HotGarbage : ModNPC
                     {
                         NPC.frame.Y = 3 * frameHeight;
                     }
-                }
-            }
-        }
-        else if (AIState == State.OpenLid)
-        {
-            NPC.frame.X = 160;
-            if (NPC.frameCounter % 5 == 0)
-            {
-                if (NPC.frame.Y < 3 * frameHeight)
-                {
-                    NPC.frame.Y += frameHeight;
-                }
-            }
-        }
-        else if (AIState == State.CloseLid)
-        {
-            NPC.frame.X = 160;
-            if (NPC.frameCounter % 5 == 0)
-            {
-                if (NPC.frame.Y == frameHeight)
-                    SoundEngine.PlaySound(SoundID.Item37, NPC.Center);
-                if (NPC.frame.Y > 0)
-                {
-                    NPC.frame.Y -= frameHeight;
-                }
+                    break;
+                
+                case AnimationStyles.Boost:
+                    NPC.frame.X = 80;
+                    if (NPC.frame.Y < 9 * frameHeight)
+                    {
+                        NPC.frame.Y += frameHeight;
+                    }
+                    else if (NPC.frame.Y >= 9 * frameHeight || NPC.frame.Y < 6 * frameHeight)
+                    {
+                        NPC.frame.Y = 6 * frameHeight;
+                    }
+                    break;
+                
+                case AnimationStyles.Open:
+                    NPC.frame.X = 160;
+                    if (NPC.frame.Y < 3 * frameHeight)
+                    {
+                        NPC.frame.Y += frameHeight;
+                    }
+                    break;
+                
+                case AnimationStyles.Close:
+                    NPC.frame.X = 160;
+                    if (NPC.frame.Y == frameHeight)
+                        SoundEngine.PlaySound(SoundID.Item37, NPC.Center);
+                    if (NPC.frame.Y > 0)
+                    {
+                        NPC.frame.Y -= frameHeight;
+                    }
+                    break;
             }
         }
     }

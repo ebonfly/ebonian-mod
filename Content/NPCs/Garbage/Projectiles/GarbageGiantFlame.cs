@@ -5,7 +5,7 @@ namespace EbonianMod.Content.NPCs.Garbage.Projectiles;
 
 public class GarbageGiantFlame : ModProjectile
 {
-    public override string Texture => Helper.AssetPath+"Extras/fireball";
+    public override string Texture => Helper.AssetPath + "Extras/fireball";
     public override void SetStaticDefaults()
     {
         ProjectileID.Sets.TrailCacheLength[Type] = 50;
@@ -15,14 +15,13 @@ public class GarbageGiantFlame : ModProjectile
     {
         int b = 0;
         var fadeMult = Helper.SafeDivision(1f / Projectile.oldPos.Length);
-        if (Projectile.owner == Main.myPlayer)
-            Projectile.NewProjectile(null, Projectile.Center, Vector2.Zero, ProjectileType<FlameExplosionWSprite>(), 0, 0);
+        MPUtils.NewProjectile(null, Projectile.Center, Vector2.Zero, ProjectileType<FlameExplosionWSpriteHostile>(), 0, 0);
         foreach (Vector2 pos in Projectile.oldPos)
         {
             b++;
             float s = MathHelper.SmoothStep(0, 1, (1f - fadeMult * b * 2));
             if (b % 6 == 0 && b < Projectile.oldPos.Length / 2 - 6)
-                Projectile.NewProjectileDirect(null, pos + Projectile.Size / 2, Vector2.Zero, ProjectileType<FlameExplosionWSprite>(), s < 0.5f ? 0 : Projectile.damage, 0).scale = s;
+                MPUtils.NewProjectile(null, pos + Projectile.Size / 2, Vector2.Zero, ProjectileType<FlameExplosionWSpriteHostile>(), s < 0.5f ? 0 : Projectile.damage, 0).scale = s;
             float Y = MathHelper.Lerp(60, 0, (float)(MathHelper.Clamp(Projectile.velocity.Length(), -10, 10) + 10) / 20);
             Vector2 oldpos = Vector2.SmoothStep(pos, pos - new Vector2(MathF.Sin(Main.GlobalTimeWrappedHourly * 2) * 5 + Main.windSpeedCurrent * 2, Y), (float)b / Projectile.oldPos.Length);
             if (b < Projectile.oldPos.Length / 2)
@@ -31,11 +30,10 @@ public class GarbageGiantFlame : ModProjectile
         }
         if (Projectile.ai[2] != 0)
         {
-            if (Projectile.owner == Main.myPlayer)
-                for (int i = 0; i < 3; i++)
-                {
-                    Projectile.NewProjectile(null, Projectile.Center, new Vector2(Main.rand.NextFloat(-3, 3), Main.rand.NextFloat(-8, -0.1f)), ProjectileType<GarbageFlame>(), Projectile.damage, 0);
-                }
+            for (int i = 0; i < 3; i++)
+            {
+                MPUtils.NewProjectile(null, Projectile.Center, new Vector2(Main.rand.NextFloat(-3, 3), Main.rand.NextFloat(-8, -0.1f)), ProjectileType<GarbageFlame>(), Projectile.damage, 0);
+            }
         }
         return true;
     }

@@ -53,6 +53,19 @@ public partial class HotGarbage : ModNPC
         GiantFireball,
         SummonDrones,
     }
+
+    public enum AnimationStyles
+    {
+        Intro = -1,
+        Still,
+        Idle,
+        BoostWarning,
+        Boost,
+        Open,
+        Close
+    }
+
+    public AnimationStyles AnimationStyle;
     public override void SetStaticDefaults()
     {
         Main.npcFrameCount[Type] = 13;

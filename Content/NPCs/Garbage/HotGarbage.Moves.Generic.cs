@@ -10,6 +10,7 @@ public partial class HotGarbage : ModNPC
 	void HandleLidAI() {
 		if (AIState == State.CloseLid)
 		{
+            AnimationStyle = AnimationStyles.Close;
 			AITimer++;
 			if (AITimer > 20)
 			{
@@ -20,6 +21,7 @@ public partial class HotGarbage : ModNPC
 		}
 		if (AIState == State.OpenLid)
 		{
+            AnimationStyle = AnimationStyles.Open;
 			AITimer++;
 			if (NextAttack2 == State.FallOver)
 				NPC.rotation -= ToRadians(-0.9f * 5 * NPC.direction);
@@ -38,27 +40,34 @@ public partial class HotGarbage : ModNPC
 		}
 	}
 	
-    void DoIdle() {
+    void DoIdle()
+    {
+        AnimationStyle = AnimationStyles.Idle;
+        AITimer++;
+        
         NPC.dontTakeDamage = false;
         NPC.damage = 0;
-        AITimer++;
         NPC.rotation = Lerp(NPC.rotation, 0, 0.35f);
         NPC.spriteDirection = NPC.direction = player.Center.X > NPC.Center.X ? 1 : -1;
+        
         JumpCheck();
-        if (AITimer == 50 && Main.rand.NextBool() && NextAttack2 != State.SpewFire)
-            MPUtils.NewProjectile(NPC.GetSource_FromThis(), Helper.Raycast(NPC.Center - new Vector2(Main.rand.NextFloat(-500, 500), 200), Vector2.UnitY, 600, true).Point, Vector2.Zero, ProjectileType<Mailbox>(), 15, 0);
-        NPC.velocity.X = Lerp(NPC.velocity.X, Helper.FromAToB(NPC.Center, player.Center + Helper.FromAToB(player.Center, NPC.Center) * 70, false).X * 0.043f, 0.12f);
+        
+        float velocityX = Helper.FromAToB(NPC.Center, player.Center + Helper.FromAToB(player.Center, NPC.Center) * 70, false).X * 0.033f;
+        velocityX = MathHelper.Clamp(velocityX, -15f, 15f);
+        NPC.velocity.X = Lerp(NPC.velocity.X, velocityX, 0.12f);
         if (player.Distance(NPC.Center) < 70)
-            AITimer += 1;
+            AITimer++;
         if (player.Distance(NPC.Center) < 40)
-            AITimer += 1;
+            AITimer++;
         if (MathF.Abs(player.Center.X - NPC.Center.X) < 50 && player.Center.Y < NPC.Center.Y - 100)
             AITimer += 2;
-        if (AITimer >= 150)
+
+        if (AITimer > 150)
+            NPC.velocity.X *= 0.98f;
+        
+        if (AITimer >= 200)
         {
-            NPC.netUpdate = true;
-            if (NextAttack != State.WarningForDash)
-                NPC.velocity.X = 0;
+            NPC.velocity.X = 0;
             AITimer = 0;
             if (PerformedFullMoveset)
             {
@@ -66,9 +75,12 @@ public partial class HotGarbage : ModNPC
                 if (NextAttack == State.OpenLid)
                     NextAttack2 = Main.rand.Next(OpenAttackPool);
             }
+            NextAttack = State.SlamPreperation;
             AIState = NextAttack;
             if (NextAttack == State.OpenLid)
                 NPC.frame.Y = 0;
+            
+            NPC.netUpdate = true;
         }
     }
     
@@ -107,12 +119,17 @@ public partial class HotGarbage : ModNPC
                 CameraSystem.ScreenShakeAmount = 20;
 
             }
-            if (AITimer % 5 == 0 && AITimer <= 21 && AITimer >= 0)
+
+            if (AITimer is >= 0 and <= 20)
+                AnimationStyle = AnimationStyles.Open;
+            if (AITimer is > 20 and <= 40)
+                AnimationStyle = AnimationStyles.Close;
+            if (AITimer > 40)
             {
-                if (NPC.frame.Y < 3 * 76)
-                {
-                    NPC.frame.Y += 76;
-                }
+                if (NPC.velocity.Length() > 4f)
+                    AnimationStyle = AnimationStyles.Boost;
+                else
+                    AnimationStyle = AnimationStyles.BoostWarning;
             }
             if (AITimer >= 40 && AITimer <= 20)
             {
@@ -208,56 +225,52 @@ public partial class HotGarbage : ModNPC
 
     void DoIntro()
     {
-            if (!NPC.collideY && AITimer2 < 150)
-            {
-                if (Helper.Raycast(NPC.Center, Vector2.UnitY, 80).RayLength > 50)
-                    NPC.position.Y += NPC.velocity.Y * 0.5f;
-                NPC.frameCounter = 0;
-            }
-            NPC.dontTakeDamage = true;
-            AITimer2++;
-            if (NPC.collideY || AITimer2 > 150)
-            {
-                AITimer++;
-                if (AITimer == 1)
+        AnimationStyle = AnimationStyles.Intro;
+        
+        if (!NPC.collideY && AITimer2 < 150)
+        {
+            if (Helper.Raycast(NPC.Center, Vector2.UnitY, 80).RayLength > 50)
+                NPC.position.Y += NPC.velocity.Y * 0.5f;
+            NPC.frameCounter = 0;
+        }
+        else 
+            AITimer++;
+        NPC.dontTakeDamage = true;
+        AITimer2++;
+        if (AITimer == 1)
+        {
+            NPC.netUpdate = true;
+            NPC.position.Y -= NPC.velocity.Y;
+            foreach (Player p in Main.ActivePlayers)
+                if (!p.dead && p.Distance(NPC.Center) < 3000)
                 {
-                    NPC.netUpdate = true;
-                    NPC.position.Y -= NPC.velocity.Y;
-                    foreach (Player p in Main.ActivePlayers)
-                        if (!p.dead && p.Distance(NPC.Center) < 3000)
-                        {
-                            player.JumpMovement();
-                            player.velocity.Y = -10;
-                        }
-                    MPUtils.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + NPC.height * 0.5f * Vector2.UnitY, new Vector2(0, 0), ProjectileType<GarbageImpact>(), 0, 0, 0, 0);
-                    CameraSystem.ChangeCameraPos(NPC.Center - new Vector2(0, 50), 120, null, 1.5f, InOutQuart);
+                    player.JumpMovement();
+                    player.velocity.Y = -10;
                 }
-                if (AITimer == 15)
-                {
-                    SoundEngine.PlaySound(Sounds.garbageAwaken);
-                }
-                if (AITimer == 45)
-                {
-                    CameraSystem.ChangeZoom(75, new ZoomInfo(2, 1f, InOutBounce, InOutCirc));
-                    for (int i = 0; i < 3; i++)
-                        MPUtils.NewProjectile(NPC.InheritSource(NPC), NPC.Center, Vector2.Zero, ProjectileType<BloodShockwave2>(), 0, 0);
-                }
-                if (AITimer < 30)
-                {
-                    NPC.frameCounter = 0;
-                }
-                if (AITimer > 100)
-                {
-                    NPC.Center += new Vector2(2 * NPC.direction, 0);
-                    NPC.frame.X = 80;
-                    NPC.frame.Y = 0;
-                    AIState = State.Idle;
-                    AITimer = 0;
-                    AITimer2 = 0;
-                    NextAttack = State.WarningForDash;
+            MPUtils.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + NPC.height * 0.5f * Vector2.UnitY, new Vector2(0, 0), ProjectileType<GarbageImpact>(), 0, 0, 0, 0);
+            CameraSystem.ChangeCameraPos(NPC.Center - new Vector2(0, 50), 120, null, 1.5f, InOutQuart);
+        }
+        if (AITimer == 15)
+        {
+            SoundEngine.PlaySound(Sounds.garbageAwaken);
+        }
+        if (AITimer == 45)
+        {
+            CameraSystem.ChangeZoom(75, new ZoomInfo(2, 1f, InOutBounce, InOutCirc));
+            for (int i = 0; i < 3; i++)
+                MPUtils.NewProjectile(NPC.InheritSource(NPC), NPC.Center, Vector2.Zero, ProjectileType<BloodShockwave2>(), 0, 0);
+        }
+        if (AITimer > 100)
+        {
+            NPC.Center += new Vector2(2 * NPC.direction, 0);
+            NPC.frame.X = 80;
+            NPC.frame.Y = 0;
+            AIState = State.Idle;
+            AITimer = 0;
+            AITimer2 = 0;
+            NextAttack = State.WarningForDash;
 
-                    NPC.netUpdate = true;
-                }
-            }
+            NPC.netUpdate = true;
+        }
     }
 }

@@ -33,7 +33,7 @@ public class FlameExplosionWSprite : ModProjectile
     {
         Helper.AddCameraModifier(new PunchCameraModifier(Projectile.Center, Main.rand.NextVector2Unit(), 4, 6, 30, 1000));
 
-        SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.Center);
+        SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode with { MaxInstances = 3 }, Projectile.Center);
 
         Projectile.rotation = Main.rand.NextFloat(0, MathHelper.TwoPi);
 
@@ -134,6 +134,16 @@ public class FlameExplosionWSprite : ModProjectile
 
         Main.spriteBatch.Reload(BlendState.AlphaBlend);
         return false;
+    }
+}
+
+public class FlameExplosionWSpriteHostile : FlameExplosionWSprite
+{
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.hostile = true;
+        Projectile.friendly = false;
     }
 }
 public class BloodExplosionWSprite : ModProjectile

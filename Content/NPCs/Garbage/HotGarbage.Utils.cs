@@ -38,6 +38,8 @@ public partial class HotGarbage : ModNPC
     public SlotId LaserSoundSlot;
     
     void AmbientVFX() {
+        AnimationStyle = AnimationStyles.Idle;
+        
         if (RedFrames.Contains(new(NPC.frame.X, NPC.frame.Y)))
             Lighting.AddLight(NPC.Center, TorchID.Red);
         if (YellowFrames.Contains(new(NPC.frame.X, NPC.frame.Y)))
@@ -92,43 +94,40 @@ public partial class HotGarbage : ModNPC
     
     void JumpCheck()
     {
-        Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.stepSpeed, ref NPC.gfxOffY, 1, false, 0);
-
-        if (AIState == State.Idle)
+        if (NPC.collideX || Helper.Raycast(NPC.Center, Vector2.UnitX, 1000).RayLength < NPC.width*0.5f || Helper.Raycast(NPC.Center, -Vector2.UnitX,  NPC.width).RayLength < NPC.width*0.5f)
+            NPC.velocity.Y = -4f;
+        if (Helper.Raycast(NPC.Center, -Vector2.UnitY, NPC.height).RayLength < NPC.height - 1 && !Collision.CanHit(NPC, player))
         {
-            if (Helper.Raycast(NPC.Center, -Vector2.UnitY, NPC.height).RayLength < NPC.height - 1 && !Collision.CanHit(NPC, player))
+            if (!NPC.noTileCollide)
             {
-                if (!NPC.noTileCollide)
-                {
-                    NPC.noTileCollide = true;
-                    NPC.netUpdate = true;
-                }
-
-                if (player.Center.Y < NPC.Center.Y)
-                    NPC.Center -= Vector2.UnitY * 2;
-                else
-                    NPC.Center += Vector2.UnitY * 2;
-
-                NPC.Center += new Vector2(Helper.FromAToB(NPC.Center, player.Center).X * 2, 0);
-            }
-            else if ((!Collision.CanHit(NPC, player) || !Collision.CanHitLine(NPC.TopLeft, 10, 10, player.position, player.width, player.height) || !Collision.CanHitLine(NPC.TopRight, 10, 10, player.position, player.width, player.height)) && player.Center.X.InRange(NPC.Center.X, NPC.width))
-            {
-                if (!NPC.noTileCollide)
-                {
-                    NPC.noTileCollide = true;
-                    NPC.netUpdate = true;
-                }
-
-                if (player.Center.Y < NPC.Center.Y)
-                    NPC.Center -= Vector2.UnitY * 2;
-                else
-                    NPC.Center += Vector2.UnitY * 2;
-            }
-            else if (NPC.noTileCollide)
-            {
-                NPC.noTileCollide = false;
+                NPC.noTileCollide = true;
                 NPC.netUpdate = true;
             }
+
+            if (player.Center.Y < NPC.Center.Y)
+                NPC.Center -= Vector2.UnitY * 2;
+            else
+                NPC.Center += Vector2.UnitY * 2;
+
+            NPC.Center += new Vector2(Helper.FromAToB(NPC.Center, player.Center).X * 2, 0);
+        }
+        else if ((!Collision.CanHit(NPC, player) || !Collision.CanHitLine(NPC.TopLeft, 10, 10, player.position, player.width, player.height) || !Collision.CanHitLine(NPC.TopRight, 10, 10, player.position, player.width, player.height)) && player.Center.X.InRange(NPC.Center.X, NPC.width))
+        {
+            if (!NPC.noTileCollide)
+            {
+                NPC.noTileCollide = true;
+                NPC.netUpdate = true;
+            }
+
+            if (player.Center.Y < NPC.Center.Y)
+                NPC.Center -= Vector2.UnitY * 2;
+            else
+                NPC.Center += Vector2.UnitY * 2;
+        }
+        else if (NPC.noTileCollide)
+        {
+            NPC.noTileCollide = false;
+            NPC.netUpdate = true;
         }
     }
 }
