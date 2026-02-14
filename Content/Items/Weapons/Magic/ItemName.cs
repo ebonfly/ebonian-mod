@@ -78,16 +78,6 @@ public class ItemNameProjectile : ModProjectile
 		{
 			if (Projectile.oldPos[i] == Vector2.Zero || Projectile.oldPos[i].Distance(Projectile.Center) > 1000f) continue;
 			length++;
-			
-			/*Vector2 basePosition = Projectile.oldPos[i] + Projectile.Size / 2 - Main.screenPosition;
-			float mult = 1f - i / length;
-			float rotation = (Projectile.oldPos[i] - Projectile.oldPos[i+1]).ToRotation();
-			Color color = new Color(116, 131, 250, 40) * MathF.Pow(mult,2) * 3 * MathF.Sin(mult * MathF.PI) * Projectile.Opacity * MathHelper.Clamp(Projectile.position.Distance(Projectile.oldPos[i]) / 20f, 0, 1);
-			for (int j = -1; j < 2; j += 2)
-			{
-				Vector2 position = basePosition + new Vector2(5f, 0).RotatedBy(rotation + MathHelper.PiOver2 * j);
-				vertices.Add(Helper.AsVertex(position, color, new Vector2(mult + Main.GlobalTimeWrappedHourly*5, j < 0 ? 0 : j)));
-			}*/	
 		}
 
 		Vector2 lastOldPos = Vector2.Lerp(Projectile.Center, Projectile.oldPos[(int)MathHelper.Clamp(length - 1, 0, 7)], Projectile.Opacity);

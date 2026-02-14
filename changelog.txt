@@ -4,6 +4,7 @@ v3.0
 - New blood moon enemies: Goat-head Fanatics, Cryptids 
 
 ## Changes:
+- Reworked Hot Garbage
 - Reorganized the mod's codebase (this doesn't affect the mod in any direct way but there's a risk for oversights)
 - Updated the Hookworm's spawn rate, coin drops, bestiary, and added a chance for it to drop a Whoopie Cushion
 - Rotten Spine now only fires if the player is in its line of sight
