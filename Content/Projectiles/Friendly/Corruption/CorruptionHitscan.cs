@@ -14,8 +14,8 @@ public class CorruptionHitscan : ModProjectile
     bool EmitParticles = true;
     public override void SetDefaults()
     {
-        Projectile.height = 20;
-        Projectile.width = 20;
+        Projectile.height = 5;
+        Projectile.width = 5;
         Projectile.tileCollide = true;
         Projectile.friendly = true;
         Projectile.hostile = false;
@@ -29,12 +29,12 @@ public class CorruptionHitscan : ModProjectile
         {
             if (Projectile.oldPos[i] == Vector2.Zero)
                 continue;
-            Vector2 basePos = Projectile.oldPos[i] + Projectile.Size / 2 - Main.screenPosition;
-            float mult = MathF.Pow(1f - 1f / Projectile.oldPos.Length * i, 2);
-            float mult2 = SmoothStep(1, 0, MathF.Pow(mult, 3));
-            Color col = Color.DarkSlateBlue;
-            vertices.Add(Helper.AsVertex(basePos + new Vector2(20 + 100 * mult * mult2, 0).RotatedBy(PiOver2 + Projectile.velocity.ToRotation()), col, new Vector2(0, 0)));
-            vertices.Add(Helper.AsVertex(basePos + new Vector2(20 + 100 * mult * mult2, 0).RotatedBy(-PiOver2 + Projectile.velocity.ToRotation()), col, new Vector2(1, 1)));
+            Vector2 basePosition = Projectile.oldPos[i] + Projectile.Size / 2 - Main.screenPosition;
+            float multiplier = MathF.Pow(1f - 1f / Projectile.oldPos.Length * i, 2);
+            float multiplier2 = SmoothStep(1, 0, MathF.Pow(multiplier, 3));
+            Color color = Color.DarkSlateBlue;
+            vertices.Add(Helper.AsVertex(basePosition + new Vector2(20 + 100 * multiplier * multiplier2, 0).RotatedBy(PiOver2 + Projectile.velocity.ToRotation()), color, new Vector2(0, 0)));
+            vertices.Add(Helper.AsVertex(basePosition + new Vector2(20 + 100 * multiplier * multiplier2, 0).RotatedBy(-PiOver2 + Projectile.velocity.ToRotation()), color, new Vector2(1, 1)));
         }
 
         SpritebatchParameters sbParams = Main.spriteBatch.Snapshot();

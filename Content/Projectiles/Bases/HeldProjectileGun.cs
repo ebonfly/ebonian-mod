@@ -4,15 +4,15 @@ namespace EbonianMod.Content.Projectiles.Bases;
 
 public abstract class HeldProjectileGun : HeldProjectile
 {
-    protected float RotationSpeed, AnimationRotationSpeed = 0.2f, AnimationRotation;
-    protected Vector2 CursorOffset;
+    protected float RotationSpeed, RecoilRecoverySpeed = 0.2f, RecoilRotation;
+    protected float AimingOffset;
     public override void AI()
     {
         base.AI();
         Player player = Main.player[Projectile.owner];
         player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - PiOver2);
 
-        AnimationRotation = Lerp(AnimationRotation, 0, AnimationRotationSpeed);
+        RecoilRotation = Lerp(RecoilRotation, 0, RecoilRecoverySpeed);
         Projectile.netUpdate = true;
     }
     public override void SendExtraAI(BinaryWriter writer)
@@ -25,9 +25,8 @@ public abstract class HeldProjectileGun : HeldProjectile
         base.ReceiveExtraAI(reader);
         Projectile.rotation = reader.ReadSingle();
     }
-
-    protected override void LocalBehaviour()
+    protected override void LocalBehaviour(Player player)
     {
-        Projectile.rotation = Utils.AngleLerp(Projectile.rotation, (Difference + CursorOffset.RotatedBy(Projectile.rotation) * Main.player[Projectile.owner].direction).ToRotation(), RotationSpeed) + AnimationRotation * AttackDelayMultiplier;
+        Projectile.rotation = Utils.AngleLerp(Projectile.rotation, (Difference + new Vector2(0, AimingOffset + player.Center.Y - player.MountedCenter.Y).RotatedBy(Projectile.rotation) * Projectile.spriteDirection).ToRotation(), RotationSpeed) + RecoilRotation * RecoilMultiplier;
     }
 }

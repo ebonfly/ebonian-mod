@@ -10,7 +10,6 @@ public class CoreProjectile : ModProjectile
         Projectile.Size = new Vector2(30);
         Projectile.friendly = true;
         Projectile.hostile = false;
-        Projectile.aiStyle = 2;
     }
     public override Color? GetAlpha(Color lightColor)
     {

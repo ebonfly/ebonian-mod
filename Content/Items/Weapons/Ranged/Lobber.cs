@@ -60,7 +60,7 @@ public class LobberProjectile : HeldProjectileGun
         base.SetDefaults();
         ItemType = ItemType<Lobber>();
         RotationSpeed = 0.2f;
-        CursorOffset = new Vector2(0, 25);
+        AimingOffset = 25;
         Projectile.Size = new Vector2(56, 48);
         Projectile.frame = 1;
     }
@@ -87,7 +87,7 @@ public class LobberProjectile : HeldProjectileGun
                 Scale = new Vector2(0.65f, 1.6f);
                 if (player.whoAmI == Main.myPlayer)
                 {
-                    AnimationRotation = -0.2f * player.direction;
+                    RecoilRotation = -0.2f * player.direction;
                     Vector2 spawnPosition = Projectile.Center + new Vector2(30, -25 * player.direction).RotatedBy(Projectile.rotation);
                     if (player.whoAmI == Main.myPlayer)
                         Projectile.NewProjectileDirect(Projectile.InheritSource(Projectile), spawnPosition, Projectile.rotation.ToRotationVector2() * 16, ProjectileType<CrimsonBall>(), (int)(Projectile.damage * 0.8f), Projectile.knockBack, Projectile.owner);
@@ -166,7 +166,7 @@ public class LobberProjectile2 : HeldProjectileGun
             if (!Main.mouseRight && player.whoAmI == Main.myPlayer)
             {
                 Projectile.frame = 6;
-                AnimationRotation = -charge / 240f * player.direction;
+                RecoilRotation = -charge / 240f * player.direction;
                 Vector2 spawnPosition = Projectile.Center + new Vector2(30, -25 * player.direction).RotatedBy(Projectile.rotation);
                 for (int u = 0; u < 14; u++)
                     Dust.NewDustPerfect(spawnPosition, DustID.Blood, (Projectile.rotation + Main.rand.NextFloat(-PiOver4, PiOver4)).ToRotationVector2() * Main.rand.NextFloat(2, 8), Scale: 1.5f).noGravity = true;

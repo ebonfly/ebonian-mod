@@ -6,7 +6,7 @@ using System.IO;
 
 namespace EbonianMod.Content.Projectiles.Friendly.Crimson;
 
-public class LatcherProjectile : ModProjectile
+public class LatcherTongue : ModProjectile
 {
     bool IsAttached;
     Vector2 PositionOffset, NeckOrigin;
@@ -78,7 +78,7 @@ public class LatcherProjectile : ModProjectile
             }
             Projectile.timeLeft = 190;
 
-            Speed += 1.5f;
+            if(Speed < 60) Speed += 1.5f;
             player.velocity = Helper.FromAToB(player.Center, Projectile.Center, true) * Speed;
             player.SyncPlayerControls();
             Projectile.Center = Target.Center + PositionOffset;
@@ -88,8 +88,7 @@ public class LatcherProjectile : ModProjectile
                 SoundEngine.PlaySound(Sounds.chomp2.WithPitchOffset(Main.rand.NextFloat(0.2f, 0.4f)), Projectile.Center);
                 SoundEngine.PlaySound(Sounds.chomp1.WithPitchOffset(Main.rand.NextFloat(-0.6f, -0.2f)), Projectile.Center);
                 player.velocity *= -0.2f;
-                Target.SimpleStrikeNPC((int)MathF.Pow(velocityMagnitude * 0.31f, 2), -(int)player.velocity.X, false, velocityMagnitude / 3);
-                for (int i = 0; i < 15; i++) Dust.NewDustPerfect(Target.Center, DustID.Blood, (Projectile.rotation + Main.rand.NextFloat(-PiOver4, PiOver4)).ToRotationVector2() * Main.rand.NextFloat(2, 6) * player.direction, Scale: 1.5f);
+                Target.SimpleStrikeNPC((int)MathF.Pow(velocityMagnitude / 3, 2), -(int)player.velocity.X, false, velocityMagnitude / 3);
                 Projectile.Kill();
             }
         }
@@ -125,15 +124,15 @@ public class LatcherProjectile : ModProjectile
             distanceToProjectile = NeckOrigin - center;
             distance = distanceToProjectile.Length();
 
-            Main.spriteBatch.Draw(Assets.Projectiles.Friendly.Crimson.LatcherP_Chain.Value, center - Main.screenPosition,null, new Color(Lighting.GetSubLight(center)), projectileRotation, Assets.Projectiles.Friendly.Crimson.LatcherP_Chain.Value.Size() / 2, 1f, SpriteEffects.None, 0);
+            Main.spriteBatch.Draw(Assets.Projectiles.Friendly.Crimson.Latcher_Chain.Value, center - Main.screenPosition,null, new Color(Lighting.GetSubLight(center)), projectileRotation, Assets.Projectiles.Friendly.Crimson.Latcher_Chain.Value.Size() / 2, 1f, SpriteEffects.None, 0);
         }
-        Main.spriteBatch.Draw(Assets.Projectiles.Friendly.Crimson.LatcherP_Chain.Value, Projectile.Center - Main.screenPosition, null, new Color(Lighting.GetSubLight(Projectile.Center)), projectileRotation, Assets.Projectiles.Friendly.Crimson.LatcherP_Chain.Value.Size() / 2, 1f, SpriteEffects.None, 0);
+        Main.spriteBatch.Draw(Assets.Projectiles.Friendly.Crimson.Latcher_Chain.Value, Projectile.Center - Main.screenPosition, null, new Color(Lighting.GetSubLight(Projectile.Center)), projectileRotation, Assets.Projectiles.Friendly.Crimson.Latcher_Chain.Value.Size() / 2, 1f, SpriteEffects.None, 0);
         return false;
     }
 }
-public class LatcherProjectileCecitior : ModProjectile
+public class LatcherTongueCecitior : ModProjectile
 {
-    public override string Texture => Helper.AssetPath+"Projectiles/Friendly/Crimson/LatcherP";
+    public override string Texture => Helper.Empty;
     public override void SetDefaults()
     {
         Projectile.width = 12;
@@ -261,9 +260,9 @@ public class LatcherProjectileCecitior : ModProjectile
             distance = distToProj.Length();
 
             //Draw chain
-            Main.spriteBatch.Draw(Assets.Projectiles.Friendly.Crimson.LatcherP_Chain.Value, center - Main.screenPosition,
+            Main.spriteBatch.Draw(Assets.Projectiles.Friendly.Crimson.Latcher_Chain.Value, center - Main.screenPosition,
                 null, Lighting.GetColor((int)center.X / 16, (int)center.Y / 16), projRotation,
-                Assets.Projectiles.Friendly.Crimson.LatcherP_Chain.Value.Size() / 2, 1f, SpriteEffects.None, 0);
+                Assets.Projectiles.Friendly.Crimson.Latcher_Chain.Value.Size() / 2, 1f, SpriteEffects.None, 0);
         }
         return true;
     }

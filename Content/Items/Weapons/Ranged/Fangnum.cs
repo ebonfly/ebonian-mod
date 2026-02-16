@@ -32,8 +32,7 @@ public class Fangnum : ModItem
     }
     public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
     {
-        velocity = Vector2.Zero;
-        Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
+        Projectile.NewProjectile(source, position, Vector2.Zero, type, damage, knockback, player.whoAmI);
         return false;
     }
     public override void AddRecipes()
@@ -45,16 +44,16 @@ public class Fangnum : ModItem
 public class FangnumProjectile : HeldProjectileGun
 {
     public override string Texture => Helper.AssetPath + "Items/Weapons/Ranged/Fangnum";
-    float HoldOffset;
     public override bool? CanDamage() => false;
     public override void SetDefaults()
     {
         base.SetDefaults();
-        ItemType = ItemType<Fangnum>();
-        RotationSpeed = 0.23f;
-        AnimationRotationSpeed = 0.3f;
-        CursorOffset = new Vector2(0, 11);  
         Projectile.Size = new(42, 24);
+        ItemType = ItemType<Fangnum>();
+        HoldOffset.Y = -4;
+        AimingOffset = 11;
+        RotationSpeed = 0.23f;
+        RecoilRecoverySpeed = 0.3f;
     }
     public override void OnSpawn(IEntitySource source)
     {
@@ -69,28 +68,30 @@ public class FangnumProjectile : HeldProjectileGun
 
         player.heldProj = Projectile.whoAmI;
 
+        HoldOffset.X = Lerp(HoldOffset.X, 27, 0.2f);
+
         if (Projectile.ai[0]++ >= 50 * AttackDelayMultiplier)
         {
-            AnimationRotation = -0.3f * player.direction;
-            Projectile.UseAmmo(AmmoID.Bullet);
-            SoundEngine.PlaySound(SoundID.Item38.WithPitchOffset(Main.rand.NextFloat(0.5f, 1f)), player.Center);
-            Vector2 shotPoint = Projectile.Center + new Vector2(40, -7 * player.direction).RotatedBy(Projectile.rotation);
+            HoldOffset.X -= 21 * RecoilMultiplier;
+            RecoilRotation = -0.3f * player.direction;
+
+            Vector2 shotPoint = Projectile.Center + new Vector2(21, -4 * player.direction).RotatedBy(Projectile.rotation);
             if (player.whoAmI == Main.myPlayer)
-                Projectile.NewProjectileDirect(Projectile.InheritSource(Projectile), shotPoint, Projectile.rotation.ToRotationVector2() * 20, ProjectileType<ToothProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Projectile.NewProjectileDirect(Projectile.InheritSource(Projectile), shotPoint, Projectile.rotation.ToRotationVector2() * 20, ProjectileType<Tooth>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
             for (int i = 0; i < 7; i++)
                 Dust.NewDustPerfect(shotPoint, DustID.Blood, (Projectile.rotation + Main.rand.NextFloat(-PiOver4, PiOver4)).ToRotationVector2() * Main.rand.NextFloat(2, 8), Scale: 1.5f).noGravity = true;
-            Projectile.ai[0] = 0;
-            HoldOffset = 6;
-        }
-        HoldOffset = Lerp(HoldOffset, 27, 0.2f);
 
-        if (!player.channel)
-            Projectile.Kill();
+            SoundEngine.PlaySound(SoundID.Item38.WithPitchOffset(Main.rand.NextFloat(0.5f, 1f)), player.Center);
+
+            Projectile.UseAmmo(AmmoID.Bullet);
+            Projectile.ai[0] = 0;
+        }
+
+        if (!player.channel) Projectile.Kill();
     }
     public override bool PreDraw(ref Color lightColor)
     {
-        Player player = Main.player[Projectile.owner];
-        Main.EntitySpriteDraw(Helper.GetTexture(Texture).Value, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, new Vector2(Projectile.width / 2 - HoldOffset, Projectile.height / 2 + 4 * player.direction), Projectile.scale, player.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically);
+        Main.EntitySpriteDraw(TextureAssets.Projectile[Type].Value, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, Projectile.Size / 2, Projectile.scale, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically);
         return false;
     }
 }

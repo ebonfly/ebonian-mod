@@ -50,7 +50,7 @@ public class SpudCannon : ModItem
             base.SetDefaults();
             ItemType = ItemType<SpudCannon>();
             RotationSpeed = 0.2f;
-            CursorOffset = new Vector2(0, -5);
+            AimingOffset = -5;
             Projectile.Size = new Vector2(58, 24);
         }
         public override void OnSpawn(IEntitySource source)

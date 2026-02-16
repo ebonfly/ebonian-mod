@@ -10,7 +10,7 @@ public class GoryJaw : ModProjectile
     int TargetIndex = -1;
     public override void SetDefaults()
     {
-        Projectile.width = 23;
+        Projectile.width = 34;
         Projectile.height = 34;
         Projectile.tileCollide = true;
         Projectile.friendly = true;
@@ -23,12 +23,10 @@ public class GoryJaw : ModProjectile
         Projectile.ArmorPenetration = 11;
         Projectile.extraUpdates = 10;
     }
-
     public override void OnSpawn(IEntitySource source)
     {
         Projectile.spriteDirection = Main.player[Projectile.owner].direction;
     }
-
     public override void OnKill(int timeLeft)
     {
         if (Main.dedServ) return;
@@ -46,7 +44,6 @@ public class GoryJaw : ModProjectile
         TargetIndex = reader.ReadInt32();
         PositionOffset = reader.ReadVector2();
     }
-
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
     {
         if (Projectile.ai[1] == 0)
@@ -59,24 +56,23 @@ public class GoryJaw : ModProjectile
     }
     public override void AI()
     {
-        
         Projectile.extraUpdates = 10;
         Player player = Main.player[Projectile.owner];
         if (TargetIndex > -1 && TargetIndex < Main.npc.Length)
         {
-            NPC Target = Main.npc[TargetIndex];
-            if (Target.life <= 0 || !Target.active)
+            NPC target = Main.npc[TargetIndex];
+            if (target.life <= 0 || !target.active)
             {
                 Projectile.ai[1] = 0;
-                Projectile.velocity = Vector2.Lerp(Projectile.velocity, new Vector2(Projectile.velocity.X / 10, 1), 0.005f);
-                Projectile.rotation = Projectile.velocity.ToRotation();
                 Projectile.tileCollide = true;
                 Projectile.netUpdate = true;
                 return;
             }
+            Projectile.Center = target.Center + PositionOffset;
+
             Projectile.localNPCHitCooldown = 180;
             Projectile.tileCollide = false;
-            Projectile.Center = Target.Center + PositionOffset;
+
             Projectile.frameCounter++;
             if (Projectile.frameCounter == 60)
             {
@@ -102,9 +98,7 @@ public class GoryJaw : ModProjectile
     }
     public override bool PreDraw(ref Color lightColor)
     {
-        Texture2D texture = TextureAssets.Projectile[Type].Value;
-        Rectangle frameRect = new Rectangle(0, Projectile.frame * 34, 46, 34);
-        Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, frameRect, lightColor, Projectile.rotation, Projectile.Size / 2f, Vector2.Clamp(Scale, Vector2.One * 0.75f, Vector2.One * 1.25f), Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically);
+        Main.EntitySpriteDraw(TextureAssets.Projectile[Type].Value, Projectile.Center - Main.screenPosition, new Rectangle(0, Projectile.frame * 34, 46, 34), lightColor, Projectile.rotation, Projectile.Size / 2f, Vector2.Clamp(Scale, Vector2.One * 0.75f, Vector2.One * 1.25f), Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically);
         return false;
     }
 }

@@ -12,7 +12,7 @@ internal class Serration : ModItem
     public override void SetDefaults()
     {
         Item.knockBack = 10f;
-        Item.width = Item.height = 80;
+        Item.Size = new Vector2(60);
         Item.crit = 10;
         Item.damage = 100;
         Item.useAnimation = 40;
@@ -49,8 +49,7 @@ public class SerrationP : HeldSword
     public override string Texture => Helper.AssetPath + "Items/Weapons/Melee/Serration";
     public override void SetExtraDefaults()
     {
-        Projectile.width = 60;
-        Projectile.height = 60;
+        Projectile.Size = new Vector2(60);
         swingTime = 70;
         minSwingTime = 57;
         holdOffset = 30;

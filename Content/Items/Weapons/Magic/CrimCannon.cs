@@ -37,6 +37,7 @@ public class CrimCannon : ModItem
 
 public class CrimCannonProjectile : HeldProjectileGun
 {
+    Vector2 Scale = new Vector2(0.4f, 0);
     public override string Texture => Helper.AssetPath + "Items/Weapons/Magic/CrimCannonReload";
     public override bool? CanDamage() => false;
     public override void SetDefaults()
@@ -44,29 +45,29 @@ public class CrimCannonProjectile : HeldProjectileGun
         base.SetDefaults();
         ItemType = ItemType<CrimCannon>();
         RotationSpeed = 0.08f;
-        CursorOffset = new Vector2(0, -5);
         Projectile.Size = new Vector2(56, 38);
+        HoldOffset.X = 25;
     }
     public override void OnSpawn(IEntitySource source)
     {
         CalculateAttackSpeedParameters(50);
         Player player = Main.player[Projectile.owner];
         player.CheckMana(player.HeldItem.mana, true);
+
         if (player.whoAmI == Main.myPlayer)
             Projectile.rotation = (Main.MouseWorld - player.Center).ToRotation();
+
         Projectile.frameCounter = (int)(-15 * AttackDelayMultiplier);
     }
-    Vector2 Scale = new Vector2(0, 1);
     public override void AI()
     {
         base.AI();
 
         Player player = Main.player[Projectile.owner];
 
-        player.heldProj = Projectile.whoAmI;
+        if (!Main.player[Projectile.owner].channel || !player.CheckMana(player.HeldItem.mana)) Projectile.Kill();
 
-        if (!Main.player[Projectile.owner].channel || !player.CheckMana(player.HeldItem.mana))
-            Projectile.Kill();
+        player.heldProj = Projectile.whoAmI;
 
         Scale = Vector2.Lerp(Scale, new Vector2(1, 1), 0.14f);
 
@@ -77,12 +78,12 @@ public class CrimCannonProjectile : HeldProjectileGun
         }
         if (Projectile.frame > 5)
         {
-            Projectile.frame = 0;
-            AnimationRotation = -0.15f * player.direction;
             Scale = new Vector2(0.65f, 1.6f);
-            SoundEngine.PlaySound(SoundID.NPCHit9.WithPitchOffset(Main.rand.NextFloat(-1f, -0.5f)), player.Center);
+            RecoilRotation = -0.15f * player.direction;
+
             player.CheckMana(player.HeldItem.mana, true, true);
-            Vector2 shotPoint = Projectile.Center + Projectile.rotation.ToRotationVector2() * 22;
+
+            Vector2 shotPoint = Projectile.Center + Projectile.rotation.ToRotationVector2() * 5;
             if (Main.myPlayer == player.whoAmI)
             {
                 Projectile.NewProjectile(Projectile.InheritSource(Projectile), shotPoint, Projectile.rotation.ToRotationVector2() * 1.2f, ProjectileType<GoryJaw>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
@@ -92,13 +93,16 @@ public class CrimCannonProjectile : HeldProjectileGun
                     Dust.NewDustPerfect(shotPoint, DustID.Blood, (Projectile.rotation + Main.rand.NextFloat(-PiOver2, -PiOver4)).ToRotationVector2() * Main.rand.NextFloat(3, 8), Scale: 1.5f).noGravity = true;
                 }
             }
+
+            SoundEngine.PlaySound(SoundID.NPCHit9.WithPitchOffset(Main.rand.NextFloat(-1f, -0.5f)), player.Center);
+
+            Projectile.frame = 0;
             Projectile.frameCounter = (int)(-15 * AttackDelayMultiplier);
         }
     }
     public override bool PreDraw(ref Color lightColor)
     {
-        Rectangle frameRect = new Rectangle(0, Projectile.frame * Projectile.height, Projectile.width, Projectile.height);
-        Main.EntitySpriteDraw(Helper.GetTexture(Texture).Value, Projectile.Center - Main.screenPosition, frameRect, lightColor, Projectile.rotation, new Vector2(Projectile.width / 2 - 25, Projectile.height / 2), Scale, Main.player[Projectile.owner].direction == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically);
+        Main.EntitySpriteDraw(TextureAssets.Projectile[Type].Value, Projectile.Center - Main.screenPosition, new Rectangle(0, Projectile.frame * Projectile.height, Projectile.width, Projectile.height), lightColor, Projectile.rotation, Projectile.Size / 2, Scale, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically);
         return false;
     }
 }

@@ -95,19 +95,28 @@ public static partial class Helper
 
         return data;
 	}
-	public static Vector2 GetNearestSurface(Vector2 position, bool checkPlatforms = false)
+	public static bool GetNearestSurface(Vector2 position, float maxLength, bool checkPlatforms, out Vector2 point)
 	{
-		if(Collision.SolidTiles(position, 1, 1, checkPlatforms))
+		bool success = true;
+		point = position;
+		if(Collision.SolidTiles(point, 1, 1, checkPlatforms))
 		{
-            while (Collision.SolidTiles(position, 1, 1, checkPlatforms))
+            while (Collision.SolidTiles(point, 1, 1, checkPlatforms))
             {
-                position -= Vector2.UnitY;
+                point -= Vector2.UnitY;
+				if (maxLength-- <= 0)
+				{
+					success = false;
+					break;
+				}
             }
         }
 		else
 		{
-			position = Raycast(position, Vector2.UnitY, 640, checkPlatforms).Point;
+			RaycastData cast = Raycast(position, Vector2.UnitY, maxLength, checkPlatforms);
+			if (cast.Success) point = cast.Point;
+			else success = false;
 		}
-		return position;
+		return success;
     }
 }

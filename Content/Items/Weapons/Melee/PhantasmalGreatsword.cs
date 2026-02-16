@@ -152,7 +152,6 @@ public class PhantasmalGreatswordP : HeldSword
 
             Player player = Main.player[Projectile.owner];
 
-
             float swingProgress = Ease(Utils.GetLerpValue(0f, swingTime, Projectile.timeLeft));
             if (Projectile.oldPos.Length > 2)
             {
@@ -218,16 +217,10 @@ public class PhantasmalGreatswordP : HeldSword
     }
     public override float Ease(float x)
     {
-        return x == 0
-? 0
-: x == 1
-? 1
-: x < 0.5 ? MathF.Pow(2, 20 * x - 10) / 2
-: (2 - MathF.Pow(2, -20 * x + 10)) / 2;
+        return x == 0 ? 0 : x == 1 ? 1 : x < 0.5 ? MathF.Pow(2, 20 * x - 10) / 2 : (2 - MathF.Pow(2, -20 * x + 10)) / 2;
     }
     public override void PostDraw(Color lightColor)
     {
-
         EbonianMod.finalDrawCache.Add(() =>
         {
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;

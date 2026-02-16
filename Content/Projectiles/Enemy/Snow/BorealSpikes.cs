@@ -35,7 +35,8 @@ public class BorealSpike : ModProjectile
         if (Projectile.timeLeft < 79 && Projectile.timeLeft > 76 && Projectile.ai[0] < Projectile.localAI[0] && Projectile.frame < 14)
         {
             Projectile.ai[0]++;
-            MPUtils.NewProjectile(Projectile.GetSource_FromAI(), Helper.GetNearestSurface(new Vector2(Projectile.Center.X + Projectile.ai[1] * 10, Projectile.Center.Y)) + new Vector2(0, 4), Vector2.Zero, ProjectileType<BorealSpike>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: Projectile.ai[1], ai2: Projectile.frame + 2);
+            if(Helper.GetNearestSurface(new Vector2(Projectile.Center.X + Projectile.ai[1] * 10, Projectile.Center.Y), 160, true, out Vector2 point)) 
+                MPUtils.NewProjectile(Projectile.GetSource_FromAI(), new Vector2(point.X, point.Y + 4), Vector2.Zero, ProjectileType<BorealSpike>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: Projectile.ai[1], ai2: Projectile.frame + 2);
         }
         Projectile.scale = Projectile.timeLeft < 20 ? Lerp(Projectile.scale, 0, 0.25f) : Lerp(Projectile.scale, 1, 0.3f);
     }

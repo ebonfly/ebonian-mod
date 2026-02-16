@@ -47,25 +47,22 @@ public class EbonianGunProjectile : HeldProjectileGun
     public override void SetDefaults()
     {
         base.SetDefaults();
+        Projectile.Size = new(72, 24);
         ItemType = ItemType<EbonianGun>();
         RotationSpeed = 0.25f;
-        Projectile.Size = new(72, 24);
-        CursorOffset = new Vector2(0, 12);
+        HoldOffset.Y = -6;
+        AimingOffset = 10;
     }
     public override void OnSpawn(IEntitySource source)
     {
         CalculateAttackSpeedParameters(32);
         Projectile.rotation = (Main.MouseWorld - Main.player[Projectile.owner].Center).ToRotation();
     }
-
-    float HoldOffset;
     public override void AI()
     {
-        base.AI();
-
         Player player = Main.player[Projectile.owner];
 
-        HoldOffset = Lerp(HoldOffset, 26, 0.2f);
+        HoldOffset.X = Lerp(HoldOffset.X, 26, 0.2f);
 
         player.heldProj = Projectile.whoAmI;
 
@@ -73,22 +70,22 @@ public class EbonianGunProjectile : HeldProjectileGun
         if (Projectile.ai[0] >= 32 * AttackDelayMultiplier)
         {
             Projectile.UseAmmo(AmmoID.Bullet);
-            AnimationRotation = -0.14f * player.direction;
+            RecoilRotation = -0.14f * player.direction;
             SoundEngine.PlaySound(SoundID.Item11.WithPitchOffset(Main.rand.NextFloat(-1f, -0.5f)), player.Center);
             SoundEngine.PlaySound(SoundID.Item17.WithPitchOffset(Main.rand.NextFloat(-0.5f, -0.2f)), player.Center);
             if (player.whoAmI == Main.myPlayer)
-                Projectile.NewProjectileDirect(Projectile.InheritSource(Projectile), Projectile.Center + new Vector2(50, -7.5f * player.direction).RotatedBy(Projectile.rotation), Projectile.rotation.ToRotationVector2() * 10, ProjectileType<CorruptionHitscan>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-            HoldOffset = 11;
+                Projectile.NewProjectileDirect(Projectile.InheritSource(Projectile), Projectile.Center + new Vector2(26, -4f * player.direction).RotatedBy(Projectile.rotation), Projectile.rotation.ToRotationVector2() * 10, ProjectileType<CorruptionHitscan>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            HoldOffset.X = 11;
             Projectile.ai[0] = 0;
         }
 
-        if (!player.channel)
-            Projectile.Kill();
+        base.AI();
+
+        if (!player.channel) Projectile.Kill();
     }
     public override bool PreDraw(ref Color lightColor)
     {
-        Player player = Main.player[Projectile.owner];
-        Main.EntitySpriteDraw(Helper.GetTexture(Texture).Value, Projectile.Center - new Vector2(0, 4) + player.GFX() - Main.screenPosition, null, lightColor, Projectile.rotation, new Vector2(Projectile.width / 2 - HoldOffset, Projectile.height / 2), Projectile.scale, player.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically);
+        Main.EntitySpriteDraw(TextureAssets.Projectile[Type].Value, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, Projectile.Size / 2, Projectile.scale, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically);
         return false;
     }
 }

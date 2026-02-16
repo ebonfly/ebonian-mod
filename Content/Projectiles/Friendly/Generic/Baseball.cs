@@ -5,7 +5,7 @@ using System.Threading;
 using Terraria;
 
 namespace EbonianMod.Content.Projectiles.Friendly.Generic;
-public class Ball : ModProjectile
+public class Baseball : ModProjectile
 {
     public override string Texture => Helper.AssetPath + "Projectiles/Friendly/Generic/" + Name;
     public override void SetDefaults()
@@ -16,18 +16,17 @@ public class Ball : ModProjectile
         Projectile.timeLeft = 400;
         Projectile.usesLocalNPCImmunity = true;
     }
-
+    public override void SetStaticDefaults()
+    {
+        ProjectileID.Sets.TrailCacheLength[Type] = 10;
+        ProjectileID.Sets.TrailingMode[Type] = 0;
+    }
     public override void OnSpawn(IEntitySource source)
     {
         Player player = Main.player[Projectile.owner];
         Projectile.ai[0] = 0;
         Projectile.ai[2] = player.direction;
     }
-    public override void OnKill(int timeLeft)
-    {
-
-    }
-
     public override bool OnTileCollide(Vector2 oldVelocity)
     {
         if (oldVelocity.Length() > 3)
@@ -66,6 +65,7 @@ public class Ball : ModProjectile
         }
         else
         {
+            Projectile.localAI[0] = 10;
             Projectile.penetrate = 1;
             Projectile.CritChance = 0;
         }
@@ -85,5 +85,16 @@ public class Ball : ModProjectile
 
         if (Projectile.timeLeft < 20)
             Projectile.Opacity *= 0.8f;
+
+        if (Projectile.localAI[0] > 0) Projectile.localAI[0]--;
+    }
+
+    public override bool PreDraw(ref Color lightColor)
+    {
+        if (Projectile.damage > 90)
+            for (int i = 0; i < Projectile.oldPos.Length - Projectile.localAI[0]; i++) 
+                Main.EntitySpriteDraw(TextureAssets.Projectile[Type].Value, Projectile.oldPos[i] + Projectile.Size / 2 - Main.screenPosition, null, lightColor * (1 - i / 10f), Projectile.rotation, Projectile.Size / 2, Projectile.scale, SpriteEffects.None);
+
+        return true;
     }
 }

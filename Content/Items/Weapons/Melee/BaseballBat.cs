@@ -10,8 +10,7 @@ public class BaseballBat : ModItem
     public override void SetDefaults()
     {
         Item.knockBack = 10f;
-        Item.width = 48;
-        Item.height = 66;
+        Item.Size = new Vector2(48);
         Item.crit = 0;
         Item.damage = 18;
         Item.useAnimation = 20;
@@ -25,138 +24,97 @@ public class BaseballBat : ModItem
         Item.useStyle = ItemUseStyleID.Swing;
         Item.rare = ItemRarityID.Green;
         Item.shoot = ProjectileType<BaseballBatProjectile>();
+        Item.shootSpeed = 1;
     }
-
     public override void AddRecipes()
     {
         CreateRecipe().AddIngredient(ItemID.Wood, 10).AddIngredient(RecipeGroupID.IronBar, 20).AddTile(TileID.Anvils).Register();
     }
-    public override bool AltFunctionUse(Player player)
-    {
-        return true;
-    }
+    public override bool AltFunctionUse(Player player) => true;
     public override bool CanUseItem(Player player)
     {
-        Item.shoot = player.altFunctionUse == 2 ? ProjectileType<Ball>() : ProjectileType<BaseballBatProjectile>();
-        return Item.shoot == ProjectileType<BaseballBatProjectile>()
-            || (Item.shoot == ProjectileType<Ball>()
-            && player.ownedProjectileCounts[ProjectileType<Ball>()] < 4);
+        Item.shoot = player.altFunctionUse == 2 ? ProjectileType<Baseball>() : ProjectileType<BaseballBatProjectile>();
+        return Item.shoot == ProjectileType<BaseballBatProjectile>() || (Item.shoot == ProjectileType<Baseball>() && player.ownedProjectileCounts[ProjectileType<Baseball>()] < 4);
     }
     public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
     {
         if (player.altFunctionUse == 2)
         {
-            if (MathF.Abs(player.velocity.Y) < 0.03f)
-                velocity = new Vector2(player.velocity.X, -5 + player.velocity.Y);
-            else
-                velocity += new Vector2(player.velocity.X, -1.5f + player.velocity.Y);
+            velocity = new Vector2(player.velocity.X, player.velocity.Y - 3);
         }
+
         Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1);
         return false;
     }
 }
-public class BaseballBatProjectile : HeldSword
+public class BaseballBatProjectile : HeldProjectile
 {
     public override string Texture => Helper.AssetPath + "Items/Weapons/Melee/BaseballBat";
-    public override bool? CanDamage() => Projectile.ai[1] < 0 && Projectile.timeLeft > 10;
-    public override void SetExtraDefaults()
+    public override bool? CanDamage() => Projectile.ai[2] < 1;
+    public override void SetDefaults()
     {
-        Projectile.width = 10;
-        Projectile.height = 62;
+        base.SetDefaults();
+        ItemType = ItemType<BaseballBat>();
+        Projectile.Size = new Vector2(48);
+        HoldOffset = new Vector2(46, 0);
+        PlayerFacesCursor = false;
+        Projectile.penetrate = -1;
     }
     public override void OnSpawn(IEntitySource source)
     {
-        Projectile.scale = 0.3f;
-        Player player = Main.player[Projectile.owner];
-        Projectile.spriteDirection = Main.MouseWorld.X > player.Center.X ? 1 : -1;
-        Projectile.rotation = Helper.FromAToB(player.Center, Main.MouseWorld).ToRotation() + Pi / 2;
-        Projectile.ai[0] = Projectile.rotation - Pi * 0.9f * player.direction;
-        Projectile.localAI[0] = Projectile.rotation - Pi;
-        Projectile.ai[2] = 36;
+        Projectile.rotation = Projectile.velocity.ToRotation();
+        Projectile.ai[0] = Projectile.rotation - Pi * Main.player[Projectile.owner].direction * 0.9f;
+        Projectile.ai[2] = 1;
     }
     public override void AI()
     {
         Player player = Main.player[Projectile.owner];
 
-        Projectile.scale = Lerp(Projectile.scale, 1, 0.45f);
-
-        Projectile.velocity = new Vector2(0);
-
         player.heldProj = Projectile.whoAmI;
-        Projectile.ai[1]++;
-        if (Projectile.ai[1] > 0)
-        {
-            if (Main.mouseRightRelease && Main.myPlayer == player.whoAmI)
-                Projectile.localAI[1]--;
 
-            if (Main.mouseRight && Main.myPlayer == player.whoAmI && Projectile.localAI[1] < 0)
-            {
-                Vector2 velocity = new Vector2(player.velocity.X, -5 + player.velocity.Y);
-                Projectile.NewProjectile(Projectile.InheritSource(Projectile), player.MountedCenter + velocity, velocity, ProjectileType<Ball>(), Projectile.damage, Projectile.knockBack, player.whoAmI);
-                Projectile.localAI[1] = Pi / 9;
-                Projectile.netUpdate = true;
-            }
-            Projectile.rotation = Utils.AngleLerp(Projectile.rotation, Projectile.ai[0], 0.2f);
-            if (!player.channel && Projectile.ai[1] > 12)
-            {
-                Projectile.ai[1] = -100;
-            }
-            Projectile.timeLeft = 30;
-        }
-        Vector2 startRotationDirection = (Projectile.localAI[0] + Pi / 2).ToRotationVector2();
-        if (Projectile.ai[1] < 0)
+        float attackSpeedMultiplier = Main.LocalPlayer.GetAttackSpeed(DamageClass.Melee);
+        if (Projectile.ai[1] < 20)
         {
-            if (Projectile.timeLeft == 29)
+            Projectile.ai[1] += attackSpeedMultiplier;
+            Projectile.rotation = Utils.AngleLerp(Projectile.rotation, Projectile.ai[0], Min(0.25f * attackSpeedMultiplier, 1));
+        }
+        else if(!player.channel)
+        {
+            Projectile.rotation += Projectile.ai[2] * attackSpeedMultiplier * Projectile.direction;
+            Projectile.ai[2] *= MathF.Pow(0.86f, attackSpeedMultiplier);
+            if (Projectile.ai[2] < 0.4f)
             {
-                SoundEngine.PlaySound(SoundID.Item1.WithPitchOffset(Main.rand.NextFloat(-0.82f, -0.6f)), Projectile.Center);
+                Projectile.ai[2] -= 0.025f * attackSpeedMultiplier;
+                Projectile.Opacity *= MathF.Pow(0.8f, attackSpeedMultiplier);
+                if (Projectile.ai[2] < 0) Projectile.Kill();
             }
-            foreach (Projectile projectile in Main.ActiveProjectiles)
+            else if(Projectile.ai[1] != 100)
             {
-                if (Vector2.Distance(player.Center + startRotationDirection * 30, projectile.Center) < 55 && projectile.type == ProjectileType<Ball>() && projectile.ai[1] == 0 && Projectile.ai[2] > 27)
+                foreach (Projectile projectile in Main.ActiveProjectiles)
                 {
-                    SoundEngine.PlaySound(SoundID.Item126.WithPitchOffset(Main.rand.NextFloat(-0.9f, -0.7f)), Projectile.Center);
-                    SoundEngine.PlaySound(SoundID.Item10.WithPitchOffset(Main.rand.NextFloat(1f, 2f)), Projectile.Center);
-                    float BaseVelocity = projectile.velocity.Length();
-                    float VelocityPower = MathF.Pow(BaseVelocity, 2) / 9;
-                    projectile.velocity = startRotationDirection * Clamp(VelocityPower, 14, 34);
-                    projectile.timeLeft = 360;
-                    projectile.Opacity = 1;
-                    if (Projectile.localAI[0] > -3.3f && Projectile.localAI[0] < -2.9f)
-                        projectile.velocity.X = player.velocity.X;
-                    projectile.ai[1] = 10;
-                    Projectile.netUpdate = true; // TEST
+                    if (projectile.type == ProjectileType<Baseball>() && Vector2.Distance(Projectile.Center, projectile.Center) < 50)
+                    {
+                        SoundEngine.PlaySound(SoundID.Item126.WithPitchOffset(Main.rand.NextFloat(-0.9f, -0.7f)), Projectile.Center);
+                        SoundEngine.PlaySound(SoundID.Item10.WithPitchOffset(Main.rand.NextFloat(1f, 2f)), Projectile.Center);
+                        projectile.velocity = Projectile.velocity * Clamp(MathF.Pow(projectile.velocity.Length(), 2) / 9, 14, 34);
+                        projectile.timeLeft = 360;
+                        projectile.Opacity = 1;
+                        if (player.whoAmI == Main.myPlayer && Distance(Main.MouseWorld.X, player.Center.X) < 8) projectile.velocity.X = player.velocity.X;
+                        projectile.SyncProjectile();
+                        projectile.netUpdate = true;
+                        Projectile.ai[1] = 100;
+                    }
                 }
             }
-            Projectile.rotation += player.direction * ToRadians(Projectile.ai[2]);
-            if (Projectile.timeLeft == 23)
-            {
-                Projectile.ai[2] /= 2.5f;
-            }
-            if (Projectile.timeLeft < 23)
-            {
-                Projectile.Opacity *= 0.72f;
-                Projectile.ai[2] *= 0.8f;
-            }
         }
 
-        if (Projectile.Opacity > 0.2f)
-        {
-            player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation + Pi);
-            player.itemAnimation = 2;
-        }
+        player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - PiOver2);
 
-        Projectile.Center = player.MountedCenter;
-        if (player.HeldItem.type != ItemType<BaseballBat>() && !player.active || player.dead || player.CCed || player.noItems || Projectile.Opacity < 0.05f)
-        {
-            Projectile.Kill();
-            player.itemAnimation = 0;
-        }
-        else player.itemTime = 2;
+        base.AI();
     }
     public override bool PreDraw(ref Color lightColor)
     {
-        Player player = Main.player[Projectile.owner];
-        Main.EntitySpriteDraw(Helper.GetTexture(Texture).Value, Projectile.Center - Main.screenPosition, null, lightColor * Projectile.Opacity, Projectile.rotation, new Vector2(Projectile.width / 2, Projectile.height / 2 + 41), Projectile.scale, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
+        Main.EntitySpriteDraw(TextureAssets.Projectile[Type].Value, Projectile.Center - Main.screenPosition, null, lightColor * Projectile.Opacity, Projectile.rotation + Pi / 4, Projectile.Size / 2, Projectile.scale, SpriteEffects.None);
         return false;
     }
 }

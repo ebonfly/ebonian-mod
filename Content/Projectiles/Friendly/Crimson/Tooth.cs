@@ -2,7 +2,7 @@
 
 namespace EbonianMod.Content.Projectiles.Friendly.Crimson;
 
-public class ToothProj : ModProjectile
+public class Tooth : ModProjectile
 {
     public override string Texture => Helper.AssetPath + "Projectiles/Friendly/Crimson/" + Name;
     public override void SetDefaults()

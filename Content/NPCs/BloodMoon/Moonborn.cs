@@ -1,13 +1,8 @@
 using System;
-using System.Diagnostics;
-using Terraria;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using static Terraria.ModLoader.PlayerDrawLayer;
 
 public class Moonborn : ModNPC
 {
     public override string Texture => Helper.AssetPath + "NPCs/BloodMoon/Moonborn";
-
     public override void SetDefaults()
     {
         NPC.Size = new Vector2(60, 80);
@@ -19,7 +14,6 @@ public class Moonborn : ModNPC
         NPC.noTileCollide = true;
         NPC.noGravity = true;
     }
-
     public override void SetStaticDefaults()
     {
         Main.npcFrameCount[Type] = 8;
@@ -43,7 +37,6 @@ public class Moonborn : ModNPC
             Legs[i].MaxDistance = Main.rand.NextFloat(108, 126);
         }
     }
-
     public override void AI()
     {
         NPC.TargetClosest(true);
@@ -51,8 +44,8 @@ public class Moonborn : ModNPC
 
         NPC.direction = player.Center.X > NPC.Center.X ? 1 : -1;
         Helper.RaycastData bodyCast = Helper.Raycast(NPC.Center, Vector2.UnitY, 110, true, false);
-        Helper.RaycastData frontCast = Helper.Raycast(NPC.Center, new Vector2(NPC.direction, 0), 76, true, IsInBlocks, true);
-        Helper.RaycastData backCast =  Helper.Raycast(NPC.Center, new Vector2(-NPC.direction, 0), 76, true, IsInBlocks, true);
+        Helper.RaycastData frontCast = Helper.Raycast(NPC.Center, new Vector2(NPC.direction, 0), 78, true, IsInBlocks, true);
+        Helper.RaycastData backCast =  Helper.Raycast(NPC.Center, new Vector2(-NPC.direction, 0), 78, true, IsInBlocks, true);
         MovementDirection = new Vector2(NPC.velocity.X > 0 ? 1 : -1, NPC.velocity.Y > 0 ? 1 : -1);
         HasWalls = frontCast.Success && backCast.Success;
         IsGrounded = bodyCast.Success || HasWalls;
@@ -95,17 +88,17 @@ public class Moonborn : ModNPC
 
         for (int i = 0, j = 1; i < 6; i++, j *= -1)
         {
-            float distanceToTargetPosition = Vector2.Distance(NPC.Center, Legs[i].TargetPosition);
             bool front = j == MovementDirection.X;
             if (Legs[i].IsMoving)
             {
                 float distance = Vector2.Distance(Legs[i].RawPosition, Legs[i].TargetPosition);
-                Legs[i].Speed = Max(NPC.velocity.Length() * 2, 5);
-                Legs[i].RawPosition += (Legs[i].TargetPosition - Legs[i].RawPosition).SafeNormalize(Vector2.UnitY) * Max(NPC.velocity.Length() * 2, 5);
+                Legs[i].Speed = Max(NPC.velocity.Length(), 3);
+                Legs[i].RawPosition += (Legs[i].TargetPosition - Legs[i].RawPosition).SafeNormalize(Vector2.UnitY) * Legs[i].Speed;
                 if (Legs[i].Range != 0) Legs[i].VerticalOffset = (-MathF.Pow(distance * 2 - Legs[i].Range, 2) / (Legs[i].Range * Legs[i].Range) + 1) * 30;
                 Legs[i].Position = new Vector2(Legs[i].RawPosition.X, Legs[i].RawPosition.Y - Legs[i].VerticalOffset);
                 if (distance < Legs[i].Speed)
                 {
+                    Legs[i].ReferenceOffset = Legs[i].TargetPosition - NPC.Center;
                     Legs[i].Position = Legs[i].TargetPosition;
                     Legs[i].IsMoving = false;
                 }
@@ -115,7 +108,7 @@ public class Moonborn : ModNPC
                 float multiplier = 1 - (i + 2) / 8f;
                 if (IsGrounded)
                 {
-                    if (distanceToTargetPosition > Legs[i].MaxDistance)
+                    if (Vector2.Distance(NPC.Center + Legs[i].ReferenceOffset, Legs[i].TargetPosition) > Legs[i].MaxDistance)
                     {
                         float chosenLength = (j == 1 ? frontCast : backCast).RayLength;
 
@@ -130,7 +123,7 @@ public class Moonborn : ModNPC
                             {
                                 for (float offset = chosenLength * multiplier; offset > 0; offset -= 16)
                                 {
-                                    Helper.RaycastData verticalcast = Helper.Raycast(new Vector2(NPC.Center.X + offset * j, NPC.Center.Y), -Vector2.UnitY, 200, true, IsInBlocks);
+                                    Helper.RaycastData verticalcast = Helper.Raycast(new Vector2(NPC.Center.X + offset * j, NPC.Center.Y), Vector2.UnitY, 200, true, IsInBlocks);
                                     if (verticalcast.Success)
                                     {
                                         Legs[i].TargetPosition = verticalcast.Point;
@@ -140,8 +133,8 @@ public class Moonborn : ModNPC
                             }
                             else
                             {
-                                float otherLength = (j == 1 ? backCast : frontCast).RayLength;
-                                for (float offset = 0; offset < otherLength * multiplier; offset += 16)
+
+                                for (float offset = 0; offset < (j == 1 ? backCast : frontCast).RayLength * multiplier; offset += 16)
                                 {
                                     Helper.RaycastData verticalcast = Helper.Raycast(new Vector2(NPC.Center.X - offset * j, NPC.Center.Y), Vector2.UnitY, 110, true, IsInBlocks);
                                     if (verticalcast.Success)
@@ -152,7 +145,6 @@ public class Moonborn : ModNPC
                                 }
                             }
                         }
-                        Legs[i].MaxDistance = IsInBlocks ? 100 : 126;
                         Legs[i].Range = Vector2.Distance(Legs[i].RawPosition, Legs[i].TargetPosition);
                         Legs[i].IsMoving = true;
                     }
@@ -160,12 +152,11 @@ public class Moonborn : ModNPC
             }
         }
     }
-
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         if (!NPC.IsABestiaryIconDummy)
         {
-            for (int i = 0, j = 1; i < 6; i++, j *= -1)
+            for (int i = 0, j = 1; i < 2; i++, j *= -1)
             {
                 Vector2 jointPosition = NPC.Center + new Vector2(70, 0).RotatedBy((Legs[i].Position - NPC.Center).ToRotation() - j * MathF.Acos(Min((Legs[i].Position - NPC.Center).Length(), 126) / 126));
                 SpriteEffects flip = j == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically;
@@ -175,7 +166,6 @@ public class Moonborn : ModNPC
         }
         return true;
     }
-
     public override void FindFrame(int frameHeight)
     {
         NPC.frameCounter++;

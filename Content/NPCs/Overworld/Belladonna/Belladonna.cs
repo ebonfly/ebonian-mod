@@ -187,8 +187,10 @@ public class Belladonna : ModNPC
                 for (int i = 0; i < 3; i++)
                 {
                     Vector2 rawPosition = new Vector2(16 * (NPC.Center.X / 16 + Main.rand.Next(-25, 25)) + 4, NPC.Center.Y);
-                    Vector2 position = Helper.GetNearestSurface(rawPosition);
-                    MPUtils.NewProjectile(NPC.GetSource_FromAI(), position - Vector2.UnitY * 20, Vector2.Zero, ProjectileType<BelladonnaBush>(), 0, 0);
+                    if (Helper.GetNearestSurface(rawPosition, 160, false, out Vector2 point))
+                    {
+                        MPUtils.NewProjectile(NPC.GetSource_FromAI(), point - Vector2.UnitY * 20, Vector2.Zero, ProjectileType<BelladonnaBush>(), 0, 0);
+                    }
                 }
             }
         }
