@@ -288,6 +288,7 @@ DummyProjectile.DisplayName: Atrapa Pocisku
 Misery.DisplayName: Odrzutowy Głaz
 CrimCannonGraphics.DisplayName: Grafika Krwawej Armaty
 ToothProj.DisplayName: Pocisk Zębowy
+// Tooth.DisplayName: Tooth
 CorebreakerGraphics.DisplayName: Grafika Kodołamacz
 AImpact.DisplayName: Uderzenie A
 AureusLaser.DisplayName: Laser Aureusa
@@ -380,6 +381,7 @@ PotatoProjectile.DisplayName: Pocisk Ziemniaka
 ExolsawProjectile.DisplayName: Pocisk Piekielnej Piły
 CrimCannonProjectile.DisplayName: Pocisk Krwawej Armaty
 BaseballBatProjectile.DisplayName: Pocisk Kija Baseballowego
+// Baseball.DisplayName: Baseball
 EbonianGunProjectile.DisplayName: Pocisk Plugo Broni
 EbonianRocketLauncherProjectile.DisplayName: Pocisk Plugo Wyrzutni Rakiet
 CoreProjectile.DisplayName: Pocisk Rdzeniowy
@@ -397,4 +399,6 @@ StarcallerShotVFX.DisplayName: Strzał Przywoływacza Gwiazd
 // ItemNameFlowerDamaging.DisplayName: Item Name Flower Damaging
 // LatcherProjectile.DisplayName: Latcher Projectile
 // LatcherProjectileCecitior.DisplayName: Latcher Projectile Cecitior
-// FlameExplosionWSpriteHostile.DisplayName: Wybuch Płomieni
+// FlameExplosionWSpriteHostile.DisplayName: Flame Explosion
+// LatcherTongueCecitior.DisplayName: Latcher Tongue Cecitior
+// LatcherTongue.DisplayName: Latcher Tongue

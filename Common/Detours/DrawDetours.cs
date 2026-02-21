@@ -211,7 +211,7 @@ public class DrawDetours : ModSystem
         gd.Textures[1] = Assets.Extras.coherentNoise.Value;
         Effects.displacementMap.Value.Parameters["offsetY"].SetValue(0);
         Effects.displacementMap.Value.Parameters["offsetX"].SetValue(Main.GlobalTimeWrappedHourly * 0.5f);
-        Effects.displacementMap.Value.Parameters["offset"].SetValue(0.0075f);
+        Effects.displacementMap.Value.Parameters["offset"].SetValue(0.0025f);
         Effects.displacementMap.Value.Parameters["alpha"].SetValue(0.1f);
         sb.Draw(target.GetTarget(), Vector2.Zero, Color.White * 0.25f);
         gd.Textures[1] = Assets.Extras.swirlyNoise.Value;

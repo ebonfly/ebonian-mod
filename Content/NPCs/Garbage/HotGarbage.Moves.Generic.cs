@@ -65,7 +65,7 @@ public partial class HotGarbage : ModNPC
         if (AITimer > 150)
             NPC.velocity.X *= 0.98f;
         
-        if (AITimer >= 200)
+        if (    AITimer >= 200)
         {
             NPC.velocity.X = 0;
             AITimer = 0;
@@ -75,7 +75,6 @@ public partial class HotGarbage : ModNPC
                 if (NextAttack == State.OpenLid)
                     NextAttack2 = Main.rand.Next(OpenAttackPool);
             }
-            NextAttack = State.SlamPreperation;
             AIState = NextAttack;
             if (NextAttack == State.OpenLid)
                 NPC.frame.Y = 0;
@@ -225,13 +224,14 @@ public partial class HotGarbage : ModNPC
 
     void DoIntro()
     {
-        AnimationStyle = AnimationStyles.Intro;
+        AnimationStyle = AnimationStyles.Still;
+        if (AITimer > 30)
+            AnimationStyle = AnimationStyles.Intro;
         
         if (!NPC.collideY && AITimer2 < 150)
         {
             if (Helper.Raycast(NPC.Center, Vector2.UnitY, 80).RayLength > 50)
                 NPC.position.Y += NPC.velocity.Y * 0.5f;
-            NPC.frameCounter = 0;
         }
         else 
             AITimer++;
@@ -239,6 +239,7 @@ public partial class HotGarbage : ModNPC
         AITimer2++;
         if (AITimer == 1)
         {
+            SoundEngine.PlaySound(SoundID.Item70, NPC.Center);
             NPC.netUpdate = true;
             NPC.position.Y -= NPC.velocity.Y;
             foreach (Player p in Main.ActivePlayers)
@@ -248,19 +249,19 @@ public partial class HotGarbage : ModNPC
                     player.velocity.Y = -10;
                 }
             MPUtils.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + NPC.height * 0.5f * Vector2.UnitY, new Vector2(0, 0), ProjectileType<GarbageImpact>(), 0, 0, 0, 0);
-            CameraSystem.ChangeCameraPos(NPC.Center - new Vector2(0, 50), 120, null, 1.5f, InOutQuart);
+            CameraSystem.ChangeCameraPos(NPC.Center - new Vector2(0, 50), 150, null, 1.5f, InOutQuart);
         }
-        if (AITimer == 15)
+        if (AITimer == 50)
         {
             SoundEngine.PlaySound(Sounds.garbageAwaken);
         }
-        if (AITimer == 45)
+        if (AITimer == 75)
         {
             CameraSystem.ChangeZoom(75, new ZoomInfo(2, 1f, InOutBounce, InOutCirc));
             for (int i = 0; i < 3; i++)
                 MPUtils.NewProjectile(NPC.InheritSource(NPC), NPC.Center, Vector2.Zero, ProjectileType<BloodShockwave2>(), 0, 0);
         }
-        if (AITimer > 100)
+        if (AITimer > 130)
         {
             NPC.Center += new Vector2(2 * NPC.direction, 0);
             NPC.frame.X = 80;

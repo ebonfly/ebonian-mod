@@ -288,6 +288,7 @@ DummyProjectile.DisplayName: Projétil Dummy
 Misery.DisplayName: Rochedo de Mochila a Jato
 CrimCannonGraphics.DisplayName: Dentaduras Ensanguentadas
 ToothProj.DisplayName: Dente
+// Tooth.DisplayName: Tooth
 CorebreakerGraphics.DisplayName: Quebra-Núcleo
 AImpact.DisplayName: Impacto
 AureusLaser.DisplayName: Laser do Aureus
@@ -380,6 +381,7 @@ XLargeAmethystAlt.DisplayName: Grande Ametista
 // ExolsawProjectile.DisplayName: Exolsaw Projectile
 // CrimCannonProjectile.DisplayName: Crim Cannon Projectile
 // BaseballBatProjectile.DisplayName: Baseball Bat Projectile
+// Baseball.DisplayName: Baseball
 // EbonianGunProjectile.DisplayName: Ebonian Gun Projectile
 // EbonianRocketLauncherProjectile.DisplayName: Ebonian Rocket Launcher Projectile
 // CoreProjectile.DisplayName: Core Projectile
@@ -397,4 +399,6 @@ XLargeAmethystAlt.DisplayName: Grande Ametista
 // ItemNameFlowerDamaging.DisplayName: Item Name Flower Damaging
 // LatcherProjectile.DisplayName: Latcher Projectile
 // LatcherProjectileCecitior.DisplayName: Latcher Projectile Cecitior
-// FlameExplosionWSpriteHostile.DisplayName: Explosão de Chamas
+// FlameExplosionWSpriteHostile.DisplayName: Flame Explosion
+// LatcherTongueCecitior.DisplayName: Latcher Tongue Cecitior
+// LatcherTongue.DisplayName: Latcher Tongue

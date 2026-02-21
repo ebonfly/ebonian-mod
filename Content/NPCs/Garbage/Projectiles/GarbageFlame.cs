@@ -8,20 +8,10 @@ public class GarbageFlame : ModProjectile
     public override void SetStaticDefaults()
     {
         ProjectileID.Sets.TrailCacheLength[Type] = 25;
-        ProjectileID.Sets.TrailingMode[Type] = 0;
+        ProjectileID.Sets.TrailingMode[Type] = 2;
     }
     public override bool PreKill(int timeLeft)
     {
-        int b = 0;
-        var fadeMult = Helper.SafeDivision(1f / Projectile.oldPos.Length);
-        foreach (Vector2 pos in Projectile.oldPos)
-        {
-            b++;
-            float Y = MathHelper.Lerp(60, 0, (float)(MathHelper.Clamp(Projectile.velocity.Length(), -10, 10) + 10) / 20);
-            Vector2 oldpos = Vector2.SmoothStep(pos, pos - new Vector2(MathF.Sin(Main.GlobalTimeWrappedHourly * 2) * 5 + Main.windSpeedCurrent * 2, Y), (float)b / Projectile.oldPos.Length);
-            for (int i = 0; i < 2; i++)
-                Dust.NewDustPerfect(oldpos + Projectile.Size / 2, DustID.Torch, Main.rand.NextVector2Circular(1.5f, 1.5f) * (3 + (1f - fadeMult * b)), Scale: 1 + fadeMult * 1.5f).noGravity = true;
-        }
         return true;
     }
     public override bool PreDraw(ref Color lightColor)
@@ -29,6 +19,7 @@ public class GarbageFlame : ModProjectile
         EbonianMod.garbageFlameCache.Add(() =>
         {
             var fadeMult = Helper.SafeDivision(1f / Projectile.oldPos.Length);
+            Texture2D texture = Assets.Extras.Extras2.fire_01.Value;
             for (int i = 1; i < Projectile.oldPos.Length; i++)
             {
                 if (Projectile.oldPos[i] == Vector2.Zero) continue;
@@ -37,14 +28,19 @@ public class GarbageFlame : ModProjectile
                 Vector2 olderpos = Vector2.SmoothStep(Projectile.oldPos[i - 1], Projectile.oldPos[i - 1] - new Vector2(MathF.Sin(Main.GlobalTimeWrappedHourly * 2) * 5 + Main.windSpeedCurrent * 2, Y), (float)i / Projectile.oldPos.Length);
                 if (oldpos == Vector2.Zero || oldpos == Projectile.position) continue;
                 float mult = (1f - fadeMult * i);
-                for (float j = 0; j < 5; j++)
+                Color color = Color.Lerp(Color.Red, Color.Orange, mult * 0.35f) * mult * 0.35f;
+                color *= MathHelper.Clamp(alpha * (1 + i / (float)Projectile.oldPos.Length), 0, 1f);
+                
+                if (i > Projectile.oldPos.Length * alpha)
+                    continue;
+                
+                for (float j = 0; j < 3; j++)
                 {
-                    Vector2 pos = Vector2.Lerp(oldpos, olderpos, (float)(j / 5));
-                    Main.spriteBatch.Draw(TextureAssets.Projectile[Type].Value, pos + new Vector2(5, 10 / Main.GameZoomTarget) + Projectile.Size / 2 - Main.screenPosition, null, Color.Lerp(Color.Red, Color.Orange, mult * 0.35f) * mult * 0.4f, Main.GameUpdateCount * 0.03f * i, TextureAssets.Projectile[Type].Value.Size() / 2, 0.035f * mult * 2, SpriteEffects.None, 0);
+                    Vector2 pos = Vector2.Lerp(oldpos, olderpos, (float)(j / 5)) + new Vector2(0, Main.rand.NextFloat(-16f, 16f) * MathF.Pow(1f - mult, 0.75f)).RotatedBy(Projectile.oldRot[i]);
+                    Main.spriteBatch.Draw(texture, pos + new Vector2(5, 10 / Main.GameZoomTarget) + Projectile.Size / 2 - Main.screenPosition, null, color, Projectile.oldRot[i] + MathHelper.PiOver2 + Main.rand.NextFloat(-0.04f, 0.04f), texture.Size() / 2, 0.1f * MathF.Pow(mult, 0.5f), SpriteEffects.None, 0);
                 }
             }
         });
-        //Main.spriteBatch.Draw(TextureAssets.Projectile[Type].Value, Projectile.Center + new Vector2(5, 10 / Main.GameZoomTarget) - Main.screenPosition, null, Color.Orange, Main.GameUpdateCount * 0.03f, TextureAssets.Projectile[Type].Value.Size() / 2, 0.035f * 2, SpriteEffects.None, 0);
         return false;
     }
     public override void PostDraw(Color lightColor)
@@ -68,7 +64,7 @@ public class GarbageFlame : ModProjectile
         Projectile.hostile = true;
         Projectile.timeLeft = 240;
     }
-    float savedP;
+    float savedP, alpha = 1f;
     public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac)
     {
         if (Projectile.Center.Y >= savedP - 100)
@@ -78,12 +74,22 @@ public class GarbageFlame : ModProjectile
     public override void AI()
     {
         Projectile.timeLeft--;
+
+        Projectile.rotation = Projectile.velocity.ToRotation();
+        
         Lighting.AddLight(Projectile.Center, TorchID.Torch);
         if (savedP == 0)
             savedP = Main.player[Projectile.owner].Center.Y;
         if (Projectile.velocity.Y > 2.8f && Projectile.ai[0] == 0)
         {
             Projectile.velocity *= 0.87f;
+        }
+
+        if (Projectile.timeLeft < 50)
+        {
+            alpha = MathHelper.SmoothStep(1, 0, 1f - Projectile.timeLeft / 50f);
+            
+            
         }
     }
 }
