@@ -37,7 +37,7 @@ public class GarbageFlame : ModProjectile
                 for (float j = 0; j < 3; j++)
                 {
                     Vector2 pos = Vector2.Lerp(oldpos, olderpos, (float)(j / 5)) + new Vector2(0, Main.rand.NextFloat(-16f, 16f) * MathF.Pow(1f - mult, 0.75f)).RotatedBy(Projectile.oldRot[i]);
-                    Main.spriteBatch.Draw(texture, pos + new Vector2(5, 10 / Main.GameZoomTarget) + Projectile.Size / 2 - Main.screenPosition, null, color, Projectile.oldRot[i] + MathHelper.PiOver2 + Main.rand.NextFloat(-0.04f, 0.04f), texture.Size() / 2, 0.1f * MathF.Pow(mult, 0.5f), SpriteEffects.None, 0);
+                    Main.spriteBatch.Draw(texture, pos + new Vector2(5, 10 / Main.GameZoomTarget) + Projectile.Size / 2 - Main.screenPosition, null, color, Projectile.oldRot[i] + MathHelper.PiOver2 + Main.rand.NextFloat(-0.04f, 0.04f), texture.Size() / 2, 0.06f * MathF.Pow(mult, 0.5f), SpriteEffects.None, 0);
                 }
             }
         });

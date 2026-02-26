@@ -43,7 +43,7 @@ public partial class HotGarbage : ModNPC
 			
 			if (AITimer3 < 22)
 			{
-				if (NPC.Grounded() && player.Center.Y < NPC.Center.Y - 100)
+				if (NPC.Grounded() && NPC.collideX)
 					NPC.velocity.Y = -5.75f;
                 
 				NPC.velocity.X = Lerp(NPC.velocity.X, 20f * NPC.direction, 0.15f);
@@ -54,18 +54,9 @@ public partial class HotGarbage : ModNPC
 				if (NPC.velocity.Length() < 4f)
 					FacePlayer();
                 
-				if (AITimer3 < 40 && AITimer3 % 2 == 0)
+				if (AITimer3 < 40 && AITimer3 % 2 == 0 && NPC.Grounded())
 				{
-					for (int i = -1; i < 1; i++)
-					{
-						Projectile flame = MPUtils.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + new Vector2(Main.rand.NextFloat(2, 4) * i, NPC.height / 2f - 8), new Vector2(-NPC.direction * Main.rand.NextFloat(1, 3), Main.rand.NextFloat(-5, -1)), ProjectileType<GarbageFlame>(), 15, 0);
-
-						if (flame is not null)
-						{
-							flame.timeLeft = 170;
-							flame.SyncProjectile();
-						}
-					}
+					MPUtils.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + new Vector2(Main.rand.NextFloat(-4, 4), NPC.height / 2f + 6), new Vector2(-NPC.direction * Main.rand.NextFloat(1, 3), Main.rand.NextFloat(-5, -1)), ProjectileType<GarbageDashFlames>(), 15, 0);
 				}
 			}
 			
@@ -81,5 +72,10 @@ public partial class HotGarbage : ModNPC
 				ResetTo(State.OpenLid, State.SpewFire);
 			}
 		}
+	}
+
+	void DoSlam()
+	{
+		
 	}
 }

@@ -42,7 +42,10 @@ public partial class HotGarbage : ModNPC
                 DoDash();
                 break;
             
-            
+            case State.SlamPreperation:
+            case State.SlamSlamSlam:
+                DoSlam();
+                break;
         }
         if (AIState == State.SlamPreperation)
         {
