@@ -39,7 +39,7 @@ public partial class HotGarbage : ModNPC
 				AnimationStyle = AnimationStyles.BoostWarning;
             
 			if ((int)AITimer3 == 7)
-				SoundEngine.PlaySound(Sounds.exolDash, NPC.Center);
+				SoundEngine.PlaySound(Sounds.exolDash with { Volume = 0.2f, Pitch = 0.5f }, NPC.Center);
 			
 			if (AITimer3 < 22)
 			{

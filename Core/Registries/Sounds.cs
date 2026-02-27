@@ -238,6 +238,13 @@ public class Sounds : ModSystem
         SoundPath = path + "HotGarbage/garbageAwaken",
         PitchVariance = 0
     };
+    
+    public static SoundStyle GarbageThrusterLoop => Default with
+    {
+        SoundPath = path + "HotGarbage/GarbageThrusterLoop",
+        PitchVariance = 0,
+        IsLooped = true
+    };
 
 
     public static SoundStyle garbageSignal => Default with

@@ -37,7 +37,7 @@ public partial class HotGarbage : ModNPC
     public bool StruckDead;
     public bool PerformedFullMoveset;
     public Vector2 DisposablePosition;
-    public SlotId LaserSoundSlot, LoopedBoilSound;
+    public SlotId LaserSoundSlot, LoopedBoilSound, ThrusterSound;
     public Vector2 CachedVelocityForVFX;
     
     void AmbientFX() {
@@ -52,23 +52,11 @@ public partial class HotGarbage : ModNPC
         if (NPC.Grounded() && MathF.Abs(NPC.velocity.X) is > 0.75f and < 5f && MathF.Abs(NPC.velocity.X) < MathF.Abs(CachedVelocityForVFX.X) && NPC.rotation == 0f)
         {
             if (Main.GameUpdateCount % 4 == 0)
-                SoundEngine.PlaySound(SoundID.Item55 with { Volume = 0.3f }, NPC.Center);
+                SoundEngine.PlaySound(SoundID.Item55 with { Volume = 0.2f }, NPC.Center);
             
             float[] wheelOffsets = [16, NPC.width / 2f + 6f, NPC.width - 10f];
             Vector2 position = NPC.Bottom + new Vector2(-NPC.width / 2f + Main.rand.Next(wheelOffsets), -2) * NPC.direction + Main.rand.NextVector2Circular(2, 5);
             Dust.NewDustPerfect(position, ModContent.DustType<LineDustFollowPoint>(), new Vector2(MathHelper.Clamp(-NPC.velocity.X * 0.5f, -3f, 3f), Main.rand.NextFloat(-1.5f, -0.5f)), newColor: Color.OrangeRed, Scale: 0.08f).noGravity = true;
-        }
-
-        if (!Main.dedServ && !SoundEngine.TryGetActiveSound(LoopedBoilSound, out var sound))
-        {
-            /*LoopedBoilSound = SoundEngine.PlaySound(??? with { Pitch = -1f, IsLooped = true, Type = SoundType.Sound }, NPC.Center,
-                (_) =>
-                {
-                    _.Position = NPC.Center;
-                    return NPC.active && NPC.type == Type && !Main.gameInactive;
-                });*/
-            
-            // Needs a good sound
         }
         
         if (RedFrames.Contains(new(NPC.frame.X, NPC.frame.Y)))
@@ -80,6 +68,32 @@ public partial class HotGarbage : ModNPC
         if (NPC.frame.X == 80 * 2 && NPC.frame.Y > 0)
         {
             Lighting.AddLight(NPC.Center, TorchID.Torch);
+        }
+
+        if (Main.dedServ) return;
+        
+        if (!SoundEngine.TryGetActiveSound(LoopedBoilSound, out var soundBoil))
+        {
+            /*LoopedBoilSound = SoundEngine.PlaySound(??? with { Pitch = -1f, IsLooped = true, Type = SoundType.Sound }, NPC.Center,
+                (_) =>
+                {
+                    _.Position = NPC.Center;
+                    return NPC.active && NPC.type == Type && !Main.gameInactive;
+                });*/
+            
+            // Needs a good sound
+        }
+        
+        if (!SoundEngine.TryGetActiveSound(ThrusterSound, out var soundThruster))
+        {
+            ThrusterSound = SoundEngine.PlaySound(Sounds.GarbageThrusterLoop, NPC.Center,
+                (_) =>
+                {
+                    _.Position = NPC.Center;
+                    _.Pitch = NPC.velocity.Length() / 27f;
+                    _.Volume = MathHelper.Lerp(_.Volume, (NPC.frame.X == 80 && NPC.frame.Y >= 3 * 76 ? 1 + NPC.velocity.Length() / 23f : 0), 0.1f);
+                    return NPC.active && NPC.type == Type && !Main.gameInactive;
+                });
         }
     }
     
