@@ -31,7 +31,7 @@ namespace EbonianMod.Content.NPCs.Overworld.CenturyFlower.CenturyFlowerSpore
                 for (float j = 0; j < 3; j++)
                 {
                     Vector2 pos = Vector2.Lerp(Projectile.oldPos[i], Projectile.oldPos[i + 1], j / 3f);
-                    Main.EntitySpriteDraw(tex, pos + Projectile.Size / 2 - Main.screenPosition, tex.Frame(1, 2, 0, frame), Color.MediumSlateBlue with { A = 0 } * 0.1f * MathF.Pow(mult * 2, 2) * Projectile.Opacity, Projectile.oldRot[i], Projectile.Size / 2, Projectile.scale * mult, SpriteEffects.None);
+                    Main.EntitySpriteDraw(tex, pos + Projectile.Size / 2 - Main.screenPosition, tex.Frame(1, 2, 0, frame), Color.MediumSlateBlue with { A = 0 } * 0.1f * MathF.Pow(mult * 2, 2) * Projectile.Opacity, Projectile.oldRot[i], tex.Size() / 2f, Projectile.scale * mult, SpriteEffects.None);
                 }
             }
             return false;
@@ -40,8 +40,8 @@ namespace EbonianMod.Content.NPCs.Overworld.CenturyFlower.CenturyFlowerSpore
         const int MAX_TIMELEFT = 270;
         public override void SetDefaults()
         {
-            Projectile.height = 64;
-            Projectile.width = 80;
+            Projectile.height = 20;
+            Projectile.width = 20;
             Projectile.friendly = false;
             Projectile.hostile = true;
             Projectile.damage = 0;
