@@ -6,11 +6,24 @@ v3.0
 ## Changes:
 - Reworked Hot Garbage
 - Reorganized the mod's codebase (this doesn't affect the mod in any direct way but there's a risk for oversights)
-- Updated the Hookworm's spawn rate, coin drops, bestiary, and added a chance for it to drop a Whoopie Cushion
+- Updated the Hookworm's coin drops, bestiary, and added a chance for it to drop a Whoopie Cushion
 - Rotten Spine now only fires if the player is in its line of sight
+- Moved the Bloodsucker to the Blood Moon
+- Decreased the size of the Century Flower's spore hitbox
 - Added death sounds for enemies that lacked them
+- Nerfed most pre-hm enemy HP
+- Nerfed most enemy spawn rates
+
+## Removals: 
+- Removed the Dank Digger
+- Removed the Rotjaw
+- Removed the Vileglider
+- Removed the Muckling
+- Removed the Blood Hound
+- Removed the Gnasher
 
 ## Fixes:
+- Starlads, Asteriod Wardens, Asteriod Herders, and Belladonnas now scale their stats properly
 - Fixed the Defibrillator's VFX being weirdly flat
 - Fixed Cecitior's chomping attack rotating incorrectly
 - Fixed the Cold Touch spawning incorrectly

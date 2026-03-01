@@ -25,7 +25,7 @@ public class Parasite : ModNPC
         AIType = 47;
         NPC.damage = 0;
         NPC.defense = 1;
-        NPC.lifeMax = 80;
+        NPC.lifeMax = 25;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath2;
         NPC.value = 60f;

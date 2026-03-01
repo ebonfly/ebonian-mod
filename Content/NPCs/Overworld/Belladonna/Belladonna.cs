@@ -16,9 +16,9 @@ public class Belladonna : ModNPC
     {
         NPC.width = 32;
         NPC.height = 56;
-        NPC.lifeMax = 75;
+        NPC.lifeMax = 35;
         NPC.defense = 3;
-        NPC.damage = 0;
+        NPC.damage = 5;
         NPC.knockBackResist = 0.6f;
         NPC.HitSound = SoundID.DD2_KoboldHurt with { Variants = [0, 1] };
         NPC.DeathSound = SoundID.NPCDeath1;

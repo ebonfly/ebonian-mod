@@ -12,7 +12,7 @@ public class JelleyeFish : ModNPC
     public override void SetDefaults()
     {
         NPC.aiStyle = -1;
-        NPC.lifeMax = 350;
+        NPC.lifeMax = 65;
         NPC.damage = 20;
         NPC.noTileCollide = true;
         NPC.defense = 10;

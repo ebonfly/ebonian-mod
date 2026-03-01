@@ -36,7 +36,7 @@ public class Screecher : ModNPC
         NPC.height = 70;
         NPC.damage = 10;
         NPC.defense = 8;
-        NPC.lifeMax = 75;
+        NPC.lifeMax = 65;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath2;
         NPC.value = 60f;

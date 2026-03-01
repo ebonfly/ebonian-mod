@@ -45,7 +45,7 @@ public class Glutton : ModNPC
         NPC.height = 150;
         NPC.damage = 10;
         NPC.defense = 15;
-        NPC.lifeMax = 1200;
+        NPC.lifeMax = 600;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath2;
         NPC.value = 60f;

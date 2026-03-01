@@ -66,8 +66,8 @@ public class Flylad : ModNPC
 
     public override void SetDefaults()
     {
-        NPC.lifeMax = 100;
-        NPC.damage = 40;
+        NPC.lifeMax = 45;
+        NPC.damage = 20;
         NPC.defense = 15;
         NPC.knockBackResist = 0f;
 

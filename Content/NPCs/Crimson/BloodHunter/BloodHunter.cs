@@ -38,13 +38,12 @@ public class BloodHunter : ModNPC
         NPC.Size = new Vector2(94, 80);
         NPC.damage = 20;
         NPC.defense = 5;
-        NPC.lifeMax = 200;
+        NPC.lifeMax = 60;
         NPC.value = 200;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.knockBackResist = 0.45f;
         NPC.DeathSound = SoundID.NPCDeath1;
         NPC.aiStyle = -1;
-
     }
     public Vector2[] fgLegOffsets = new Vector2[2];
     public Vector2[] bgLegOffsets = new Vector2[2];

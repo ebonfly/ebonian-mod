@@ -37,8 +37,8 @@ namespace EbonianMod.Content.NPCs.Overworld.CenturyFlower
             NPC.width = 30;
             NPC.height = 70;
             NPC.damage = 12;
-            NPC.lifeMax = 50;
-            NPC.defense = 5;
+            NPC.lifeMax = 30;
+            NPC.defense = 3;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath32;
             NPC.buffImmune[BuffID.Poisoned] = true;
@@ -160,7 +160,7 @@ namespace EbonianMod.Content.NPCs.Overworld.CenturyFlower
         {
             if (Main.invasionType > 0) return 0;
             if (spawnInfo.Player.ZonePurity)
-                return SpawnCondition.OverworldDay.Chance * 0.2f;
+                return SpawnCondition.OverworldDay.Chance * 0.1f;
             return 0;
         }
         public override void ModifyNPCLoot(NPCLoot npcLoot)

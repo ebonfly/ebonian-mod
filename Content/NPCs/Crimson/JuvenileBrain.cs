@@ -73,7 +73,7 @@ public class JuvenileBrain : ModNPC
         NPC.damage = 20;
         NPC.knockBackResist = 0f;
         NPC.defense = 7;
-        NPC.lifeMax = 100;
+        NPC.lifeMax = 50;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath2;
         NPC.value = 200f;

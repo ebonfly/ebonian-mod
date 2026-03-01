@@ -58,7 +58,7 @@ public class BloatedEbonfly : ModNPC
         NPC.width = 40;
         NPC.height = 38;
         NPC.npcSlots = 0.1f;
-        NPC.lifeMax = 200;
+        NPC.lifeMax = 25;
         NPC.damage = 0;
         NPC.lavaImmune = true;
         NPC.noGravity = true;

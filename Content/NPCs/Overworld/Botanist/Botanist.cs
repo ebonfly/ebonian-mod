@@ -42,7 +42,7 @@ public class Botanist : ModNPC
         NPC.height = 22;
         NPC.damage = 10;
         NPC.defense = 3;
-        NPC.lifeMax = 60;
+        NPC.lifeMax = 35;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath2;
         NPC.value = 30;

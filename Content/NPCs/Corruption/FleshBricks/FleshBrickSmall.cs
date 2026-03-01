@@ -37,7 +37,7 @@ public class FleshBrickSmall : ModNPC
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;
         NPC.defense = -1;
-        NPC.lifeMax = 100;
+        NPC.lifeMax = 50;
         NPC.damage = 10;
         NPC.ai[3] = Main.rand.Next(3);
         NPC.value = Item.buyPrice(0, 0, 1);

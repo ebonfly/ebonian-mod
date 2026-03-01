@@ -17,7 +17,7 @@ public class Cryptid : CommonNPC
 	public override float SpawnChance(NPCSpawnInfo spawnInfo)
 	{
 		if (Main.invasionType > 0) return 0;
-		return Main.hardMode && spawnInfo.Player.ZoneCrimson && spawnInfo.Player.ZoneOverworldHeight ? 0.07f : 0;
+		return Main.hardMode && Main.bloodMoon && spawnInfo.Player.ZoneOverworldHeight ? 0.06f : 0;
 	}
 	public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 	{

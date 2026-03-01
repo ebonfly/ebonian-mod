@@ -37,7 +37,7 @@ public class WormKing : ModNPC
     public override void SetDefaults()
     {
         NPC.aiStyle = -1;
-        NPC.lifeMax = 1500;
+        NPC.lifeMax = 400;
         NPC.damage = 20;
         NPC.noTileCollide = true;
         NPC.defense = 15;

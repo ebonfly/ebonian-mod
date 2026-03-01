@@ -18,7 +18,7 @@ public class Fleshformator : ModNPC
         NPC.height = 42;
         NPC.damage = 10;
         NPC.defense = 5;
-        NPC.lifeMax = 1800;
+        NPC.lifeMax = 800;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = Sounds.fleshHit;
         NPC.value = 500f;

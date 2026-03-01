@@ -31,9 +31,9 @@ public class AsteroidHerder : CommonNPC
         NPC.Size = new Vector2(24, 30);
         NPC.noGravity = true;
         NPC.noTileCollide = true;
-        NPC.damage = 0;
+        NPC.damage = 20;
         NPC.defense = 5;
-        NPC.lifeMax = 750;
+        NPC.lifeMax = 450;
         NPC.value = Item.buyPrice(0, 1, 0, 0);
         NPC.aiStyle = -1;
         NPC.knockBackResist = 0f;

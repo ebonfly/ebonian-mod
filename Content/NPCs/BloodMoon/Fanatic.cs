@@ -18,7 +18,7 @@ public class Fanatic : CommonNPC
 	public override float SpawnChance(NPCSpawnInfo spawnInfo)
 	{
 		if (Main.invasionType > 0) return 0;
-		return spawnInfo.Player.ZoneCrimson && spawnInfo.Player.ZoneOverworldHeight ? 0.05f : 0;
+		return Main.bloodMoon && spawnInfo.Player.ZoneOverworldHeight ? 0.05f : 0;
 	}
 	public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 	{
@@ -35,7 +35,7 @@ public class Fanatic : CommonNPC
 		NPC.aiStyle = -1;
 		NPC.damage = 30;
 		NPC.defense = 4;
-		NPC.lifeMax = 230;
+		NPC.lifeMax = 80;
 		NPC.value = Item.buyPrice(0, 0, 15, 0);
 		NPC.HitSound = SoundID.NPCHit1;
 		NPC.DeathSound = SoundID.NPCDeath1;

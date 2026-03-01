@@ -35,9 +35,9 @@ public class Starlad : ModNPC
     {
         NPC.height = 90;
         NPC.width = 68;
-        NPC.damage = 0;
+        NPC.damage = 1;
         NPC.friendly = false;
-        NPC.lifeMax = 75;
+        NPC.lifeMax = 65;
         NPC.defense = 2;
         NPC.aiStyle = 0;
         NPC.HitSound = SoundID.NPCHit1;
@@ -76,7 +76,7 @@ public class Starlad : ModNPC
                     NPC.frame.Y = 0;
             }
         }
-        else if (AIState == Angery)
+        else if (AIState == Angry)
         {
             if (NPC.frameCounter % 5 == 0)
             {
@@ -98,7 +98,7 @@ public class Starlad : ModNPC
         }
     }
     private const int Idle = 0;
-    private const int Angery = 1;
+    private const int Angry = 1;
     private const int Attack = 2;
     public float AIState
     {
@@ -144,22 +144,23 @@ public class Starlad : ModNPC
         if (NPC.life != NPC.lifeMax && NPC.ai[2] == 0)
         {
             NPC.frameCounter = 0;
-            AIState = Angery;
+            AIState = Angry;
             NPC.ai[2] = 1;
         }
         if (NPC.ai[2] == 0)
         {
+            NPC.damage = 0;
             for (int i = 0; i < Main.maxNPCs; i++)
             {
                 if (Main.npc[i].active && Main.npc[i].type == ModContent.NPCType<Starlad>() && Main.npc[i].life < Main.npc[i].lifeMax)
                 {
                     NPC.frameCounter = 0;
-                    AIState = Angery;
+                    AIState = Angry;
                     NPC.ai[2] = 1;
                 }
             }
         }
-        if (AIState == Angery)
+        if (AIState == Angry)
         {
             AITimer++;
             if (AITimer > 70)

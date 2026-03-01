@@ -15,7 +15,7 @@ public class BabyCecity : ModNPC
         NPC.height = 76;
         NPC.damage = 15;
         NPC.defense = 18;
-        NPC.lifeMax = 2300;
+        NPC.lifeMax = 450;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = Sounds.fleshHit;
         NPC.value = 60f;

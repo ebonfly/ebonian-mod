@@ -32,7 +32,7 @@ public class EbonCrawler : ModNPC
         NPC.height = 38;
         NPC.damage = 36;
         NPC.defense = 4;
-        NPC.lifeMax = 50;
+        NPC.lifeMax = 35;
         NPC.aiStyle = 3;
         AIType = 218;
         NPC.HitSound = SoundID.NPCHit1;

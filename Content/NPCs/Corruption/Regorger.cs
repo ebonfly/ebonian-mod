@@ -33,7 +33,7 @@ internal class Regorger : ModNPC
         NPC.height = 50;
         NPC.damage = 10;
         NPC.defense = 7;
-        NPC.lifeMax = 230;
+        NPC.lifeMax = 150;
         NPC.aiStyle = -1;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath2;

@@ -14,7 +14,7 @@ namespace EbonianMod.Content.NPCs.Snow
             NPC.aiStyle = -1;
             NPC.damage = 0;
             NPC.defense = 10;
-            NPC.lifeMax = 120;
+            NPC.lifeMax = 40;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.HitSound = SoundID.Item49;
@@ -37,7 +37,7 @@ namespace EbonianMod.Content.NPCs.Snow
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             if (Main.invasionType > 0) return 0;
-            return (spawnInfo.Player.ZoneSnow && (spawnInfo.Player.ZoneNormalUnderground || spawnInfo.Player.ZoneNormalCaverns)) || (spawnInfo.Player.ZoneSnow && spawnInfo.Player.ZoneRain) ? 0.14f : 0;
+            return (spawnInfo.Player.ZoneSnow && (spawnInfo.Player.ZoneNormalUnderground || spawnInfo.Player.ZoneNormalCaverns)) || (spawnInfo.Player.ZoneSnow && spawnInfo.Player.ZoneRain) ? 0.05f : 0;
         }
         public override void FindFrame(int frameHeight)
         {

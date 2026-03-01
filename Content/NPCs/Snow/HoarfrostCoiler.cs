@@ -31,7 +31,7 @@ public class HoarfrostCoiler : WormHead
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
     {
         if (Main.invasionType > 0) return 0;
-        return (spawnInfo.Player.ZoneSnow && (spawnInfo.Player.ZoneNormalUnderground || spawnInfo.Player.ZoneNormalCaverns)) || (spawnInfo.Player.ZoneSnow && spawnInfo.Player.ZoneRain) ? 0.14f : 0;
+        return (spawnInfo.Player.ZoneSnow && (spawnInfo.Player.ZoneNormalUnderground || spawnInfo.Player.ZoneNormalCaverns)) || (spawnInfo.Player.ZoneSnow && spawnInfo.Player.ZoneRain) ? 0.06f : 0;
     }
     public override bool byHeight => true;
     public override int BodyType => NPCType<HoarfrostCoilerBody>();
@@ -40,9 +40,9 @@ public class HoarfrostCoiler : WormHead
     {
         NPC.CloneDefaults(NPCID.DiggerHead);
         NPC.Size = new Vector2(34, 36);
-        NPC.damage = 23;
+        NPC.damage = 15;
         NPC.aiStyle = -1;
-        NPC.lifeMax = 150;
+        NPC.lifeMax = 50;
         NPC.defense = 15;
         NPC.value = Item.buyPrice(0, 0, 2);
         NPC.HitSound = SoundID.Item49;
@@ -69,7 +69,7 @@ public class HoarfrostCoiler : WormHead
             && NPC.ai[3] <= 0 && NPC.velocity.Y > 0 && NPC.Center.Y > player.Center.Y)
         {
             for (int i = -1; i< 2;i+=2)
-                MPUtils.NewProjectile(NPC.GetSource_FromThis(), Helper.Raycast(NPC.Center - new Vector2(0, 35), Vector2.UnitY, 300, true).Point + new Vector2(0, 3), Vector2.Zero, ProjectileType<BorealSpike>(), NPC.damage, 0, ai0: 2, ai1: i);
+                MPUtils.NewProjectile(NPC.GetSource_FromThis(), Helper.Raycast(NPC.Center - new Vector2(0, 35), Vector2.UnitY, 300, true).Point + new Vector2(0, 3), Vector2.Zero, ProjectileType<BorealSpike>(), 15, 0, ai0: 2, ai1: i);
 
             SoundEngine.PlaySound(SoundID.Item1.WithPitchOffset(Main.rand.NextFloat(0f, 1f)), NPC.Center);
             NPC.ai[3] = 60;
@@ -101,7 +101,7 @@ public class HoarfrostCoilerBody : WormBody
         NPC.Size = new Vector2(30, 24);
         NPC.damage = 23;
         NPC.aiStyle = -1;
-        NPC.lifeMax = 150;
+        NPC.lifeMax = 50;
         NPC.HitSound = SoundID.Item49;
         NPC.DeathSound = SoundID.Item27;
 
@@ -132,7 +132,7 @@ public class HoarfrostCoilerTail : WormTail
         NPC.Size = new Vector2(22, 28);
         NPC.damage = 23;
         NPC.aiStyle = -1;
-        NPC.lifeMax = 150;
+        NPC.lifeMax = 50;
         NPC.HitSound = SoundID.Item49;
         NPC.DeathSound = SoundID.Item27;
 

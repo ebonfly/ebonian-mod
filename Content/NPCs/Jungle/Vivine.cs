@@ -17,7 +17,7 @@ public class Vivine : ModNPC
     {
         NPC.width = 40;
         NPC.height = 58;
-        NPC.lifeMax = 110;
+        NPC.lifeMax = 60;
         NPC.defense = 5;
         NPC.damage = 15;
         NPC.knockBackResist = 0.8f;

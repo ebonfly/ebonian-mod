@@ -41,7 +41,7 @@ public class Rolypoly : ModNPC
     public override void SetDefaults()
     {
         NPC.Size = new Vector2(100, 100);
-        NPC.lifeMax = 300;
+        NPC.lifeMax = 100;
         NPC.defense = 5;
         NPC.knockBackResist = 0.1f;
         NPC.HitSound = SoundID.NPCHit1;

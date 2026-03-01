@@ -47,7 +47,7 @@ public class ToxicAbomination : ModNPC
         NPC.width = 84;
         NPC.height = 82;
         NPC.npcSlots = 0.1f;
-        NPC.lifeMax = 450;
+        NPC.lifeMax = 200;
         NPC.damage = 37;
         NPC.lavaImmune = true;
         NPC.noGravity = true;

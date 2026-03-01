@@ -38,7 +38,7 @@ public class Hookworm : ModNPC
     public override void SetDefaults()
     {
         NPC.Size = new Vector2(28, 26);
-        NPC.lifeMax = 100;
+        NPC.lifeMax = 60;
         NPC.defense = 10;
         NPC.damage = 40;
         NPC.aiStyle = -1;

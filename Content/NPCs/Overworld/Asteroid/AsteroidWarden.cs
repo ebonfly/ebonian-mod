@@ -20,9 +20,9 @@ public class AsteroidWarden : CommonNPC
         NPC.Size = new Vector2(32);
         NPC.noGravity = true;
         NPC.noTileCollide = true;
-        NPC.damage = 0;
+        NPC.damage = 20;
         NPC.defense = 5;
-        NPC.lifeMax = 350;
+        NPC.lifeMax = 250;
         NPC.value = Item.buyPrice(0, 0, 5, 15);
         NPC.aiStyle = -1;
         NPC.knockBackResist = 0.6f;

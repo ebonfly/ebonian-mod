@@ -79,7 +79,7 @@ public class TrumpetHead : WormHead
     {
         NPC.buffImmune[BuffID.CursedInferno] = true;
         NPC.CloneDefaults(NPCID.DiggerHead);
-        NPC.lifeMax = 900;
+        NPC.lifeMax = 350;
         NPC.defense = 20;
         NPC.Size = new Vector2(58, 78);
         NPC.aiStyle = -1;
@@ -119,7 +119,7 @@ public class TrumpetBody : WormBody
     {
         NPC.buffImmune[BuffID.CursedInferno] = true;
         NPC.CloneDefaults(NPCID.DiggerHead);
-        NPC.lifeMax = 900;
+        NPC.lifeMax = 350;
         NPC.defense = 20;
         NPC.Size = new Vector2(58, 78);
         NPC.aiStyle = -1;
@@ -172,7 +172,7 @@ public class TrumpetTail : WormTail
     {
         NPC.buffImmune[BuffID.CursedInferno] = true;
         NPC.CloneDefaults(NPCID.DiggerHead);
-        NPC.lifeMax = 900;
+        NPC.lifeMax = 350;
         NPC.defense = 20;
         NPC.Size = new Vector2(58, 78);
         NPC.aiStyle = -1;
