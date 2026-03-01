@@ -1,10 +1,10 @@
 ﻿using Terraria.GameContent.Bestiary;
 
-namespace EbonianMod.Content.NPCs.Crimson;
+namespace EbonianMod.Content.NPCs.BloodMoon;
 
 public class Mosquito : ModNPC
 {
-    public override string Texture => Helper.AssetPath + "NPCs/Crimson/"+Name;
+    public override string Texture => Helper.AssetPath + "NPCs/BloodMoon/"+Name;
     public override void SetStaticDefaults()
     {
         Main.npcFrameCount[NPC.type] = 3;
@@ -12,14 +12,14 @@ public class Mosquito : ModNPC
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
     {
         bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-            BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCrimson,
+            BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Events.BloodMoon,
             new FlavorTextBestiaryInfoElement("Mods.EbonianMod.Misc.Types.Evil"),
             new FlavorTextBestiaryInfoElement("Mods.EbonianMod.NPCs.Mosquito.Bestiary"),
         });
     }
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-        Texture2D tex = Assets.NPCs.Crimson.Mosquito_Glow.Value;
+        Texture2D tex = Assets.NPCs.BloodMoon.Mosquito_Glow.Value;
         Texture2D tex2 = TextureAssets.Npc[Type].Value;
         SpriteEffects effects = NPC.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
         Main.EntitySpriteDraw(tex2, NPC.Center - screenPos, NPC.frame, drawColor, NPC.rotation, NPC.Size / 2, NPC.scale, effects, 0);
@@ -33,9 +33,9 @@ public class Mosquito : ModNPC
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
     {
         if (Main.invasionType > 0) return 0;
-        if (spawnInfo.Player.ZoneCrimson)
+        if (Main.bloodMoon)
         {
-            return .25f;
+            return .12f;
         }
         else
         {
