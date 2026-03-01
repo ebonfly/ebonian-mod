@@ -33,8 +33,6 @@ public class ArchmageShackGen : ModSystem
     Point16 arenaPos;
     public void GenHouse3(GenerationProgress progress, GameConfiguration _)
     {
-
-
         int x = arenaPos.X;
         int _y = 0;
         for (int i = x; i < x + 400; i++)
@@ -89,6 +87,19 @@ public class ArchmageShackGen : ModSystem
                     Main.tile[i, j].ClearTile();
                     if (paintingTL == Point.Zero)
                         paintingTL = new Point(i, j);
+                }
+
+                Point barrelPosition = Point.Zero;
+                if (Main.tile[i, j].TileType == TileID.Containers)
+                {
+                    if (Main.tile[i, j].TileFrameX == 0 && Main.tile[i, j].TileFrameY == 0)
+                        barrelPosition = new Point(i, j);
+                    WorldGen.KillTile(i, j, noItem: true);
+                }
+
+                if (barrelPosition != Point.Zero)
+                {
+                    WorldGen.PlaceChest(barrelPosition.X, barrelPosition.Y, style: 5);
                 }
             }
         }
@@ -163,7 +174,7 @@ public class ArchmageShackGen : ModSystem
         int side = leftValues.Count() > rightValues.Count() ? 1 : -1;
 
         //int side = ((tempHeightsL.Max() - tempHeightsL.Min()) > (tempHeightsR.Max() - tempHeightsR.Min())) ? 1 : -1;
-        int boundaries = 440 - 145;
+        int boundaries = 500;
         int x = Main.maxTilesX / 2 + 145 * side;
         int _y = 175;
         int atts = 0;
@@ -193,7 +204,13 @@ public class ArchmageShackGen : ModSystem
                         tempY++;
                 heights.Add(tempY);
             }
-            if ((heights.Max() - heights.Min()) > 5 || Main.tile[x, y].TileType == TileID.Sand || Main.tile[x, y].TileType == TileID.LivingWood)
+
+            if (Main.tile[x, y].TileType == TileID.Ebonstone || Main.tile[x, y].TileType == TileID.Ebonsand ||
+                Main.tile[x, y].TileType == TileID.Crimsand || Main.tile[x, y].TileType == TileID.Crimstone ||
+                Main.tile[x, y].TileType == TileID.CorruptThorns || Main.tile[x, y].TileType == TileID.CorruptGrass ||
+                Main.tile[x, y].TileType == TileID.CrimsonGrass)
+                failed = true;
+            if ((heights.Max() - heights.Min()) > 5 || Main.tile[x, y].TileType == TileID.Sand || Main.tile[x, y].TileType == TileID.LivingWood || Main.tile[x, y].TileType == TileID.WoodBlock || Main.tile[x, y].TileType == TileID.LeafBlock)
             {
                 x += side;
                 _y = y + 1;
@@ -239,7 +256,7 @@ public class ArchmageShackGen : ModSystem
                             m++;
                     heights.Add(tempY);
                 }
-                if ((heights.Max() - heights.Min()) > 5 || Main.tile[x, y].TileType == TileID.Sand || Main.tile[x, y].TileType == TileID.LivingWood)
+                if ((heights.Max() - heights.Min()) > 5 || Main.tile[x, y].TileType == TileID.Sand || Main.tile[x, y].TileType == TileID.LivingWood || Main.tile[x, y].TileType == TileID.WoodBlock || Main.tile[x, y].TileType == TileID.LeafBlock)
                 {
                     x += -side;
                     _y = y + 1;
