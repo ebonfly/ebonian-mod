@@ -19,8 +19,8 @@ public partial class HotGarbage : ModNPC
 
         spriteBatch.Draw(drawTexture, drawPos, NPC.frame, lightColor, NPC.rotation, origin, NPC.scale, effects, 0);
         spriteBatch.Draw(glow, drawPos, NPC.frame, Color.White, NPC.rotation, origin, NPC.scale, effects, 0);
-        if (AIState != State.Intro && AIState != State.Idle && AIState != State.OpenLid && AIState != State.SpewFire && AIState != State.CloseLid && AIState != State.FallOver && AIState != State.SpewFire2 && AIState != State.BouncingBarrels && NPC.frame.X == 80)
-            spriteBatch.Draw(fire, drawPos + new Vector2(NPC.width * -NPC.direction + (NPC.direction == 1 ? 9 : 0), 2).RotatedBy(NPC.rotation) * NPC.scale, new Rectangle(0, NPC.frame.Y - 76 * 3, 70, 76), Color.White, NPC.rotation, origin, NPC.scale, effects, 0);
+        if (NPC.frame.X == 80)
+            spriteBatch.Draw(fire, drawPos + new Vector2(NPC.width * -NPC.direction + (NPC.direction == 1 ? 10 : 0), 4).RotatedBy(NPC.rotation) * NPC.scale, new Rectangle(0, NPC.frame.Y - 76 * 3, 70, 76), Color.White, NPC.rotation, origin, NPC.scale, effects, 0);
 
         return false;
     }

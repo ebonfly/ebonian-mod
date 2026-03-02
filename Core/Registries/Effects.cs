@@ -11,7 +11,7 @@ public static class Effects
         SpriteRotation, TextGradient, TextGradient2, TextGradientY, BeamShader, Lens, Test1,
         Test2, LavaRT, Galaxy, CrystalShine, HorizBlur, TrailShader, RTAlpha, Crack, Blur,
         RTOutline, metaballGradient, metaballGradientNoiseTex, invisibleMask, PullingForce,
-        displacementMap, waterEffect, spherize, flame, starlightRiver;
+        displacementMap, waterEffect, spherize, flame, flameGround, starlightRiver;
     
     
     public static void LoadEffects()
@@ -48,6 +48,7 @@ public static class Effects
         waterEffect = LoadEffect("waterEffect");
         spherize = LoadEffect("spherize");
         flame = LoadEffect("flameEffect");
+        flameGround = LoadEffect("flameGroundEffect");
         starlightRiver = LoadEffect("starlightRiver");
     }
 }

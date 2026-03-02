@@ -65,9 +65,15 @@ public sealed class GarbageTarget : CommonRenderTarget
 {
     public override void HandleUseRequest(GraphicsDevice gd, SpriteBatch sb)
     {
-        PrepareAndSet(ref _target, gd);
+        PrepareAndSet(ref _target2, gd);
         sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         EbonianMod.garbageFlameCache.InvokeAllAndClear();
+        sb.End();
+        
+        PrepareAndSet(ref _target, gd);
+        sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, Effects.colorQuant.Value, Matrix.Identity);
+        Effects.colorQuant.Value.Parameters["res"].SetValue(32);
+        sb.Draw(_target2, new Rectangle(0, 0, (int)(Main.screenWidth / (1 + Main.GameZoomTarget)), (int)(Main.screenHeight / (1 + Main.GameZoomTarget))), Color.White);
         sb.End();
     }
 }
@@ -90,6 +96,5 @@ public sealed class JungleDustTarget : CommonRenderTarget
         sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         JunglePinkDust.DrawAll(sb);
         sb.End();
-
     }
 }

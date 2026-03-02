@@ -181,17 +181,10 @@ public class DrawDetours : ModSystem
         RTHandler.garbageTarget.RequestAndPrepare(EbonianMod.garbageFlameCache.Any());
         if (RTHandler.garbageTarget.IsReady)
         {
-            EbonianMod.primitivePixelationDrawCache.Add(() =>
-            {
-                Main.spriteBatch.End();
-                Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
-
-                for (int i = 0; i < 3; i++)
-                    DrawGarbageFlame(RTHandler.garbageTarget, Main.spriteBatch, Main.graphics.GraphicsDevice);
-
-                Main.spriteBatch.End();
-                Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            });
+            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null);
+            for (int i = 0; i < 3; i++)
+                DrawGarbageFlame(RTHandler.garbageTarget, Main.spriteBatch, Main.graphics.GraphicsDevice);
+            Main.spriteBatch.End();
         }
     }
     public static void DrawGarbageFlame(GarbageTarget target, SpriteBatch sb, GraphicsDevice gd)
@@ -203,20 +196,20 @@ public class DrawDetours : ModSystem
         Effects.displacementMap.Value.Parameters["offsetX"].SetValue(Main.GlobalTimeWrappedHourly * 0.5f);
         Effects.displacementMap.Value.Parameters["offset"].SetValue(0.0075f);
         Effects.displacementMap.Value.Parameters["alpha"].SetValue(0.1f);
-        sb.Draw(target.GetTarget(), Vector2.Zero, Color.White * 0.25f);
+        sb.Draw(target.GetTarget(), new Rectangle(0, 0, (int)(Main.screenWidth * (1 + Main.GameZoomTarget)), (int)(Main.screenHeight * (1 + Main.GameZoomTarget))), Color.White * 0.25f);
         gd.Textures[1] = Assets.Extras.swirlyNoise.Value;
         Effects.displacementMap.Value.Parameters["offsetY"].SetValue(Main.GlobalTimeWrappedHourly * 0.34f);
-        sb.Draw(target.GetTarget(), Vector2.Zero, Color.White * 0.25f);
+        sb.Draw(target.GetTarget(), new Rectangle(0, 0, (int)(Main.screenWidth * (1 + Main.GameZoomTarget)), (int)(Main.screenHeight * (1 + Main.GameZoomTarget))), Color.White * 0.25f);
 
         gd.Textures[1] = Assets.Extras.coherentNoise.Value;
         Effects.displacementMap.Value.Parameters["offsetY"].SetValue(0);
         Effects.displacementMap.Value.Parameters["offsetX"].SetValue(Main.GlobalTimeWrappedHourly * 0.5f);
         Effects.displacementMap.Value.Parameters["offset"].SetValue(0.0025f);
         Effects.displacementMap.Value.Parameters["alpha"].SetValue(0.1f);
-        sb.Draw(target.GetTarget(), Vector2.Zero, Color.White * 0.25f);
+        sb.Draw(target.GetTarget(), new Rectangle(0, 0, (int)(Main.screenWidth * (1 + Main.GameZoomTarget)), (int)(Main.screenHeight * (1 + Main.GameZoomTarget))), Color.White * 0.25f);
         gd.Textures[1] = Assets.Extras.swirlyNoise.Value;
         Effects.displacementMap.Value.Parameters["offsetX"].SetValue(Main.GlobalTimeWrappedHourly * 0.74f);
-        sb.Draw(target.GetTarget(), Vector2.Zero, Color.White * 0.25f);
+        sb.Draw(target.GetTarget(), new Rectangle(0, 0, (int)(Main.screenWidth * (1 + Main.GameZoomTarget)), (int)(Main.screenHeight * (1 + Main.GameZoomTarget))), Color.White * 0.25f);
     }
     public static void DrawXareusGoop(SpriteBatch sb, GraphicsDevice gd)
     {
