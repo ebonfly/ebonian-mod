@@ -37,8 +37,8 @@ public class BloodHunter : ModNPC
     {
         NPC.Size = new Vector2(94, 80);
         NPC.damage = 20;
-        NPC.defense = 5;
-        NPC.lifeMax = 60;
+        NPC.defense = 13;
+        NPC.lifeMax = 95;
         NPC.value = 200;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.knockBackResist = 0.45f;
