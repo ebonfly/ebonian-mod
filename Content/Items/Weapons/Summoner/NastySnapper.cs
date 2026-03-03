@@ -206,7 +206,7 @@ public class NastySnapperPro : ModProjectile
             Vector2 diff = list[i + 1] - element;
 
             float rotation = diff.ToRotation() - MathHelper.PiOver2;
-            Color color = Color.White;
+            Color color = Lighting.GetColor(pos.ToTileCoordinates());
 
             Main.EntitySpriteDraw(texture, pos - Main.screenPosition, frame, color, rotation, origin, scale, flip, 0);
 
