@@ -10,6 +10,7 @@ v3.0
 - Rotten Spine now only fires if the player is in its line of sight
 - Moved the Bloodsucker to the Blood Moon
 - Decreased the size of the Century Flower's spore hitbox
+- Small Spectators are no longer targeted by minions
 - Added death sounds for enemies that lacked them
 - Nerfed most pre-hm enemy HP
 - Nerfed most enemy spawn rates

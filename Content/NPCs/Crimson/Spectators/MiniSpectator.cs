@@ -51,6 +51,7 @@ public class MiniSpectator : ModNPC
         NPC.DeathSound = hit;
         NPC.netAlways = true;
         NPC.hide = true;
+        NPC.chaseable = false;
     }
     Verlet verlet;
     public override void DrawBehind(int index)
