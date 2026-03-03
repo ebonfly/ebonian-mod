@@ -18,8 +18,8 @@ public class Starlad : ModNPC
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         //npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Starspore>(), 3, 5, 35));
-        npcLoot.Add(ItemDropRule.Common(ItemID.Mushroom, 5, 1, 4));
-        npcLoot.Add(ItemDropRule.Common(ItemID.FallenStar, 10, 1, 3));
+        npcLoot.Add(ItemDropRule.Common(ItemID.Mushroom, 2, 1, 4));
+        npcLoot.Add(ItemDropRule.Common(ItemID.FallenStar));
     }
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
     {

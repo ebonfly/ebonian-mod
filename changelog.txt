@@ -11,6 +11,7 @@ v3.0
 - Moved the Bloodsucker to the Blood Moon
 - Decreased the size of the Century Flower's spore hitbox
 - Small Spectators are no longer targeted by minions
+- Starlads now always drop one singular fallen star, and increased the chance for them to drop mushrooms
 - Added death sounds for enemies that lacked them
 - Nerfed most pre-hm enemy HP
 - Nerfed most enemy spawn rates
