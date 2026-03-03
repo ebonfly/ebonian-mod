@@ -419,11 +419,11 @@ public class ArchmageStaffNPC : ModNPC
         if (LLen > RLen)
         {
             R = Helper.Raycast(sCenter, Vector2.UnitX, 29f * 16).Point;
-            L = Helper.Raycast(R, -Vector2.UnitX, 34.5f * 32).Point;
+            L = Helper.Raycast(R - new Vector2(16, 0), -Vector2.UnitX, 34.5f * 32).Point;
         }
         else
         {
-            R = Helper.Raycast(L, Vector2.UnitX, 34.5f * 32).Point;
+            R = Helper.Raycast(L + new Vector2(16, 0), Vector2.UnitX, 34.5f * 32).Point;
             L = Helper.Raycast(sCenter, -Vector2.UnitX, 29f * 16).Point;
         }
         Vector2 TopLeft = new Vector2(L.X, U.Y);

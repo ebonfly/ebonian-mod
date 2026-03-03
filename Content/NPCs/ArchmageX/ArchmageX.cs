@@ -188,7 +188,8 @@ public class ArchmageX : CommonNPC
     }
     public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-        if (GetArenaRect().Size().Length() > 1054) return;
+        float arenaLength = GetArenaRect().Size().Length();
+        if (arenaLength is > 1100 or < 900) return;
         arenaAlpha = MathHelper.Lerp(arenaAlpha, 1, 0.1f);
 
         arenaVFXOffset += 0.005f;
@@ -2677,11 +2678,11 @@ public class ArchmageX : CommonNPC
             if (LLen > RLen)
             {
                 R = Helper.Raycast(sCenter, Vector2.UnitX, 29f * 16).Point;
-                L = Helper.Raycast(R, -Vector2.UnitX, 34.5f * 32).Point;
+                L = Helper.Raycast(R - new Vector2(16, 0), -Vector2.UnitX, 34.5f * 32).Point;
             }
             else
             {
-                R = Helper.Raycast(L, Vector2.UnitX, 34.5f * 32).Point;
+                R = Helper.Raycast(L + new Vector2(16, 0), Vector2.UnitX, 34.5f * 32).Point;
                 L = Helper.Raycast(sCenter, -Vector2.UnitX, 29f * 16).Point;
             }
         }
