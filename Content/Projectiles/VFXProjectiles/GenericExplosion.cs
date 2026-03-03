@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Terraria.Graphics.CameraModifiers;
 
 namespace EbonianMod.Content.Projectiles.VFXProjectiles;
@@ -265,6 +266,8 @@ public class CircleTelegraph : ModProjectile
         Projectile.tileCollide = false;
         Projectile.friendly = false;
         Projectile.penetrate = -1;
+        Projectile.timeLeft = 60;
+        Projectile.extraUpdates = 1;
     }
     public override void OnHitNPC(NPC target, NPC.HitInfo hitinfo, int damage)
     {
@@ -278,23 +281,30 @@ public class CircleTelegraph : ModProjectile
     public override bool ShouldUpdatePosition() => false;
     public override bool PreDraw(ref Color lightColor)
     {
-        Texture2D tex = Assets.Extras.Extras2.star_08.Value;
-        float scale = MathHelper.Lerp(1, 0, Projectile.ai[0]);
+        Texture2D tex = Assets.Extras.Extras2.scratch_02.Value;
 
-        Main.spriteBatch.Draw(tex, Projectile.Center - Main.screenPosition, null, Color.Black * (Projectile.ai[0] * 0.5f), Main.GameUpdateCount * 0.02f, tex.Size() / 2, scale * 2, SpriteEffects.None, 0);
-
-        Main.spriteBatch.Reload(BlendState.Additive);
-        for (int i = 0; i < 3; i++)
-            Main.spriteBatch.Draw(tex, Projectile.Center - Main.screenPosition, null, Color.Red * Projectile.ai[0], Main.GameUpdateCount * 0.02f, tex.Size() / 2, scale * 2, SpriteEffects.None, 0);
-        tex = Assets.Extras.Extras2.star_03.Value;
-        Main.spriteBatch.Draw(tex, Projectile.Center - Main.screenPosition, null, Color.Red * Projectile.ai[0], Main.GameUpdateCount * -0.01f, tex.Size() / 2, scale * 4, SpriteEffects.None, 0);
-        Main.spriteBatch.Reload(BlendState.AlphaBlend);
+        UnifiedRandom rand = new UnifiedRandom((int)Projectile.ai[2] + 1249174);
+        float angleOffset = Main.rand.NextFloat(-0.1f, 0.1f);
+        float velocityLength = Projectile.velocity.Length();
+        float velocityRotation = Projectile.velocity.ToRotation();
+        for (int i = 0; i < 30; i++)
+        {
+            float angle = Helper.CircleDividedEqually(i, 30) + rand.NextFloat(-0.1f, 0.1f) + angleOffset;
+            if (velocityLength > 0f)
+                angle = velocityRotation + (i - 15f) * 0.08f + rand.NextFloat(-0.1f, 0.1f) + angleOffset;
+            Vector2 offset = new Vector2(Projectile.ai[0] * rand.NextFloat(40, 60), 0).RotatedBy(angle) - Main.screenPosition;
+            Vector2 scale = new Vector2(1 + Projectile.ai[0], MathF.Pow(Projectile.ai[0] + 0.5f, 2)) * rand.NextFloat(0.8f, 1.2f) * 0.25f;
+            Main.EntitySpriteDraw(tex, Projectile.Center + offset, null, Color.Red with { A = 0 } * (1f- Projectile.ai[0]), angle, new Vector2(tex.Width * 0.1f, tex.Height * 0.5f), scale, SpriteEffects.None);
+        }
+        
         return false;
     }
     public override void AI()
     {
+        if (Projectile.ai[0] < 0.05f)
+            Projectile.ai[2] = Main.rand.Next(20000);
         Projectile.ai[0] += 0.05f;
         if (Projectile.ai[0] > 1)
-            Projectile.Kill();
+            Projectile.ai[0] = 0;
     }
 }
