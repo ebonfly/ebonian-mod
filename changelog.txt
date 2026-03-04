@@ -12,6 +12,8 @@ v3.0
 - Decreased the size of the Century Flower's spore hitbox
 - Small Spectators are no longer targeted by minions
 - Starlads now always drop one singular fallen star, and increased the chance for them to drop mushrooms
+- Decreased the chance for giant fallen stars to drop special items
+- Added a check for the giant fallen stars to not spawn Asteroid Herders if there are no players nearby
 - Added death sounds for enemies that lacked them
 - Nerfed most pre-hm enemy HP
 - Nerfed most enemy spawn rates

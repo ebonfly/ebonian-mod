@@ -88,7 +88,7 @@ public class FallingStarBig : ModProjectile
             Projectile.ai[2] = 1f;
         Projectile.timeLeft = 10;
         Projectile.rotation += ToRadians(Math.Clamp(Projectile.velocity.Length(), 0, 5));
-        if (Projectile.ai[0] == 1)
+        if (Projectile.ai[0] > 0)
         {
             Projectile.velocity *= 0.75f;
             if (Helper.Raycast(Projectile.Center, Vector2.UnitY, 60).RayLength > 40)
@@ -184,24 +184,23 @@ public class FallingStarBig : ModProjectile
                 Gore.NewGore(Projectile.GetSource_FromThis(), Projectile.position, Main.rand.NextVector2CircularEdge(0.5f, 0.5f) * Projectile.velocity.Length(), Utils.SelectRandom(Main.rand, 16, 17, 17, 17, 17, 17, 17, 17));
             }
         }
-        Item.NewItem(Projectile.GetSource_Loot(), Projectile.getRect(), ItemID.FallenStar, Stack: Main.rand.Next(10, 20));
-        if (Main.rand.NextBool(20))
+
+        bool closeToAnyPlayer = false;
+
+        foreach (var player in Main.ActivePlayers)
+        {
+            if (player.Distance(Projectile.Center) < 800)
+            {
+                closeToAnyPlayer = true;
+                break;
+            }
+        }
+        
+        if (Main.rand.NextBool(20) && closeToAnyPlayer) 
         {
             NPC.NewNPCDirect(null, Projectile.Center, NPCType<AsteroidHerder>());
             SoundEngine.PlaySound(Sounds.reiTP.WithPitchOffset(-0.7f), Projectile.Center);
             MPUtils.NewProjectile(null, Projectile.Center, Vector2.Zero, ProjectileType<WardenSigil>(), 0, 0, ai1: 1, ai2: 2);
-        }
-        else
-        {
-            switch (Main.rand.Next(2))
-            {
-                case 0:
-                    Item.NewItem(Projectile.GetSource_Loot(), Projectile.getRect(), ItemType<WardingStar>());
-                    break;
-                case 1:
-                    Item.NewItem(Projectile.GetSource_Loot(), Projectile.getRect(), ItemType<StarBit>());
-                    break;
-            }
         }
     }
     public override bool OnTileCollide(Vector2 oldVelocity)
@@ -228,10 +227,13 @@ public class FallingStar : ModNPC
         NPC.knockBackResist = 0f;
         NPC.chaseable = false;
     }
-    public override bool CheckActive()
+
+    public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
-        return false;
+        npcLoot.Add(ItemDropRule.Common(ItemID.FallenStar, 1, 10, 20));
+        npcLoot.Add(ItemDropRule.OneFromOptions(2, ItemType<StarBit>(), ItemType<WardingStar>()));
     }
+
     List<int> GoreTypes = new List<int>()
         {
             GoreType<StarG0>(),GoreType<StarG1>(),GoreType<StarG2>(),GoreType<StarG3>(),GoreType<StarG4>(),GoreType<StarG5>(),GoreType<StarG6>(),
@@ -271,7 +273,10 @@ public class FallingStar : ModNPC
     public override void AI()
     {
         Projectile projectile = Main.projectile[(int)NPC.ai[0]];
-        if (projectile is null || projectile.whoAmI != NPC.ai[0] || !projectile.active || projectile.type != ProjectileType<FallingStarBig>()) { NPC.active = false; return; }
+        if (!projectile.active || projectile.type != ProjectileType<FallingStarBig>())
+        { 
+             return;
+        }
 
         NPC.timeLeft = 10;
         NPC.Center = projectile.Center;
