@@ -1,24 +1,28 @@
 v3.0
 ## Additions:
 - New critters: Rams, Goats
-- New blood moon enemies: Goat-head Fanatics, Cryptids 
+- New blood moon enemies: Goat-head Fanatics, Cryptids
+- New materials from Terrortoma and Cecitior 
 
-## Changes:
-- Reworked Hot Garbage
+## General Changes:
 - Reorganized the mod's codebase (this doesn't affect the mod in any direct way but there's a risk for oversights)
+
+## Item Obtainability Changes
+- Decreased the chance for giant fallen stars to drop special items
+- Adjusted the recipes for most hardmode evil biome weapons, removing the need for random pre-hm weapons
+
+## Changes to Enemies:
+- Reworked Hot Garbage
 - Updated the Hookworm's coin drops, bestiary, and added a chance for it to drop a Whoopie Cushion
 - Rotten Spine now only fires if the player is in its line of sight
 - Moved the Bloodsucker to the Blood Moon
 - Decreased the size of the Century Flower's spore hitbox
 - Small Spectators are no longer targeted by minions
 - Starlads now always drop one singular fallen star, and increased the chance for them to drop mushrooms
-- Decreased the chance for giant fallen stars to drop special items
 - Added a check for the giant fallen stars to not spawn Asteroid Herders if there are no players nearby
 - Added death sounds for enemies that lacked them
 - Nerfed most pre-hm enemy HP
 - Nerfed most enemy spawn rates
-
-## Removals: 
 - Removed the Dank Digger
 - Removed the Rotjaw
 - Removed the Vileglider

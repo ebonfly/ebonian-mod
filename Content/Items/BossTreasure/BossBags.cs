@@ -43,6 +43,7 @@ public class CecitiorBag : BossBags
     public override void ModifyItemLoot(ItemLoot itemLoot)
     {
         itemLoot.Add(ItemDropRule.Common(ItemType<CecitiorMaterial>(), 1, 40, 60));
+        itemLoot.Add(ItemDropRule.Common(ItemType<CecitiorClawMaterial>(), 1, 10, 15));
         itemLoot.Add(ItemDropRule.Common(ItemType<BrainAcc>(), 1));
         itemLoot.Add(ItemDropRule.Common(ItemType<SelfStab>(), 1));
         itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(NPCType<Cecitior>()));
@@ -53,7 +54,8 @@ public class TerrortomaBag : BossBags
     public override string Texture => Helper.AssetPath + "Items/BossTreasure/TerrortomaBag";
     public override void ModifyItemLoot(ItemLoot itemLoot)
     {
-        itemLoot.Add(ItemDropRule.Common(ItemType<TerrortomaMaterial>(), 1, 40, 60));
+        itemLoot.Add(ItemDropRule.Common(ItemType<CorruptEyeMaterial>(), 1, 40, 60));
+        itemLoot.Add(ItemDropRule.Common(ItemType<TerrortomaMaterial>(), 1, 10, 15));
         itemLoot.Add(ItemDropRule.Common(ItemType<EbonianHeart>(), 1));
         itemLoot.Add(ItemDropRule.Common(ItemType<Ostertagi>(), 1));
         itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(NPCType<Terrortoma>()));

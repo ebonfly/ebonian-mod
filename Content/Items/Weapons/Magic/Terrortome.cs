@@ -36,7 +36,7 @@ public class Terrortome : ModItem
     }
     public override void AddRecipes()
     {
-        CreateRecipe().AddIngredient(ItemID.CursedFlame).AddIngredient(ItemID.SoulofSight, 15).AddIngredient(ItemType<TerrortomaMaterial>(), 20).AddTile(TileID.Bookcases).Register();
+        CreateRecipe().AddIngredient(ItemID.CursedFlame).AddIngredient(ItemID.SoulofSight, 15).AddIngredient(ItemType<CorruptEyeMaterial>(), 20).AddTile(TileID.Bookcases).Register();
     }
     public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
     {

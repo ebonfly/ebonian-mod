@@ -41,6 +41,6 @@ public class CorruptionStaff : ModItem
     }
     public override void AddRecipes()
     {
-        CreateRecipe().AddIngredient(ItemID.Vilethorn).AddIngredient(ItemType<TerrortomaMaterial>(), 20).AddTile(TileID.MythrilAnvil).Register();
+        CreateRecipe().AddIngredient(ItemID.Vilethorn).AddIngredient(ItemType<CorruptEyeMaterial>(), 20).AddTile(TileID.MythrilAnvil).Register();
     }
 }

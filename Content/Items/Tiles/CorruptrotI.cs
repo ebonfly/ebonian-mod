@@ -21,6 +21,6 @@ public class CorruptrotI : ModItem
     }
     public override void AddRecipes()
     {
-        CreateRecipe(4).AddIngredient<TerrortomaMaterial>().AddTile(TileID.HeavyWorkBench).Register();
+        CreateRecipe(4).AddIngredient<CorruptEyeMaterial>().AddTile(TileID.HeavyWorkBench).Register();
     }
 }

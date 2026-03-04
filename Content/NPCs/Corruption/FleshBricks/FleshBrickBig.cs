@@ -22,7 +22,7 @@ public class FleshBrickBig : ModNPC
     }
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
-        npcLoot.Add(ItemDropRule.Common(ItemType<TerrortomaMaterial>(), 6, 1, 3));
+        npcLoot.Add(ItemDropRule.Common(ItemType<CorruptEyeMaterial>(), 6, 1, 3));
     }
     public override void SetDefaults()
     {

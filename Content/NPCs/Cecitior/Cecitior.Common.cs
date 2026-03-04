@@ -66,6 +66,7 @@ public partial class Cecitior : ModNPC
     {
         LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
         notExpertRule.OnSuccess(new CommonDrop(ItemType<CecitiorMaterial>(), 1, 40, 60));
+        notExpertRule.OnSuccess(new CommonDrop(ItemType<CecitiorClawMaterial>(), 1, 10, 15));
         notExpertRule.OnSuccess(new CommonDrop(ItemType<SelfStab>(), 1));
         npcLoot.Add(notExpertRule);
 

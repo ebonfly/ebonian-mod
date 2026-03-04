@@ -38,7 +38,7 @@ public class terrortomaFishingRod : ModItem
     }
     public override void AddRecipes()
     {
-        CreateRecipe().AddIngredient(ItemID.WoodFishingPole).AddIngredient<TerrortomaMaterial>(10).AddTile(TileID.MythrilAnvil).Register();
+        CreateRecipe().AddIngredient(ItemID.WoodFishingPole).AddIngredient<CorruptEyeMaterial>(10).AddTile(TileID.MythrilAnvil).Register();
     }
 }
 

@@ -29,7 +29,7 @@ public class Glutton : ModNPC
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         npcLoot.Add(ItemDropRule.Common(ItemID.CursedFlame, 1, 10, 20));
-        npcLoot.Add(ItemDropRule.Common(ItemType<TerrortomaMaterial>(), 2, 1, 3));
+        npcLoot.Add(ItemDropRule.Common(ItemType<CorruptEyeMaterial>(), 2, 1, 3));
     }
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
     {

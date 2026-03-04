@@ -44,7 +44,7 @@ public class Lobber : ModItem
     public override bool? CanAutoReuseItem(Player player) => false;
     public override void AddRecipes()
     {
-        CreateRecipe().AddIngredient(ItemID.GrenadeLauncher).AddIngredient(ItemType<CecitiorMaterial>(), 10).AddIngredient(ItemType<TerrortomaMaterial>(), 10).AddTile(TileID.MythrilAnvil).Register();
+        CreateRecipe().AddIngredient(ItemID.GrenadeLauncher).AddIngredient(ItemType<CecitiorMaterial>(), 10).AddIngredient(ItemType<CorruptEyeMaterial>(), 10).AddTile(TileID.MythrilAnvil).Register();
     }
     public override bool CanConsumeAmmo(Item ammo, Player player) => false;
 }
