@@ -22,7 +22,7 @@ public class Cecihead : ModItem
     }
     public override void AddRecipes()
     {
-        CreateRecipe().AddIngredient(ItemType<CecitiorMaterial>(), 12).AddTile(TileID.MythrilAnvil).Register();
+        CreateRecipe().AddIngredient(ItemType<CecitiorMaterial>(), 12).AddIngredient(ItemType<CecitiorClawMaterial>(), 1).AddTile(TileID.MythrilAnvil).Register();
     }
     public override bool IsArmorSet(Item head, Item body, Item legs)
     {
@@ -62,7 +62,7 @@ public class Cecibody : ModItem
     }
     public override void AddRecipes()
     {
-        CreateRecipe().AddIngredient(ItemType<CecitiorMaterial>(), 16).AddTile(TileID.MythrilAnvil).Register();
+        CreateRecipe().AddIngredient(ItemType<CecitiorMaterial>(), 16).AddIngredient(ItemType<CecitiorClawMaterial>(), 2).AddTile(TileID.MythrilAnvil).Register();
     }
 }
 [AutoloadEquip(EquipType.Legs)]
@@ -86,6 +86,6 @@ public class Cecilegs : ModItem
     }
     public override void AddRecipes()
     {
-        CreateRecipe().AddIngredient(ItemType<CecitiorMaterial>(), 12).AddTile(TileID.MythrilAnvil).Register();
+        CreateRecipe().AddIngredient(ItemType<CecitiorMaterial>(), 12).AddIngredient(ItemType<CecitiorClawMaterial>(), 1).AddTile(TileID.MythrilAnvil).Register();
     }
 }

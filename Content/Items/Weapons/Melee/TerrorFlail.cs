@@ -28,6 +28,6 @@ public class TerrorFlail : ModItem
     }
     public override void AddRecipes()
     {
-        CreateRecipe().AddIngredient(ItemID.BallOHurt).AddIngredient(ItemType<CorruptEyeMaterial>(), 20).AddTile(TileID.MythrilAnvil).Register();
+        CreateRecipe().AddIngredient<TerrortomaMaterial>(10).AddIngredient(ItemID.Chain, 10).AddTile(TileID.MythrilAnvil).Register();
     }
 }

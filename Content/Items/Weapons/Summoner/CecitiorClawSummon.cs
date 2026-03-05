@@ -46,6 +46,6 @@ public class CecitiorClawSummon : ModItem
 
     public override void AddRecipes()
     {
-        CreateRecipe().AddIngredient(ItemID.VampireFrogStaff).AddIngredient(ItemType<CecitiorMaterial>(), 20).AddTile(TileID.MythrilAnvil).Register();
+        CreateRecipe().AddIngredient<CecitiorClawMaterial>(4).AddIngredient(ItemType<CecitiorMaterial>(), 10).AddTile(TileID.MythrilAnvil).Register();
     }
 }

@@ -34,7 +34,7 @@ public class EbonianRocketLauncher : ModItem
     }
     public override void AddRecipes()
     {
-        CreateRecipe().AddIngredient(ItemID.RocketLauncher).AddIngredient(ItemType<CorruptEyeMaterial>(), 20).AddTile(TileID.MythrilAnvil).Register();
+        CreateRecipe().AddIngredient(ItemID.RocketLauncher).AddIngredient(ItemType<CorruptEyeMaterial>(), 20).AddTile(TileID.DemonAltar).Register();
     }
 }
 

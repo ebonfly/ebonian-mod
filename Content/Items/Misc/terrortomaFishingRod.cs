@@ -38,7 +38,7 @@ public class terrortomaFishingRod : ModItem
     }
     public override void AddRecipes()
     {
-        CreateRecipe().AddIngredient(ItemID.WoodFishingPole).AddIngredient<CorruptEyeMaterial>(10).AddTile(TileID.MythrilAnvil).Register();
+        CreateRecipe().AddIngredient<CorruptEyeMaterial>(10).AddTile(TileID.MythrilAnvil).Register();
     }
 }
 
@@ -76,7 +76,7 @@ public class cecitiorFishingRod : ModItem
     }
     public override void AddRecipes()
     {
-        CreateRecipe().AddIngredient(ItemID.WoodFishingPole).AddIngredient<CecitiorMaterial>(10).AddTile(TileID.MythrilAnvil).Register();
+        CreateRecipe().AddIngredient<CecitiorMaterial>(10).AddTile(TileID.MythrilAnvil).Register();
     }
 }
 

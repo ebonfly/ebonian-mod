@@ -7,9 +7,11 @@ v3.0
 ## General Changes:
 - Reorganized the mod's codebase (this doesn't affect the mod in any direct way but there's a risk for oversights)
 
-## Item Obtainability Changes
+## Changes to Items:
 - Decreased the chance for giant fallen stars to drop special items
-- Adjusted the recipes for most hardmode evil biome weapons, removing the need for random pre-hm weapons
+- Simplified the recipes for most hardmode evil biome weapons, removing the need for random pre-hm weapons
+- Mawzooka now needs to be crafted at a demon altar 
+- Nerfed the Gutling and moved it in progression
 
 ## Changes to Enemies:
 - Reworked Hot Garbage

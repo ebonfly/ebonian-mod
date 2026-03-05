@@ -923,3 +923,13 @@ ItemName: {
 	DisplayName: Item Name
 	Tooltip: ""
 }
+
+CecitiorClawMaterial: {
+	DisplayName: Loose Claw
+	Tooltip: ""
+}
+
+CorruptEyeMaterial: {
+	DisplayName: Infected Eye
+	Tooltip: ""
+}

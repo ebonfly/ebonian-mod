@@ -9,7 +9,7 @@ public class GutlingGun : ModItem
     public override void SetDefaults()
     {
         Item.DamageType = DamageClass.Ranged;
-        Item.damage = 34;
+        Item.damage = 21;
         Item.useTime = 1;
         Item.useAnimation = 10;
         Item.reuseDelay = 25;
@@ -31,7 +31,7 @@ public class GutlingGun : ModItem
     }
     public override void AddRecipes()
     {
-        CreateRecipe().AddIngredient(ItemID.ChainGun).AddIngredient(ItemType<CecitiorMaterial>(), 20).AddTile(TileID.MythrilAnvil).Register();
+        CreateRecipe().AddIngredient(ItemID.IllegalGunParts).AddIngredient(ItemID.Ichor).AddIngredient(ItemID.SoulofFright, 15).AddIngredient(ItemType<CecitiorMaterial>(), 20).AddTile(TileID.MythrilAnvil).Register();
     }
     public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
     {

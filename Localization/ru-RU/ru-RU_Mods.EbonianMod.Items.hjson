@@ -935,3 +935,13 @@ ItemName: {
 	// DisplayName: Item Name
 	// Tooltip: ""
 }
+
+CecitiorClawMaterial: {
+	// DisplayName: Cecitior Claw Material
+	// Tooltip: ""
+}
+
+CorruptEyeMaterial: {
+	// DisplayName: Corrupt Eye Material
+	// Tooltip: ""
+}

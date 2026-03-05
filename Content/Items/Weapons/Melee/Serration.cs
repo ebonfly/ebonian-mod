@@ -32,7 +32,7 @@ internal class Serration : ModItem
 
     public override void AddRecipes()
     {
-        CreateRecipe().AddIngredient(ItemType<ToothToothbrush>()).AddIngredient(ItemType<CecitiorMaterial>(), 20).AddTile(TileID.MythrilAnvil).Register();
+        CreateRecipe().AddIngredient<ToothToothbrush>().AddIngredient<CecitiorClawMaterial>(3).AddIngredient(ItemType<CecitiorMaterial>(), 10).AddTile(TileID.MythrilAnvil).Register();
     }
     public override bool? CanAutoReuseItem(Player player)
     {

@@ -28,7 +28,7 @@ public class ThornBow : ModItem
     }
     public override void AddRecipes()
     {
-        CreateRecipe().AddIngredient(ItemID.EbonwoodBow).AddIngredient(ItemType<CorruptEyeMaterial>(), 20).AddTile(TileID.MythrilAnvil).Register();
+        CreateRecipe().AddIngredient<TerrortomaMaterial>(4).AddIngredient(ItemType<CorruptEyeMaterial>(), 10).AddTile(TileID.MythrilAnvil).Register();
     }
     public override bool CanConsumeAmmo(Item ammo, Player player)
     {

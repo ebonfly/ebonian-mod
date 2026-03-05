@@ -41,7 +41,7 @@ public class BlindeyeBow : ModItem
     {
         return player.ownedProjectileCounts[Item.shoot] < 1;
     }
-    public override void AddRecipes() => CreateRecipe().AddIngredient<FangSlinger>().AddIngredient<CecitiorMaterial>(20).Register();
+    public override void AddRecipes() => CreateRecipe().AddIngredient<CecitiorClawMaterial>(4).AddIngredient<CecitiorMaterial>(10).Register();
 }
 public class BlindeyeBowP : ModProjectile
 {
