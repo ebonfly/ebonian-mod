@@ -9,7 +9,7 @@ public class CrimCannon : ModItem
     public override void SetDefaults()
     {
         Item.DamageType = DamageClass.Magic;
-        Item.damage = 3;
+        Item.damage = 7;
         Item.useTime = 50;
         Item.shootSpeed = 1;
         Item.shoot = ProjectileType<CrimCannonProjectile>();

@@ -1,4 +1,5 @@
 ﻿using System;
+using EbonianMod.Content.Items.Weapons.Magic;
 using Terraria.GameContent.Bestiary;
 
 namespace EbonianMod.Content.NPCs.Crimson;
@@ -26,7 +27,7 @@ public class JuvenileBrain : ModNPC
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         npcLoot.Add(ItemDropRule.Common(ItemID.TissueSample, 5, 1, 4));
-        npcLoot.Add(ItemDropRule.Common(ItemType<Items.Weapons.Magic.GoreSceptre>(), 45));
+        npcLoot.Add(ItemDropRule.Common(ItemType<CrimCannon>(), 75));
     }
     public override void HitEffect(NPC.HitInfo hit)
     {

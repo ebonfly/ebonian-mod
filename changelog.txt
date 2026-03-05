@@ -13,6 +13,9 @@ v3.0
 - Mawzooka, Fangnum, Vile Musket, and Equilibrium now need to be crafted at a demon/crimson altar 
 - Nerfed the Gutling and moved it in progression
 - Nerfed the Fang Slinger and made it a Screecher drop
+- The Juvenile Brain no longer drops the Defibrillator, it instead drops the Bloodsoaked Dentures
+- Removed the Bloodsoaked Dentures' recipe
+- Changed the Defibrillator's recipe
 - Adjusted the amount of materials used in certain recipes 
 
 ## Changes to Enemies:
