@@ -67,7 +67,7 @@ public class CorebreakerProjectile : HeldProjectileGun
             for (int i = 0; i < 30; i++)
                 Dust.NewDustPerfect(shotPoint, DustID.Torch, (Projectile.rotation + Main.rand.NextFloat(-PiOver4, PiOver4)).ToRotationVector2() * Main.rand.NextFloat(0.3f, 8), Scale: Main.rand.NextFloat(1f, 4f)).noGravity = true;
             if (player.whoAmI == Main.myPlayer)
-                Projectile.NewProjectile(Projectile.InheritSource(Projectile), shotPoint, (Main.MouseWorld - Projectile.Center) / 35, ProjectileType<CoreProjectile>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Projectile.NewProjectile(Projectile.InheritSource(Projectile), shotPoint, Projectile.rotation.ToRotationVector2() * (Main.MouseWorld - Projectile.Center).Length() / 32, ProjectileType<CoreProjectile>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
 
             SoundEngine.PlaySound(SoundID.Item40.WithPitchOffset(Main.rand.NextFloat(-1f, -0.5f)), player.Center);
             SoundEngine.PlaySound(SoundID.Item38.WithPitchOffset(Main.rand.NextFloat(-0.8f, -0.4f)), player.Center);

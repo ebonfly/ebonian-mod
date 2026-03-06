@@ -78,7 +78,7 @@ public class LatcherTongue : ModProjectile
             }
             Projectile.timeLeft = 190;
 
-            if(Speed < 60) Speed += 1.5f;
+            if(Speed < 30) Speed += 1.5f;
             player.velocity = Helper.FromAToB(player.Center, Projectile.Center, true) * Speed;
             player.SyncPlayerControls();
             Projectile.Center = Target.Center + PositionOffset;

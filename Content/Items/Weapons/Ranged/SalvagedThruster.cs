@@ -52,6 +52,7 @@ public class SalvagedThrusterProjectile : HeldProjectileGun
     public override void OnSpawn(IEntitySource source)
     {
         CalculateAttackSpeedParameters(100);
+        RotationSpeed = AttackSpeedMultiplier / 40;
         Projectile.rotation = (Main.MouseWorld - Main.player[Projectile.owner].Center).ToRotation();
     }
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -61,19 +62,16 @@ public class SalvagedThrusterProjectile : HeldProjectileGun
     }
     public override void AI()
     {
-        base.AI();
-
         Player player = Main.player[Projectile.owner];
 
         player.heldProj = Projectile.whoAmI;
-        RotationSpeed = AttackSpeedMultiplier / 40;
-        Projectile.localNPCHitCooldown = (int)(Clamp(4 * AttackDelayMultiplier, 2, 4));
+        Projectile.localNPCHitCooldown = (int)Clamp(4 * AttackDelayMultiplier, 2, 4);
 
-        IsReady = Scale.Length() > 1.4f;
+        IsReady = Scale.X > 0.9f;
+        Main.NewText(IsReady);
         if (Projectile.timeLeft % 10 == 0)
         {
-            if(IsReady)
-                CanAttack = Projectile.UseAmmo(AmmoID.Gel);
+            if(IsReady) CanAttack = Projectile.UseAmmo(AmmoID.Gel);
 
             if (!CanAttack)
             {
@@ -97,13 +95,14 @@ public class SalvagedThrusterProjectile : HeldProjectileGun
                     Dust.NewDustPerfect(player.MountedCenter + Projectile.rotation.ToRotationVector2() * (47 + ((RayLength - 47) / 20) * i), DustID.Torch, (Main.rand.NextFloat(0, Pi * 2)).ToRotationVector2() * Main.rand.NextFloat(1.2f, 2) * Clamp(i * Charge / 1800, 0.5f, 5), Scale: Main.rand.NextFloat(1.9f, 2.5f)).noGravity = true;
 
             Projectile.frame = 1;
-            float ScaleMultiplier = Charge / 225;
         }
         else
             Scale = Vector2.Lerp(Scale, Vector2.One, 0.2f);
 
         if (!player.channel)
             Projectile.Kill();
+
+        base.AI();
     }
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
     {
@@ -113,7 +112,7 @@ public class SalvagedThrusterProjectile : HeldProjectileGun
     public override bool PreDraw(ref Color lightColor)
     {
         Player player = Main.player[Projectile.owner];
-        Main.EntitySpriteDraw(Helper.GetTexture(Texture).Value, Projectile.Center + player.GFX() + Main.rand.NextVector2Circular(Charge * 0.01f, Charge * 0.01f) - Main.screenPosition, new Rectangle(0, Projectile.height * Projectile.frame, Projectile.width, Projectile.height), lightColor, Projectile.rotation, new Vector2(Projectile.width / 2 - 20, Projectile.height / 2 - 4 * player.direction), Scale, player.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically);
+        Main.EntitySpriteDraw(TextureAssets.Projectile[Type].Value, Projectile.Center + player.GFX() + Main.rand.NextVector2Circular(Charge * 0.01f, Charge * 0.01f) - Main.screenPosition, new Rectangle(0, Projectile.height * Projectile.frame, Projectile.width, Projectile.height), lightColor, Projectile.rotation, new Vector2(Projectile.width / 2 - 20, Projectile.height / 2 - 4 * player.direction), Scale, player.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically);
         return false;
     }
 }

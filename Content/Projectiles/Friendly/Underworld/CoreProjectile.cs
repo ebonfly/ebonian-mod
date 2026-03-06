@@ -10,6 +10,7 @@ public class CoreProjectile : ModProjectile
         Projectile.Size = new Vector2(30);
         Projectile.friendly = true;
         Projectile.hostile = false;
+        Projectile.aiStyle = 2;
     }
     public override Color? GetAlpha(Color lightColor)
     {
@@ -26,10 +27,7 @@ public class CoreProjectile : ModProjectile
     }
     void ExplosionSpawn()
     {
-        Projectile currentProjectile = Projectile.NewProjectileDirect(NPC.InheritSource(Projectile), Projectile.Center, Vector2.Zero, ProjectileType<FlameExplosionWSprite>(), Projectile.damage, 0);
-        currentProjectile.friendly = true;
-        currentProjectile.hostile = false;
-        currentProjectile.netUpdate = true;
+        Projectile.NewProjectileDirect(NPC.InheritSource(Projectile), Projectile.Center, Vector2.Zero, ProjectileType<FlameExplosionWSprite>(), Projectile.damage, 0);
         SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
     }
 }

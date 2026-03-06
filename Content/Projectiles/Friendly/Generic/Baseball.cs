@@ -1,8 +1,5 @@
 ﻿
 using System;
-using System.Collections.Generic;
-using System.Threading;
-using Terraria;
 
 namespace EbonianMod.Content.Projectiles.Friendly.Generic;
 public class Baseball : ModProjectile
@@ -15,10 +12,11 @@ public class Baseball : ModProjectile
         Projectile.hostile = false;
         Projectile.timeLeft = 400;
         Projectile.usesLocalNPCImmunity = true;
+        Projectile.penetrate = 2;
     }
     public override void SetStaticDefaults()
     {
-        ProjectileID.Sets.TrailCacheLength[Type] = 10;
+        ProjectileID.Sets.TrailCacheLength[Type] = 8;
         ProjectileID.Sets.TrailingMode[Type] = 0;
     }
     public override void OnSpawn(IEntitySource source)
@@ -60,13 +58,12 @@ public class Baseball : ModProjectile
         Projectile.damage = (int)MathF.Pow(Projectile.velocity.Length(), 2) / 9;
         if (Projectile.damage > 90)
         {
+            if (Projectile.localAI[0] > 0) Projectile.localAI[0]--;
             Projectile.CritChance = 100;
-            Projectile.penetrate = -1;
         }
         else
         {
             Projectile.localAI[0] = 10;
-            Projectile.penetrate = 1;
             Projectile.CritChance = 0;
         }
 
@@ -85,15 +82,13 @@ public class Baseball : ModProjectile
 
         if (Projectile.timeLeft < 20)
             Projectile.Opacity *= 0.8f;
-
-        if (Projectile.localAI[0] > 0) Projectile.localAI[0]--;
     }
 
     public override bool PreDraw(ref Color lightColor)
     {
         if (Projectile.damage > 90)
             for (int i = 0; i < Projectile.oldPos.Length - Projectile.localAI[0]; i++) 
-                Main.EntitySpriteDraw(TextureAssets.Projectile[Type].Value, Projectile.oldPos[i] + Projectile.Size / 2 - Main.screenPosition, null, lightColor * (1 - i / 10f), Projectile.rotation, Projectile.Size / 2, Projectile.scale, SpriteEffects.None);
+                Main.EntitySpriteDraw(TextureAssets.Projectile[Type].Value, Projectile.oldPos[i] + Projectile.Size / 2 - Main.screenPosition, null, lightColor * (1 - i / 8f), Projectile.rotation, Projectile.Size / 2, Projectile.scale, SpriteEffects.None);
 
         return true;
     }

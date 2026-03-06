@@ -56,7 +56,7 @@ public class BaseballBatProjectile : HeldProjectile
         base.SetDefaults();
         ItemType = ItemType<BaseballBat>();
         Projectile.Size = new Vector2(48);
-        HoldOffset = new Vector2(46, 0);
+        HoldOffset = new Vector2(42, 0);
         PlayerFacesCursor = false;
         Projectile.penetrate = -1;
     }
@@ -88,7 +88,7 @@ public class BaseballBatProjectile : HeldProjectile
                 Projectile.Opacity *= MathF.Pow(0.8f, attackSpeedMultiplier);
                 if (Projectile.ai[2] < 0) Projectile.Kill();
             }
-            else if(Projectile.ai[1] != 100)
+            else if(Projectile.ai[2] > 0.5f && Projectile.ai[1] != 100)
             {
                 foreach (Projectile projectile in Main.ActiveProjectiles)
                 {
@@ -102,9 +102,10 @@ public class BaseballBatProjectile : HeldProjectile
                         if (player.whoAmI == Main.myPlayer && Distance(Main.MouseWorld.X, player.Center.X) < 8) projectile.velocity.X = player.velocity.X;
                         projectile.SyncProjectile();
                         projectile.netUpdate = true;
-                        Projectile.ai[1] = 100;
+                        Projectile.ai[1] = 99;
                     }
                 }
+                if (Projectile.ai[1] == 99) Projectile.ai[1] = 100;
             }
         }
 
