@@ -23,10 +23,6 @@ public class CrimCannon : ModItem
         Item.mana = 25;
         Item.crit = 30;
     }
-    public override void AddRecipes()
-    {
-        CreateRecipe().AddIngredient(ItemID.CrimtaneBar, 20).AddIngredient(ItemID.Vertebrae, 20).AddTile(TileID.Anvils).Register();
-    }
     public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
     {
         velocity.Normalize();
