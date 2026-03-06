@@ -10,7 +10,7 @@ public class AnimeSlash : ModProjectile
     {
         ProjectileID.Sets.TrailCacheLength[Type] = 60;
         ProjectileID.Sets.TrailingMode[Type] = 2;
-        EbonianMod.projectileFinalDrawList.Add(Type);
+        FinalDrawSystem.ProjectileTypeList.Add(Type);
     }
     public override void SetDefaults()
     {
@@ -118,7 +118,7 @@ public class XAnimeSlash : ModProjectile
     {
         ProjectileID.Sets.TrailCacheLength[Type] = 60;
         ProjectileID.Sets.TrailingMode[Type] = 2;
-        EbonianMod.projectileFinalDrawList.Add(Type);
+        FinalDrawSystem.ProjectileTypeList.Add(Type);
     }
     public override void SetDefaults()
     {

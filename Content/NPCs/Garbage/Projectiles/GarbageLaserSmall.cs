@@ -2,6 +2,7 @@
 using EbonianMod.Content.NPCs.Garbage;
 using System;
 using System.Collections.Generic;
+using EbonianMod.Common.Graphics;
 
 namespace EbonianMod.Content.NPCs.Garbage.Projectiles;
 
@@ -69,7 +70,7 @@ public class GarbageLaserSmall1 : ModProjectile
     {
 
 
-        EbonianMod.garbageFlameCache.Add(() =>
+        GarbageFlameRendering.DrawCache.Add(() =>
         {
             List<VertexPositionColorTexture> vertices = new List<VertexPositionColorTexture>();
             List<VertexPositionColorTexture> vertices2 = new List<VertexPositionColorTexture>();
@@ -187,7 +188,7 @@ public class GarbageLaserSmall2 : ModProjectile
     {
 
 
-        EbonianMod.garbageFlameCache.Add(() =>
+        GarbageFlameRendering.DrawCache.Add(() =>
         {
             List<VertexPositionColorTexture> vertices = new List<VertexPositionColorTexture>();
             List<VertexPositionColorTexture> vertices2 = new List<VertexPositionColorTexture>();
@@ -298,7 +299,7 @@ public class GarbageLaserSmall3 : ModProjectile
     {
 
 
-        EbonianMod.garbageFlameCache.Add(() =>
+        GarbageFlameRendering.DrawCache.Add(() =>
         {
             List<VertexPositionColorTexture> vertices = new List<VertexPositionColorTexture>();
             List<VertexPositionColorTexture> vertices2 = new List<VertexPositionColorTexture>();

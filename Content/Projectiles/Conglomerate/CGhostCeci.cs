@@ -57,7 +57,7 @@ public class CGhostCeci : ModProjectile
             Main.spriteBatch.Reload(BlendState.AlphaBlend);
 
             /*if (Projectile.velocity.Length() > 10)
-                EbonianMod.blurDrawCache.Add(() =>
+                BlurRendering.DrawCache.Add(() =>
                 {
                     //for (int i = 0; i < 5; i++)
                     Main.spriteBatch.Draw(Assets.Extras.cone2.Value_blur, Projectile.Center - Main.screenPosition, null, Color.White * Lerp(0, 1, Projectile.velocity.Length() / 20), Projectile.rotation - PiOver2, new Vector2(0, Assets.Extras.cone2.Value.Height / 2), new Vector2(3, 1.5f), SpriteEffects.None, 0);

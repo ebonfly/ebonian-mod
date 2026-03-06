@@ -3,6 +3,7 @@ using EbonianMod.Content.Projectiles.VFXProjectiles;
 using EbonianMod.Core.Systems.Cinematic;
 using System;
 using System.Collections.Generic;
+using EbonianMod.Common.Graphics;
 
 namespace EbonianMod.Content.Projectiles.Conglomerate;
 
@@ -136,7 +137,7 @@ public class CBeam : ModProjectile
     }
     void DrawVertices(Vector2 pos, float rotation, Texture2D texture, Texture2D texture2, float i_progress, float alphaOffset, float quality = 0.002f, float max = 1, float visOff = 0)
     {
-        offsetShake = Vector2.Lerp(offsetShake, Vector2.Zero, 0.2f);
+        /*offsetShake = Vector2.Lerp(offsetShake, Vector2.Zero, 0.2f);
         SpritebatchParameters sbParams = Main.spriteBatch.Snapshot();
         List<VertexPositionColorTexture> vertices = new List<VertexPositionColorTexture>();
         List<VertexPositionColorTexture> vertices2 = new List<VertexPositionColorTexture>();
@@ -203,7 +204,7 @@ public class CBeam : ModProjectile
         Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         if (vertices.Count >= 3 && vertices2.Count >= 3 && (Type != ProjectileType<CBeamSmall>() ? vertices3.Count >= 3 : true))
         {
-            EbonianMod.affectedByInvisibleMaskCache.Add(() =>
+            InvisibleMaskRendering.AffectedDrawCache.Add(() =>
             {
                 Main.spriteBatch.End();
                 Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
@@ -215,14 +216,14 @@ public class CBeam : ModProjectile
                     Helper.DrawTexturedPrimitives(vertices.ToArray(), PrimitiveType.TriangleStrip, texture2, false);
                 }
             });
-            EbonianMod.invisibleMaskCache.Add(() =>
+            InvisibleMaskRendering.DrawCache.Add(() =>
             {
                 Helper.DrawTexturedPrimitives(vertices3.ToArray(), PrimitiveType.TriangleStrip, Assets.Extras.laserMask.Value, false);
                 Helper.DrawTexturedPrimitives(vertices3.ToArray(), PrimitiveType.TriangleStrip, Assets.Extras.swirlyNoise.Value, false);
             }); for (int i = 0; i < 2; i++)
                 Helper.DrawTexturedPrimitives(vertices.ToArray(), PrimitiveType.TriangleStrip, texture, false);
         }
-        Main.spriteBatch.ApplySaved(sbParams);
+        Main.spriteBatch.ApplySaved(sbParams);*/
     }
 }
 public class CBeamSmall : ModProjectile

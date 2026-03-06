@@ -6,6 +6,7 @@ float offset = 1;
 float offsetX, offsetY, scale = 1;
 float alpha;
 bool wrapped;
+float uIntensity = 1;
 
 float2 Wrap(float2 uv)
 {
@@ -43,7 +44,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
     float2 uv = coords + float2(sin(noiseA), cos(noiseA)) * offset;
     float4 c = tex2D(uImage0, uv);
     float a = max(c.r, max(c.g, c.b));
-    return float4(c.rgb, a * (noiseA + 0.5f) * alpha);
+    return float4(c.rgb, a * (noiseA + 0.5f) * alpha) * uIntensity;
 }
 
 technique Technique1

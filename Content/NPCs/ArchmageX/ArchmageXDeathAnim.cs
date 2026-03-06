@@ -9,7 +9,7 @@ public class ArchmageDeath : ModProjectile
     public override string Texture => Helper.AssetPath+"NPCs/ArchmageX/ArchmageX";
     public override void SetStaticDefaults()
     {
-        EbonianMod.projectileFinalDrawList.Add(Type);
+        FinalDrawSystem.ProjectileTypeList.Add(Type);
     }
     public override void SetDefaults()
     {
@@ -49,7 +49,7 @@ public class ArchmageHead : ModProjectile
     public override void SetStaticDefaults()
     {
         Main.projFrames[Type] = 10;
-        EbonianMod.projectileFinalDrawList.Add(Type);
+        FinalDrawSystem.ProjectileTypeList.Add(Type);
     }
     public override void SetDefaults()
     {
@@ -105,7 +105,7 @@ public class ArchmageArm : ModProjectile
     public override string Texture => Helper.AssetPath+"ExtraSprites/ArchmageX/ArchmageX_Arm";
     public override void SetStaticDefaults()
     {
-        EbonianMod.projectileFinalDrawList.Add(Type);
+        FinalDrawSystem.ProjectileTypeList.Add(Type);
     }
     public override void SetDefaults()
     {
@@ -131,7 +131,7 @@ public class ArchmageStaffGore : ModProjectile
     public override string Texture => Helper.AssetPath+"ExtraSprites/ArchmageX/StaffOfXItem";
     public override void SetStaticDefaults()
     {
-        EbonianMod.projectileFinalDrawList.Add(Type);
+        FinalDrawSystem.ProjectileTypeList.Add(Type);
     }
     public override void SetDefaults()
     {

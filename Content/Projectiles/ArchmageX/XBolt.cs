@@ -9,7 +9,7 @@ public class XBolt : ModProjectile
     {
         ProjectileID.Sets.TrailCacheLength[Type] = 100;
         ProjectileID.Sets.TrailingMode[Type] = 2;
-        EbonianMod.projectileFinalDrawList.Add(Type);
+        FinalDrawSystem.ProjectileTypeList.Add(Type);
         Main.projFrames[Type] = 5;
     }
     public override void SetDefaults()
@@ -102,7 +102,7 @@ public class XBoltFriendly : ModProjectile
     {
         ProjectileID.Sets.TrailCacheLength[Type] = 100;
         ProjectileID.Sets.TrailingMode[Type] = 2;
-        EbonianMod.projectileFinalDrawList.Add(Type);
+        FinalDrawSystem.ProjectileTypeList.Add(Type);
         Main.projFrames[Type] = 5;
     }
     public override void SetDefaults()
@@ -193,7 +193,7 @@ public class XBoltFriendly2 : ModProjectile
     {
         ProjectileID.Sets.TrailCacheLength[Type] = 100;
         ProjectileID.Sets.TrailingMode[Type] = 2;
-        EbonianMod.projectileFinalDrawList.Add(Type);
+        FinalDrawSystem.ProjectileTypeList.Add(Type);
         Main.projFrames[Type] = 5;
     }
     public override void SetDefaults()

@@ -1,4 +1,6 @@
-﻿namespace EbonianMod.Content.Dusts;
+﻿using EbonianMod.Common.Graphics;
+
+namespace EbonianMod.Content.Dusts;
 
 public class FireDust : ModDust
 {
@@ -21,17 +23,16 @@ public class FireDust : ModDust
             dust.active = false;
         return false;
     }
-    public static void DrawAll(SpriteBatch sb, Dust d)
+
+    public override bool PreDraw(Dust d)
     {
-        if (d.type == DustType<FireDust>() && d.active)
-        {
-            Texture2D tex = Request<Texture2D>(Helper.AssetPath+"Extras/Extras2/fire_0" + d.customData).Value;
-            sb.Draw(tex, d.position - Main.screenPosition, null, Color.White, 0, tex.Size() / 2, d.scale * 0.85f * 2, SpriteEffects.None, 0);
-            sb.Draw(tex, d.position - Main.screenPosition, null, Color.OrangeRed, 0, tex.Size() / 2, d.scale * 2, SpriteEffects.None, 0);
-        }
+        Texture2D tex = Request<Texture2D>(Helper.AssetPath+"Extras/Extras2/fire_0" + d.customData).Value;
+        Main.spriteBatch.Draw(tex, d.position - Main.screenPosition, null, Color.White with { A = 0 }, 0, tex.Size() / 2, d.scale * 0.85f * 2, SpriteEffects.None, 0);
+        Main.spriteBatch.Draw(tex, d.position - Main.screenPosition, null, Color.OrangeRed with { A = 0 }, 0, tex.Size() / 2, d.scale * 2, SpriteEffects.None, 0);
+        return false;
     }
 }
-public class ColoredFireDust : ModDust
+public class GarbageFlameDust : ModDust
 {
     public override string Texture => Helper.Empty;
     public override void OnSpawn(Dust dust)
@@ -54,18 +55,17 @@ public class ColoredFireDust : ModDust
             dust.active = false;
         return false;
     }
-    public static void DrawAll(SpriteBatch sb, Dust d)
-    {
-        if (d.type == DustType<ColoredFireDust>() && d.active)
-        {
-            Texture2D tex = Assets.Extras.Extras2.fire_01.Value;
 
-            EbonianMod.garbageFlameCache.Add(() =>
-            {
-                sb.Draw(tex, d.position - Main.screenPosition, null, d.color * (d.scale * 5), d.rotation, tex.Size() / 2, d.scale * 0.6f, SpriteEffects.None, 0);
-                sb.Draw(tex, d.position - Main.screenPosition, null, Color.White * (d.scale * .1f), d.rotation, tex.Size() / 2, d.scale * 0.6f, SpriteEffects.None, 0);
-            });
-        }
+    public override bool PreDraw(Dust d)
+    {
+        Texture2D tex = Assets.Extras.Extras2.fire_01.Value;
+
+        GarbageFlameRendering.DrawCache.Add(() =>
+        {
+            Main.spriteBatch.Draw(tex, d.position - Main.screenPosition, null, d.color * (d.scale * 5), d.rotation, tex.Size() / 2, d.scale * 0.6f, SpriteEffects.None, 0);
+            Main.spriteBatch.Draw(tex, d.position - Main.screenPosition, null, Color.White * (d.scale * .1f), d.rotation, tex.Size() / 2, d.scale * 0.6f, SpriteEffects.None, 0);
+        });
+        return false;
     }
 }
 public class SmokeDustAkaFireDustButNoGlow : ModDust
@@ -99,17 +99,13 @@ public class SmokeDustAkaFireDustButNoGlow : ModDust
             dust.active = false;
         return false;
     }
-    public static void DrawAll(SpriteBatch sb)
+
+    public override bool PreDraw(Dust d)
     {
-        foreach (Dust d in Main.dust)
-        {
-            if (d.type == DustType<SmokeDustAkaFireDustButNoGlow>() && d.active)
-            {
-                float alpha = MathHelper.Lerp(1, 0, d.scale * 2.857142857142857f);
-                Texture2D tex = d.dustIndex % 2 == 0 ? Assets.Extras.Extras2.fire_01.Value : Assets.Extras.Extras2.fire_02.Value;
-                sb.Draw(tex, d.position - Main.screenPosition, null, d.color * alpha, d.rotation, tex.Size() / 2, d.scale * 2, SpriteEffects.None, 0);
-            }
-        }
+        float alpha = MathHelper.Lerp(1, 0, d.scale * 2.857142857142857f);
+        Texture2D tex = d.dustIndex % 2 == 0 ? Assets.Extras.Extras2.fire_01.Value : Assets.Extras.Extras2.fire_02.Value;
+        Main.spriteBatch.Draw(tex, d.position - Main.screenPosition, null, d.color with { A = 0 } * alpha, d.rotation, tex.Size() / 2, d.scale * 2, SpriteEffects.None, 0);
+        return false;
     }
 }
 public class SmokeDustAkaFireDustButNoGlow2 : ModDust
@@ -144,13 +140,12 @@ public class SmokeDustAkaFireDustButNoGlow2 : ModDust
             dust.active = false;
         return false;
     }
-    public static void DrawAll(SpriteBatch sb, Dust d)
+
+    public override bool PreDraw(Dust d)
     {
-        if (d.type == DustType<SmokeDustAkaFireDustButNoGlow2>() && d.active)
-        {
-            float alpha = MathHelper.Lerp(1, 0, d.scale * 2.857142857142857f);
-            Texture2D tex = d.dustIndex % 2 == 0 ? Assets.Extras.Extras2.fire_01.Value : Assets.Extras.Extras2.fire_02.Value;
-            sb.Draw(tex, d.position - Main.screenPosition, null, d.color * alpha, d.rotation, tex.Size() / 2, d.scale * 2, SpriteEffects.None, 0);
-        }
+        float alpha = MathHelper.Lerp(1, 0, d.scale * 2.857142857142857f);
+        Texture2D tex = d.dustIndex % 2 == 0 ? Assets.Extras.Extras2.fire_01.Value : Assets.Extras.Extras2.fire_02.Value;
+        Main.spriteBatch.Draw(tex, d.position - Main.screenPosition, null, d.color with { A = 0 } * alpha, d.rotation, tex.Size() / 2, d.scale * 2, SpriteEffects.None, 0);
+        return false;
     }
 }

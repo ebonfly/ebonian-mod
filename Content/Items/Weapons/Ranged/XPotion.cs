@@ -56,7 +56,7 @@ public class XareusPotionExplosion : ModProjectile
     public override string Texture => Helper.Placeholder;
     public override void SetStaticDefaults()
     {
-        EbonianMod.projectileFinalDrawList.Add(Type);
+        FinalDrawSystem.ProjectileTypeList.Add(Type);
     }
     public override void SetDefaults()
     {

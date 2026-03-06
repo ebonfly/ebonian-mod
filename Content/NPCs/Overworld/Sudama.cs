@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EbonianMod.Common.Graphics;
 
 namespace EbonianMod.Content.NPCs.Overworld;
 
@@ -29,7 +30,7 @@ public class Sudama : ModNPC
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         if (NPC.IsABestiaryIconDummy) return true;
-        EbonianMod.primitivePixelationDrawCache.Add(() =>
+        PixelationRendering.DrawCache.Add(() =>
         {
             List<VertexPositionColorTexture> vertices = new();
             for (int i = 0; i < NPC.oldPos.Length; i++)
@@ -53,7 +54,7 @@ public class Sudama : ModNPC
                 Helper.DrawTexturedPrimitives(vertices.ToArray(), PrimitiveType.TriangleStrip, Assets.NPCs.Overworld.SudamaTrail.Value, false, true);
         }
         );
-        EbonianMod.finalDrawCache.Add(() =>
+        FinalDrawSystem.DrawCache.Add(() =>
         spriteBatch.Draw(TextureAssets.Npc[Type].Value, NPC.Center - screenPos, null, Main.LocalPlayer.HasBuff(BuffID.Hunter) ? NPC.HunterPotionColor() : Color.White, NPC.rotation + (NPC.direction == -1 ? Pi : 0), NPC.Size / 2, NPC.scale, NPC.direction == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 0)
         );
         return false;

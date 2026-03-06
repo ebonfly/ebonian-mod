@@ -255,7 +255,7 @@ public class CircleTelegraph : ModProjectile
     public override string Texture => Helper.Empty;
     public override void SetStaticDefaults()
     {
-        EbonianMod.projectileFinalDrawList.Add(Type);
+        FinalDrawSystem.ProjectileTypeList.Add(Type);
         ProjectileID.Sets.DontAttachHideToAlpha[Type] = true;
     }
     public override void SetDefaults()

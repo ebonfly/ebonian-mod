@@ -4,6 +4,8 @@ global using Microsoft.Xna.Framework.Graphics;
 global using static Microsoft.Xna.Framework.MathHelper;
 // Ebonian Mod
 global using EbonianMod.Common;
+global using EbonianMod.Common.Graphics;
+global using EbonianMod.Common.Graphics.RenderTargets;
 global using EbonianMod.Core.Registries;
 global using EbonianMod.Core.Systems;
 global using EbonianMod.Core.Systems.Misc;
@@ -39,40 +41,6 @@ namespace EbonianMod;
 public class EbonianMod : Mod
 {
     public static EbonianMod Instance => GetInstance<EbonianMod>();
-    public static List<int> projectileFinalDrawList = new List<int>();
-    public RenderTarget2D blurrender;
     public EbonianMod() => MusicSkipsVolumeRemap = true;
     public override void HandlePacket(BinaryReader reader, int whoAmI) => Packets.HandlePackets(reader);
-    public override void Load()
-    {
-        LoadDrawCache();
-        Main.OnResolutionChanged += (Vector2 obj) => CreateRender();
-        CreateRender();
-    }
-    public static List<Action> invisibleMaskCache = [], affectedByInvisibleMaskCache = [],
-        blurDrawCache = [], pixelationDrawCache = [], primitivePixelationDrawCache = [], finalDrawCache = [], garbageFlameCache = [],
-        xareusGoopCache = [];
-    public void LoadDrawCache()
-    {
-        invisibleMaskCache ??= [];
-        affectedByInvisibleMaskCache ??= [];
-        blurDrawCache ??= [];
-        pixelationDrawCache ??= [];
-        primitivePixelationDrawCache ??= [];
-        finalDrawCache ??= [];
-        garbageFlameCache ??= [];
-        xareusGoopCache ??= [];
-    }
-    
-    public void CreateRender()
-    {
-        if (Main.netMode != NetmodeID.Server)
-            Main.QueueMainThreadAction(() =>
-            {
-                if (Instance.blurrender is not null)
-                    if (!Instance.blurrender.IsDisposed)
-                        Instance.blurrender.Dispose();
-                Instance.blurrender = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
-            });
-    }
 }

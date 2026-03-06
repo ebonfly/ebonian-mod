@@ -62,22 +62,26 @@ namespace EbonianMod.Content.Items.Weapons.Magic
             Main.projFrames[Projectile.type] = 2;
             ProjectileID.Sets.TrailCacheLength[Type] = 20;
             ProjectileID.Sets.TrailingMode[Type] = 2;
-            PixelationTarget.pixelatedProjectiles.Add(Type);
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            if (lightColor != Color.Transparent) return false;
-            Texture2D tex = TextureAssets.Projectile[Type].Value;
-            int frame = Projectile.frame;
-            for (int i = 0; i < Projectile.oldPos.Length - 1; i++)
+            PixelationRendering.DrawCache.Add(() =>
             {
-                float mult = 1 - Helper.SafeDivision(1f / Projectile.oldPos.Length) * i;
-                for (float j = 0; j < 3; j++)
+                Texture2D tex = TextureAssets.Projectile[Type].Value;
+                int frame = Projectile.frame;
+                for (int i = 0; i < Projectile.oldPos.Length - 1; i++)
                 {
-                    Vector2 pos = Vector2.Lerp(Projectile.oldPos[i], Projectile.oldPos[i + 1], j / 3f);
-                    Main.EntitySpriteDraw(tex, pos + Projectile.Size / 2 - Main.screenPosition, tex.Frame(1, 2, 0, frame), Color.MediumSlateBlue with { A = 0 } * 0.05f * MathF.Pow(mult * 2, 2) * Projectile.Opacity, Projectile.oldRot[i], Projectile.Size / 2, Projectile.scale * mult, SpriteEffects.None);
+                    float mult = 1 - Helper.SafeDivision(1f / Projectile.oldPos.Length) * i;
+                    for (float j = 0; j < 3; j++)
+                    {
+                        Vector2 pos = Vector2.Lerp(Projectile.oldPos[i], Projectile.oldPos[i + 1], j / 3f);
+                        Main.EntitySpriteDraw(tex, pos + Projectile.Size / 2 - Main.screenPosition,
+                            tex.Frame(1, 2, 0, frame),
+                            Color.MediumSlateBlue with { A = 0 } * 0.05f * MathF.Pow(mult * 2, 2) * Projectile.Opacity,
+                            Projectile.oldRot[i], Projectile.Size / 2, Projectile.scale * mult, SpriteEffects.None);
+                    }
                 }
-            }
+            });
             return false;
         }
         const int MAX_TIMELEFT = 170;

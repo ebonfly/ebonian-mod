@@ -10,7 +10,7 @@ public class XKnife : ModProjectile
     {
         ProjectileID.Sets.TrailCacheLength[Type] = 15;
         ProjectileID.Sets.TrailingMode[Type] = 2;
-        EbonianMod.projectileFinalDrawList.Add(Type);
+        FinalDrawSystem.ProjectileTypeList.Add(Type);
     }
     public override bool PreKill(int timeLeft)
     {

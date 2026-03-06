@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace EbonianMod.Core.Systems.Verlets;
 
@@ -19,7 +20,32 @@ public class SpawnableVerlet
 }
 public class S_VerletSystem : ModSystem
 {
-    public static List<SpawnableVerlet> verlets = new List<SpawnableVerlet>(100);
+    public override void Load()
+    {
+        On_Main.DrawPlayers_AfterProjectiles += (orig, self) =>
+        {
+            if (verlets.Any())
+            {
+                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+                
+                for (int i = 0; i < verlets.Count; i++)
+                {
+                    if (verlets[i].timeLeft > 0 && verlets[i].verlet is not null)
+                    {
+                        float alpha = Clamp(Lerp(0, 2, (float)verlets[i].timeLeft / verlets[i].maxTime), 0, 1);
+                        VerletDrawData verletDrawData = verlets[i].drawData;
+                        verletDrawData.color = Lighting.GetColor(verlets[i].verlet.lastP.position.ToTileCoordinates()) * alpha;
+                        verlets[i].verlet.Draw(Main.spriteBatch, verletDrawData);
+                    }
+                }
+                Main.spriteBatch.End();
+            }
+            
+            orig(self);
+        };
+    }
+
+    public static List<SpawnableVerlet> verlets = new(100);
     public override void PostUpdateEverything()
     {
         if (Main.dedServ)

@@ -1,4 +1,5 @@
 ﻿using System;
+using EbonianMod.Common.Graphics;
 
 namespace EbonianMod.Content.NPCs.Garbage.Projectiles;
 
@@ -16,7 +17,7 @@ public class GarbageFlame : ModProjectile
     }
     public override bool PreDraw(ref Color lightColor)
     {
-        EbonianMod.garbageFlameCache.Add(() =>
+        GarbageFlameRendering.DrawCache.Add(() =>
         {
             var fadeMult = Helper.SafeDivision(1f / Projectile.oldPos.Length);
             Texture2D texture = Assets.Extras.Extras2.fire_01.Value;

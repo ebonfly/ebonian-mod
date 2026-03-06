@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using EbonianMod.Common.Graphics;
 
 namespace EbonianMod.Content.Items.Weapons.Summoner;
 public class SudamaTrident : ModItem
@@ -79,7 +80,7 @@ public class SudamaF : ModProjectile
     }
     public override bool PreDraw(ref Color lightColor)
     {
-        EbonianMod.primitivePixelationDrawCache.Add(() =>
+        PixelationRendering.DrawCache.Add(() =>
         {
             List<VertexPositionColorTexture> vertices = new();
             for (int i = 0; i < Projectile.oldPos.Length; i++)
@@ -103,8 +104,8 @@ public class SudamaF : ModProjectile
                 Helper.DrawTexturedPrimitives(vertices.ToArray(), PrimitiveType.TriangleStrip, Assets.NPCs.Overworld.SudamaTrail.Value, false, true);
         }
         );
-        EbonianMod.finalDrawCache.Add(() =>
-        Main.spriteBatch.Draw(TextureAssets.Projectile[Type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, Projectile.Size / 2, Projectile.scale, SpriteEffects.FlipHorizontally, 0)
+        FinalDrawSystem.DrawCache.Add(() =>
+            Main.spriteBatch.Draw(TextureAssets.Projectile[Type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, Projectile.Size / 2, Projectile.scale, SpriteEffects.FlipHorizontally, 0)
         );
         return false;
     }

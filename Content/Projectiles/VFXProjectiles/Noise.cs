@@ -20,7 +20,7 @@ public class Noise : ModProjectile
     public override bool PreDraw(ref Color lightColor)
     {
         if (Projectile.ai[2] > 0)
-            EbonianMod.blurDrawCache.Add(() =>
+            BlurRendering.DrawCache.Add(() =>
             {
                 Texture2D tex = Assets.Extras.seamlessNoise2.Value;
                 Main.spriteBatch.Reload(BlendState.Additive);

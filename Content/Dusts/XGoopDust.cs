@@ -23,17 +23,16 @@ public class XGoopDust : ModDust
             dust.active = false;
         return false;
     }
-    public static void DrawAll(SpriteBatch sb, Dust d)
+
+    public override bool PreDraw(Dust d)
     {
-        if ((d.type == DustType<XGoopDust>() || d.type == DustType<XGoopDust2>()) && d.active)
+        XareusRendering.DrawCache.Add(() =>
         {
-            EbonianMod.xareusGoopCache.Add(() =>
-            {
-                Texture2D tex = Assets.Extras.Extras2.fire_01.Value;
-                sb.Draw(tex, d.position - Main.screenPosition, null, (d.customData is null ? Color.White : d.color) * MathHelper.Clamp(d.scale * 2, 0, 0.5f), d.rotation, tex.Size() / 2, d.scale * 0.2f, SpriteEffects.None, 0);
-                sb.Draw(tex, d.position - Main.screenPosition, null, (d.customData is null ? Color.White : d.color) * MathHelper.Clamp(d.scale * 2, 0, 0.5f), -d.rotation, tex.Size() / 2, d.scale * 0.2f, SpriteEffects.None, 0);
-            });
-        }
+            Texture2D tex = Assets.Extras.Extras2.fire_01.Value;
+            Main.spriteBatch.Draw(tex, d.position - Main.screenPosition, null, (d.customData is null ? Color.White : d.color) * MathHelper.Clamp(d.scale * 2, 0, 0.5f), d.rotation, tex.Size() / 2, d.scale * 0.2f, SpriteEffects.None, 0);
+            Main.spriteBatch.Draw(tex, d.position - Main.screenPosition, null, (d.customData is null ? Color.White : d.color) * MathHelper.Clamp(d.scale * 2, 0, 0.5f), -d.rotation, tex.Size() / 2, d.scale * 0.2f, SpriteEffects.None, 0);
+        });
+        return false;
     }
 }
 public class XGoopDust2 : ModDust

@@ -1,4 +1,5 @@
 using System;
+using EbonianMod.Common.Graphics;
 using EbonianMod.Content.Dusts;
 
 namespace EbonianMod.Content.NPCs.Garbage.Projectiles;
@@ -46,7 +47,7 @@ public class GarbageDashFlames : ModProjectile
 		Texture2D tex2 = Assets.Extras.swirlyNoise.Value;
 		Texture2D tex3 = Assets.Extras.gradation2.Value;
 		
-		EbonianMod.garbageFlameCache.Add(() =>
+		GarbageFlameRendering.DrawCache.Add(() =>
 		{
 			Main.spriteBatch.End(out var ss);
 			Main.spriteBatch.Begin(ss with { sortMode = SpriteSortMode.Immediate, blendState = BlendState.Additive, effect = Effects.flameGround.Value, samplerState = SamplerState.PointWrap });

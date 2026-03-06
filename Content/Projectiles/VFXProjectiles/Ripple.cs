@@ -4,7 +4,7 @@ class Ripple : ModProjectile
 {
     public override bool PreDraw(ref Color lightColor)
     {
-        EbonianMod.blurDrawCache.Add(() =>
+        BlurRendering.DrawCache.Add(() =>
         {
             Texture2D a = TextureAssets.Projectile[Projectile.type].Value;
             Main.spriteBatch.Draw(a, Projectile.Center - Main.screenPosition, null, Color.White, 0, a.Size() / 2, Projectile.ai[0], SpriteEffects.None, 0f);

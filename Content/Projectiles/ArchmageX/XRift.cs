@@ -8,7 +8,7 @@ public class XRift : ModProjectile
     public override string Texture => Helper.Empty;
     public override void SetStaticDefaults()
     {
-        EbonianMod.projectileFinalDrawList.Add(Type);
+        FinalDrawSystem.ProjectileTypeList.Add(Type);
     }
     public override void SetDefaults()
     {
@@ -58,7 +58,7 @@ public class XRift : ModProjectile
     }
     public override bool PreDraw(ref Color lightColor)
     {
-        EbonianMod.finalDrawCache.Add(() =>
+        FinalDrawSystem.DrawCache.Add(() =>
         {
             Texture2D tex = Assets.Extras.vortex.Value;
             Texture2D s_tex2 = Assets.Extras.cone7.Value;
@@ -92,7 +92,7 @@ public class XRiftSmall : ModProjectile
     public override string Texture => Helper.Empty;
     public override void SetStaticDefaults()
     {
-        EbonianMod.projectileFinalDrawList.Add(Type);
+        FinalDrawSystem.ProjectileTypeList.Add(Type);
     }
     public override void SetDefaults()
     {

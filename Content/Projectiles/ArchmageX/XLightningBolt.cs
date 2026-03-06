@@ -139,7 +139,7 @@ public class XLightningBolt : ModProjectile
     {
         if (!RunOnce || points.Count < 2) return false;
 
-        EbonianMod.xareusGoopCache.Add(() =>
+        XareusRendering.DrawCache.Add(() =>
         {
             Texture2D tex = Assets.Extras.Extras2.spark_08.Value;
             float s = 0f;

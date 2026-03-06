@@ -48,7 +48,7 @@ public class PhantasmalGreatswordP : HeldSword
     public override void SetStaticDefaults()
     {
         ProjectileID.Sets.DontCancelChannelOnKill[Type] = true;
-        EbonianMod.projectileFinalDrawList.Add(Type);
+        FinalDrawSystem.ProjectileTypeList.Add(Type);
         ProjectileID.Sets.TrailCacheLength[Type] = 70;
         ProjectileID.Sets.TrailingMode[Type] = 2;
     }
@@ -143,7 +143,7 @@ public class PhantasmalGreatswordP : HeldSword
     float visualOff;
     public override bool PreDraw(ref Color lightColor)
     {
-        EbonianMod.xareusGoopCache.Add(() =>
+        XareusRendering.DrawCache.Add(() =>
         {
             visualOff -= 0.05f;
             if (visualOff <= 0)
@@ -221,7 +221,7 @@ public class PhantasmalGreatswordP : HeldSword
     }
     public override void PostDraw(Color lightColor)
     {
-        EbonianMod.finalDrawCache.Add(() =>
+        FinalDrawSystem.DrawCache.Add(() =>
         {
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             Vector2 orig = texture.Size() / 2;
@@ -327,7 +327,7 @@ public class PhantasmalGreatswordP2 : ModProjectile
     public override Color? GetAlpha(Color lightColor) => Color.White;
     public override bool PreDraw(ref Color lightColor)
     {
-        EbonianMod.xareusGoopCache.Add(() =>
+        XareusRendering.DrawCache.Add(() =>
         {
             float swingProgress = Ease(Utils.GetLerpValue(0f, swingTime, Projectile.timeLeft));
             if (Projectile.oldPos.Length > 2)

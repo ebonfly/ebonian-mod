@@ -9,7 +9,7 @@ public class XCloud : ModProjectile
     public override string Texture => Helper.Empty;
     public override void SetStaticDefaults()
     {
-        EbonianMod.projectileFinalDrawList.Add(Type);
+        FinalDrawSystem.ProjectileTypeList.Add(Type);
     }
     public override void SetDefaults()
     {

@@ -52,7 +52,7 @@ public class GarbageBag : ModProjectile
     {
         if (Projectile.frame == 0)
         {
-            Dust.NewDustPerfect(Projectile.Center + Projectile.velocity, DustType<ColoredFireDust>(), Projectile.velocity * 0.4f, 0, Color.OrangeRed, 0.1f).noGravity = true;
+            Dust.NewDustPerfect(Projectile.Center + Projectile.velocity, DustType<GarbageFlameDust>(), Projectile.velocity * 0.4f, 0, Color.OrangeRed, 0.1f).noGravity = true;
         }
         Projectile.tileCollide = Projectile.Center.Y > Main.player[Projectile.owner].Center.Y - 20;
         Projectile.velocity *= 1.01f;

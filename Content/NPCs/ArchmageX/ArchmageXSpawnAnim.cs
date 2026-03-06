@@ -10,7 +10,7 @@ public class ArchmageXSpawnAnim : ModProjectile
     public override string Texture => Helper.Empty;
     public override void SetStaticDefaults()
     {
-        EbonianMod.projectileFinalDrawList.Add(Type);
+        FinalDrawSystem.ProjectileTypeList.Add(Type);
     }
     public override void SetDefaults()
     {
@@ -55,7 +55,7 @@ public class ArchmageXSpawnAnim : ModProjectile
     }
     public override bool PreDraw(ref Color lightColor)
     {
-        EbonianMod.xareusGoopCache.Add(() =>
+        XareusRendering.DrawCache.Add(() =>
         {
             Texture2D tex3 = Assets.Extras.crosslight.Value;
             for (int i = 0; i < 4; i++)

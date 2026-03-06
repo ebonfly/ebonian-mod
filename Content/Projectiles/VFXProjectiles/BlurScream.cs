@@ -31,7 +31,7 @@ public class BlurScream : ModProjectile
     }
     public override bool PreDraw(ref Color lightColor)
     {
-        EbonianMod.blurDrawCache.Add(() =>
+        BlurRendering.DrawCache.Add(() =>
         {
             Texture2D tex = Assets.Extras.cone2_blur.Value;
             UnifiedRandom rand = new UnifiedRandom(seed);

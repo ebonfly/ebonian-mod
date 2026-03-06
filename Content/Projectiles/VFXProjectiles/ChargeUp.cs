@@ -173,7 +173,7 @@ public class ArchmageChargeUp : ModProjectile
     public override bool PreDraw(ref Color lightColor)
     {
 
-        EbonianMod.xareusGoopCache.Add(() =>
+        XareusRendering.DrawCache.Add(() =>
         {
             if (seed == 0) seed = Main.rand.Next(int.MaxValue / 2);
             Texture2D tex = Assets.Extras.Extras2.scratch_03.Value;

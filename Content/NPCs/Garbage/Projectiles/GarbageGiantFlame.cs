@@ -1,5 +1,6 @@
 ﻿using EbonianMod.Content.Projectiles.VFXProjectiles;
 using System;
+using EbonianMod.Common.Graphics;
 
 namespace EbonianMod.Content.NPCs.Garbage.Projectiles;
 
@@ -39,7 +40,7 @@ public class GarbageGiantFlame : ModProjectile
     }
     public override bool PreDraw(ref Color lightColor)
     {
-        EbonianMod.garbageFlameCache.Add(() =>
+        GarbageFlameRendering.DrawCache.Add(() =>
         {
             var fadeMult = Helper.SafeDivision(1f / Projectile.oldPos.Length);
             for (int i = 1; i < Projectile.oldPos.Length; i++)

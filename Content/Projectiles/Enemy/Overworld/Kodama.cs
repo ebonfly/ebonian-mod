@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using EbonianMod.Common.Graphics;
 using Terraria.GameContent.Drawing;
 
 namespace EbonianMod.Content.Projectiles.Enemy.Overworld;
@@ -30,7 +31,7 @@ public class Kodama : ModProjectile
     public override Color? GetAlpha(Color drawColor) => Color.White;
     public override bool PreDraw(ref Color drawColor)
     {
-        EbonianMod.primitivePixelationDrawCache.Add(() =>
+        PixelationRendering.DrawCache.Add(() =>
         {
             List<VertexPositionColorTexture> vertices = new();
             for (int i = 0; i < Projectile.oldPos.Length; i++)
@@ -54,7 +55,7 @@ public class Kodama : ModProjectile
                 Helper.DrawTexturedPrimitives(vertices.ToArray(), PrimitiveType.TriangleStrip, Assets.ExtraSprites.Overworld.KodamaTrail.Value, false, true);
         }
         );
-        EbonianMod.finalDrawCache.Add(() =>
+        FinalDrawSystem.DrawCache.Add(() =>
         Main.spriteBatch.Draw(TextureAssets.Projectile[Type].Value, Projectile.Center - Main.screenPosition, null, Color.White * alpha, Projectile.rotation + (Projectile.direction == -1 ? Pi : 0), Projectile.Size / 2, Projectile.scale, Projectile.direction == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 0)
         );
         return false;

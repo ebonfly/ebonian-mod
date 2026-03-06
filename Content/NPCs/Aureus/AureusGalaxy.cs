@@ -1,4 +1,5 @@
-﻿using EbonianMod.Content.Dusts;
+﻿using EbonianMod.Common.Graphics;
+using EbonianMod.Content.Dusts;
 
 namespace EbonianMod.Content.NPCs.Aureus;
 
@@ -75,7 +76,7 @@ public class AureusVortex : ModProjectile
     }
     public override bool PreDraw(ref Color lightColor)
     {
-        EbonianMod.pixelationDrawCache.Add(() =>
+        PixelationRendering.DrawCache.Add(() =>
         {
             for (int i = 0; i < 3; i++)
             {

@@ -17,7 +17,7 @@ public class HotGarbageNuke : ModProjectile
         ProjectileID.Sets.DrawScreenCheckFluff[Projectile.type] = 10000;
         ProjectileID.Sets.TrailCacheLength[Type] = 25;
         ProjectileID.Sets.TrailingMode[Type] = 2;
-        EbonianMod.projectileFinalDrawList.Add(Type);
+        FinalDrawSystem.ProjectileTypeList.Add(Type);
     }
 
     public override void SetDefaults()

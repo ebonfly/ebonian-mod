@@ -24,19 +24,18 @@ public class BlurDust : ModDust
             dust.active = false;
         return false;
     }
-    public static void DrawAll(SpriteBatch sb, Dust d)
+
+    public override bool PreDraw(Dust d)
     {
-        if (d.type == DustType<BlurDust>() && d.active)
+        BlurRendering.DrawCache.Add(() =>
         {
-            EbonianMod.blurDrawCache.Add(() =>
+            Texture2D tex = Assets.Extras.Extras2.fire_01_normal.Value;
+            for (float i = 0; i < 30 * d.fadeIn; i++)
             {
-                Texture2D tex = Assets.Extras.Extras2.fire_01_normal.Value;
-                for (float i = 0; i < 30 * d.fadeIn; i++)
-                {
-                    sb.Draw(tex, d.position - d.velocity * d.scale * i * 2 - Main.screenPosition, null, d.color * d.scale * SmoothStep(2, 0, i / 30f), 0, tex.Size() / 2, d.scale * 0.85f * 2, SpriteEffects.None, 0);
-                }
-                sb.Draw(tex, d.position - Main.screenPosition, null, d.color * d.scale * d.fadeIn, 0, tex.Size() / 2, d.scale * 0.85f * 2, SpriteEffects.None, 0);
-            });
-        }
+                Main.spriteBatch.Draw(tex, d.position - d.velocity * d.scale * i * 2 - Main.screenPosition, null, d.color * d.scale * SmoothStep(2, 0, i / 30f), 0, tex.Size() / 2, d.scale * 0.85f * 2, SpriteEffects.None, 0);
+            }
+            Main.spriteBatch.Draw(tex, d.position - Main.screenPosition, null, d.color * d.scale * d.fadeIn, 0, tex.Size() / 2, d.scale * 0.85f * 2, SpriteEffects.None, 0);
+        });
+        return false;
     }
 }
