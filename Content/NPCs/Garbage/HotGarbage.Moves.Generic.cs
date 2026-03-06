@@ -50,7 +50,7 @@ public partial class HotGarbage : ModNPC
         NPC.rotation = Lerp(NPC.rotation, 0, 0.35f);
         NPC.spriteDirection = NPC.direction = player.Center.X > NPC.Center.X ? 1 : -1;
         
-        JumpCheck();
+        Phase();
         
         float velocityX = Helper.FromAToB(NPC.Center, player.Center + Helper.FromAToB(player.Center, NPC.Center) * 70, false).X * 0.033f;
         velocityX = MathHelper.Clamp(velocityX, -15f, 15f);
@@ -65,7 +65,7 @@ public partial class HotGarbage : ModNPC
         if (AITimer > 150)
             NPC.velocity.X *= 0.98f;
         
-        if (    AITimer >= 200)
+        if (AITimer >= 200)
         {
             NPC.velocity.X = 0;
             AITimer = 0;
@@ -112,7 +112,7 @@ public partial class HotGarbage : ModNPC
                     NPC.velocity.Y++;
             }
             if (AITimer > 20)
-                JumpCheck();
+                Phase();
             if (AITimer == 0)
             {
                 CameraSystem.ScreenShakeAmount = 20;

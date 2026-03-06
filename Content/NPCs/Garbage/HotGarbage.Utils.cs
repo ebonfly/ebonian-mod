@@ -137,42 +137,34 @@ public partial class HotGarbage : ModNPC
         NPC.netUpdate = true;
     }  
     
-    void JumpCheck()
+    bool Phase()
     {
+        NPC.noTileCollide = false;
+        bool phased = false;
+        
+        Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.stepSpeed, ref NPC.gfxOffY);
+        
         if (NPC.collideX || Helper.Raycast(NPC.Center, Vector2.UnitX, 1000).RayLength < NPC.width*0.5f || Helper.Raycast(NPC.Center, -Vector2.UnitX,  NPC.width).RayLength < NPC.width*0.5f)
-            NPC.velocity.Y = -4f;
-        if (Helper.Raycast(NPC.Center, -Vector2.UnitY, NPC.height).RayLength < NPC.height - 1 && !Collision.CanHit(NPC, player))
         {
-            if (!NPC.noTileCollide)
-            {
-                NPC.noTileCollide = true;
-                NPC.netUpdate = true;
-            }
-
+            NPC.Center += new Vector2(NPC.direction * 2, 0);
+        }
+        
+        if (Helper.Raycast(NPC.Center, Vector2.UnitY, NPC.height / 3f).Success && player.Center.Y < NPC.Center.Y + 100)
+            NPC.Center -= Vector2.UnitY * 8;
+        else if (player.Center.Y > NPC.Center.Y + 120)
+            NPC.Center += Vector2.UnitY * 8;
+            
+        
+        if (((!Collision.CanHit(NPC, player) || !Collision.CanHitLine(NPC.TopLeft, 10, 10, player.position, player.width, player.height) || !Collision.CanHitLine(NPC.TopRight, 10, 10, player.position, player.width, player.height)) && player.Center.X.InRange(NPC.Center.X, NPC.width)) || (Helper.Raycast(NPC.Center, -Vector2.UnitY, NPC.height).RayLength < NPC.height - 1 && !Collision.CanHit(NPC, player)))
+        {
             if (player.Center.Y < NPC.Center.Y)
                 NPC.Center -= Vector2.UnitY * 2;
-            else
-                NPC.Center += Vector2.UnitY * 2;
 
             NPC.Center += new Vector2(Helper.FromAToB(NPC.Center, player.Center).X * 2, 0);
+            
+            phased = true;
         }
-        else if ((!Collision.CanHit(NPC, player) || !Collision.CanHitLine(NPC.TopLeft, 10, 10, player.position, player.width, player.height) || !Collision.CanHitLine(NPC.TopRight, 10, 10, player.position, player.width, player.height)) && player.Center.X.InRange(NPC.Center.X, NPC.width))
-        {
-            if (!NPC.noTileCollide)
-            {
-                NPC.noTileCollide = true;
-                NPC.netUpdate = true;
-            }
 
-            if (player.Center.Y < NPC.Center.Y)
-                NPC.Center -= Vector2.UnitY * 2;
-            else
-                NPC.Center += Vector2.UnitY * 2;
-        }
-        else if (NPC.noTileCollide)
-        {
-            NPC.noTileCollide = false;
-            NPC.netUpdate = true;
-        }
+        return phased;
     }
 }
