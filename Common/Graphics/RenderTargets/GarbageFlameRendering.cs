@@ -33,9 +33,9 @@ public class GarbageFlameRendering : BaseCachedActionRenderTarget<GarbageFlameRe
         Effects.displacementMap.Value.CurrentTechnique.Passes[0].Apply();
         Effects.displacementMap.Value.Parameters["uIntensity"].SetValue(3f);
         Effects.displacementMap.Value.Parameters["uTime"].SetValue(Main.GlobalTimeWrappedHourly * 0.75f);
-        Effects.displacementMap.Value.Parameters["offsetY"].SetValue(Main.GlobalTimeWrappedHourly * 0.25f);
-        Effects.displacementMap.Value.Parameters["offsetX"].SetValue(Main.GlobalTimeWrappedHourly * 0.5f);
-        Effects.displacementMap.Value.Parameters["offset"].SetValue(0.0075f);
+        Effects.displacementMap.Value.Parameters["offsetY"].SetValue(0);
+        Effects.displacementMap.Value.Parameters["offsetX"].SetValue(0);
+        Effects.displacementMap.Value.Parameters["offset"].SetValue(0f);
         Effects.displacementMap.Value.Parameters["alpha"].SetValue(0.1f);
         Main.spriteBatch.Draw(Targets[1], new Rectangle(0, 0, (int)(Main.screenWidth * (1 + Main.GameZoomTarget)), (int)(Main.screenHeight * (1 + Main.GameZoomTarget))), Color.White);
         Main.graphics.GraphicsDevice.Textures[1] = Assets.Extras.swirlyNoise.Value;
@@ -44,8 +44,8 @@ public class GarbageFlameRendering : BaseCachedActionRenderTarget<GarbageFlameRe
 
         Main.graphics.GraphicsDevice.Textures[1] = Assets.Extras.coherentNoise.Value;
         Effects.displacementMap.Value.Parameters["offsetY"].SetValue(0);
-        Effects.displacementMap.Value.Parameters["offsetX"].SetValue(Main.GlobalTimeWrappedHourly * 0.5f);
-        Effects.displacementMap.Value.Parameters["offset"].SetValue(0.0025f);
+        Effects.displacementMap.Value.Parameters["offsetX"].SetValue(0);
+        Effects.displacementMap.Value.Parameters["offset"].SetValue(0f);
         Effects.displacementMap.Value.Parameters["alpha"].SetValue(0.1f);
         Main.spriteBatch.Draw(Targets[1], new Rectangle(0, 0, (int)(Main.screenWidth * (1 + Main.GameZoomTarget)), (int)(Main.screenHeight * (1 + Main.GameZoomTarget))), Color.White);
         Main.graphics.GraphicsDevice.Textures[1] = Assets.Extras.swirlyNoise.Value;

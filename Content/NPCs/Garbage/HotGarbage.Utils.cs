@@ -146,7 +146,8 @@ public partial class HotGarbage : ModNPC
         
         if (NPC.collideX || Helper.Raycast(NPC.Center, Vector2.UnitX, 1000).RayLength < NPC.width*0.5f || Helper.Raycast(NPC.Center, -Vector2.UnitX,  NPC.width).RayLength < NPC.width*0.5f)
         {
-            NPC.Center += new Vector2(NPC.direction * 2, 0);
+            if (MathF.Abs(player.Center.X - NPC.Center.X) > 20)
+                NPC.Center += new Vector2(NPC.direction * 4, 0);
         }
         
         if (Helper.Raycast(NPC.Center, Vector2.UnitY, NPC.height / 3f).Success && player.Center.Y < NPC.Center.Y + 100)

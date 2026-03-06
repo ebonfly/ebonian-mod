@@ -18,6 +18,7 @@ public partial class HotGarbage : ModNPC
 
     public override void AI()
     {
+        NextAttack = State.WarningForDash;
         AmbientFX();
         
         if (AIState != State.Idle && AIState != State.SlamSlamSlam && AIState != State.PipeBombAirstrike)

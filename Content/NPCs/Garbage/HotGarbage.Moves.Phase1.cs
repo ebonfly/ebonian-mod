@@ -54,7 +54,7 @@ public partial class HotGarbage : ModNPC
 				if (NPC.velocity.Length() < 4f)
 					FacePlayer();
                 
-				if (AITimer3 < 40 && AITimer3 % 2 == 0 && NPC.Grounded() && !phased)
+				if (AITimer3 < 40 && NPC.Grounded(1f) && !phased)
 				{
 					MPUtils.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + new Vector2(Main.rand.NextFloat(-4, 4), NPC.height / 2f + 6), new Vector2(-NPC.direction * Main.rand.NextFloat(1, 3), Main.rand.NextFloat(-5, -1)), ProjectileType<GarbageDashFlames>(), 15, 0, ai2: (1f - AITimer2 / 40f) * Main.rand.NextFloat(0.2f, 0.4f));
 				}
