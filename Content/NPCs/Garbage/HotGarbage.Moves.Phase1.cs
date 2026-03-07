@@ -308,4 +308,37 @@ public partial class HotGarbage : ModNPC
 	            ResetTo(State.MassiveLaser, null, true);
         }
 	}
+
+	void DoTrashBags()
+	{
+		AITimer++;
+		AITimer3++;
+		
+		Phase();
+		NPC.velocity.X = Lerp(NPC.velocity.X, Helper.FromAToB(NPC.Center, player.Center + Helper.FromAToB(player.Center, NPC.Center) * 70, false).X * 0.043f, 0.12f);
+		FacePlayer();
+		
+		if (AITimer < 100)
+			AnimationStyle = AnimationStyles.Open;
+		else
+			AnimationStyle = AnimationStyles.Close;
+            
+		if (AITimer == 1 && MPUtils.NotMPClient)
+		{
+			AITimer3 = Main.rand.Next(10000000);
+			NPC.netUpdate = true;
+		}
+		UnifiedRandom rand = new((int)AITimer3);
+		if (AITimer <= 60 && AITimer % 5 == 0)
+		{
+			SoundEngine.PlaySound(SoundID.DD2_FlameburstTowerShot, NPC.Center);
+			MPUtils.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, new Vector2(Main.rand.NextFloat(-2.5f, 2.5f), Main.rand.NextFloat(-15, -7)) * 0.5f, ProjectileType<GarbageBag>(), 15, 0, player.whoAmI);
+		}
+
+		if (AITimer % 3 == 0 && AITimer > 100) 
+			MPUtils.NewProjectile(NPC.GetSource_FromThis(), new Vector2(player.Center.X + 600 * rand.NextFloat(-1, 1), player.Center.Y - Main.rand.NextFloat(700, 1000)), new Vector2(rand.NextFloat(-1, 1) * 5f, 1) , ProjectileType<GarbageBag>(), 15, 0, player.whoAmI);
+		
+		if (AITimer >= 170)
+			ResetTo(State.OpenLid, State.SodaMissiles);
+	}
 }

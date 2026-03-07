@@ -18,8 +18,7 @@ public partial class HotGarbage : ModNPC
 
     public override void AI()
     {
-        NextAttack = State.OpenLid;
-        NextAttack2 = State.GiantFireball;
+        NextAttack = State.TrashBags;
         
         AmbientFX();
 
@@ -31,8 +30,10 @@ public partial class HotGarbage : ModNPC
         {
             case State.Death:
                 DoDeath(); break;
+            
             case State.Intro: 
                 DoIntro(); break;
+            
             case State.Idle:
                 DoIdle(); break;
             
@@ -56,51 +57,17 @@ public partial class HotGarbage : ModNPC
             case State.GiantFireball:    
                 DoFireSpewAttacks();
                 break;
-        }
-        if (AIState == State.TrashBags)
-        {
-            if (AITimer < 100)
-                AnimationStyle = AnimationStyles.Open;
-            else
-                AnimationStyle = AnimationStyles.Close;
             
-            if (AITimer == 1 && MPUtils.NotMPClient)
-            {
-                AITimer3 = Main.rand.Next(10000000);
-                NPC.netUpdate = true;
-            }
-            AITimer3++;
-            UnifiedRandom rand = new((int)AITimer3);
-            AITimer++;
-            Phase();
-            NPC.velocity.X = Lerp(NPC.velocity.X, Helper.FromAToB(NPC.Center, player.Center + Helper.FromAToB(player.Center, NPC.Center) * 70, false).X * 0.043f, 0.12f);
-            FacePlayer();
-            if (AITimer <= 60 && AITimer % 5 == 0)
-            {
-                Projectile bag = MPUtils.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, new Vector2(Main.rand.NextFloat(-2.5f, 2.5f), Main.rand.NextFloat(-15, -7)) * 0.5f, ProjectileType<GarbageBag>(), 15, 0, player.whoAmI);
-                if (bag is not null)
-                {
-                    bag.timeLeft = 200;
-                    bag.SyncProjectile();
-                }
-            }
-            if (AITimer % 3 == 0 && AITimer > 100)
-            {
-                MPUtils.NewProjectile(NPC.GetSource_FromThis(), new Vector2(player.Center.X + 600 * rand.NextFloat(-1, 1), player.Center.Y - 600), new Vector2(rand.NextFloat(-1, 1), 2) * 0.5f, ProjectileType<GarbageBag>(), 15, 0, player.whoAmI);
-            }
-            if (AITimer >= 150)
-            {
-                NPC.velocity = Vector2.Zero;
-                ResetTo(State.OpenLid, State.SodaMissiles);
-            }
+            case State.TrashBags:
+                DoTrashBags();
+                break;
         }
-        else if (AIState == State.SodaMissiles)
+        if (AIState == State.SodaMissiles)
         {
             if (AITimer == 1 && !MPUtils.NotMPClient)
             {
                 AITimer3 = Main.rand.Next(10000000);
-
-
+                
                 NPC.netUpdate = true;
             }
             AITimer3++;
