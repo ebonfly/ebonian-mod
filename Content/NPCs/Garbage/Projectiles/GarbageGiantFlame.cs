@@ -34,6 +34,9 @@ public class GarbageGiantFlame : ModProjectile
                 Dust.NewDustPerfect(oldpos + Projectile.Size / 2 + Main.rand.NextVector2Circular(15, 15), ModContent.DustType<GarbageFlameDust>(), new Vector2(Main.rand.NextFloat(-2, 2), Main.rand.NextFloat(0, 2)) * s * 5, newColor: Color.OrangeRed, Scale: s * 0.2f).noGravity = true;
             }
         }
+        for (int i = -3; i < 7; i++) {
+            MPUtils.NewProjectile(null, Helper.Raycast(Projectile.Center + new Vector2(i * Main.rand.NextFloat(5, 10), -5), Vector2.UnitY, 50).Point, Vector2.Zero, ProjectileType<GarbageDashFlames>(), Projectile.damage, 0);
+        }
         if (Projectile.ai[2] != 0)
         {
             for (int i = 0; i < 3; i++)

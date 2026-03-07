@@ -86,9 +86,9 @@ public class GarbageFlame : ModProjectile
             Projectile.velocity *= 0.87f;
         }
 
-        if (Projectile.timeLeft < 50)
+        if (Projectile.timeLeft < 30)
         {
-            alpha = MathHelper.SmoothStep(1, 0, 1f - Projectile.timeLeft / 50f);
+            alpha = MathHelper.SmoothStep(1, 0, 1f - Projectile.timeLeft / 30f);
             
             
         }

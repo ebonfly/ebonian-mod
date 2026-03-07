@@ -283,7 +283,7 @@ public class CircleTelegraph : ModProjectile
     {
         Texture2D tex = Assets.Extras.Extras2.scratch_02.Value;
 
-        UnifiedRandom rand = new UnifiedRandom((int)Projectile.ai[2] + 1249174);
+        UnifiedRandom rand = new UnifiedRandom((int)Projectile.localAI[0] + 1249174);
         float angleOffset = Main.rand.NextFloat(-0.1f, 0.1f);
         float velocityLength = Projectile.velocity.Length();
         float velocityRotation = Projectile.velocity.ToRotation();
@@ -293,7 +293,7 @@ public class CircleTelegraph : ModProjectile
             if (velocityLength > 0f)
                 angle = velocityRotation + (i - 15f) * 0.08f + rand.NextFloat(-0.1f, 0.1f) + angleOffset;
             Vector2 offset = new Vector2(Projectile.ai[0] * rand.NextFloat(40, 60), 0).RotatedBy(angle) - Main.screenPosition;
-            Vector2 scale = new Vector2(1 + Projectile.ai[0], MathF.Pow(Projectile.ai[0] + 0.5f, 2)) * rand.NextFloat(0.8f, 1.2f) * 0.25f;
+            Vector2 scale = new Vector2(1 + Projectile.ai[0], MathF.Pow(Projectile.ai[0] + 0.5f, 2)) * rand.NextFloat(0.8f, 1.2f) * 0.25f * (Projectile.ai[1] + 1f);
             Main.EntitySpriteDraw(tex, Projectile.Center + offset, null, Color.Red with { A = 0 } * (1f- Projectile.ai[0]), angle, new Vector2(tex.Width * 0.1f, tex.Height * 0.5f), scale, SpriteEffects.None);
         }
         
@@ -302,7 +302,7 @@ public class CircleTelegraph : ModProjectile
     public override void AI()
     {
         if (Projectile.ai[0] < 0.05f)
-            Projectile.ai[2] = Main.rand.Next(20000);
+            Projectile.localAI[0] = Main.rand.Next(20000);
         Projectile.ai[0] += 0.05f;
         if (Projectile.ai[0] > 1)
             Projectile.ai[0] = 0;

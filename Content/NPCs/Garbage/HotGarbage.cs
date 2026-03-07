@@ -18,7 +18,7 @@ public partial class HotGarbage : ModNPC
 
     public override void AI()
     {
-        NextAttack = State.SlamPreperation;
+        NextAttack = State.WarningForBigDash;
         AmbientFX();
 
         TargetingLogic();
@@ -43,53 +43,13 @@ public partial class HotGarbage : ModNPC
             case State.SlamSlamSlam:
                 DoSlam();
                 break;
+            
+            case State.WarningForBigDash:
+            case State.BigDash:
+                DoBigDash();
+                break;
         }
-        if (AIState == State.WarningForBigDash)
-        {
-            AnimationStyle = AnimationStyles.BoostWarning;
-            
-            AITimer++;
-            NPC.velocity.X = Helper.FromAToB(NPC.Center, player.Center).X * -1;
-            if (AITimer == 10)
-            {
-                SoundEngine.PlaySound(SoundID.Zombie66, NPC.Center);
-                MPUtils.NewProjectile(NPC.InheritSource(NPC), NPC.Center, Vector2.Zero, ProjectileType<CircleTelegraph>(), 0, 0);
-            }
-            NPC.rotation += ToRadians(-0.2f * 2 * NPC.direction);
-            FacePlayer();
-            if (AITimer >= 50)
-            {
-                NPC.netUpdate = true;
-                NPC.velocity.X = 0;
-                AITimer = 0;
-                AITimer2 = 0;
-                AIState = State.BigDash;
-                NPC.velocity = Vector2.Zero;
-            }
-        }
-        else if (AIState == State.BigDash)
-        {
-            AnimationStyle = AnimationStyles.Boost;
-            
-            AITimer++;
-            NPC.damage = 90;
-            NPC.rotation = Lerp(NPC.rotation, 0, 0.35f);
-            if (AITimer == 2)
-                SoundEngine.PlaySound(Sounds.exolDash, NPC.Center);
-            if (AITimer < 12)
-                NPC.velocity += new Vector2(NPC.direction * 2f, -1.2f);
-            
-            if (AITimer % 6 == 0)
-                MPUtils.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, new Vector2(-NPC.direction * Main.rand.NextFloat(1, 3), Main.rand.NextFloat(-5, -1)), ProjectileType<GarbageFlame>(), 15, 0);
-            
-            if (AITimer >= 110)
-            {
-                NPC.velocity = Vector2.Zero;
-                ResetTo(State.OpenLid, State.TrashBags);
-                AITimer = -50;
-            }
-        }
-        else if (AIState == State.SpewFire)
+        if (AIState == State.SpewFire)
         {
             AnimationStyle = AnimationStyles.Open;
             

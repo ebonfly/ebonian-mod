@@ -122,7 +122,7 @@ public partial class HotGarbage : ModNPC
                 if (AITimer < 176)
                     DisposablePosition = player.Center - new Vector2(-player.velocity.X * 20, 500);
                 NPC.direction = NPC.spriteDirection = 1;
-                NPC.rotation = Lerp(NPC.rotation, ToRadians(90), 0.05f);
+                NPC.rotation = Utils.AngleLerp(NPC.rotation, ToRadians(90), 0.05f);
                 if (AITimer % 8 == 0)
                     NPC.velocity = Helper.FromAToB(NPC.Center, DisposablePosition, false) * MathHelper.Lerp(0.025f, 0.056f, Helper.Saturate((AITimer - 50f) / 50f));
             }
@@ -170,5 +170,64 @@ public partial class HotGarbage : ModNPC
                 ResetTo(State.WarningForBigDash);
             }
         }
+	}
+	
+	void DoBigDash() {
+		if (AIState == State.WarningForBigDash)
+		{
+			AnimationStyle = AnimationStyles.BoostWarning;
+            
+			AITimer++;
+			NPC.velocity.X = Helper.FromAToB(NPC.Center, player.Center).X * -1;
+			if (AITimer == 10)
+			{
+				SoundEngine.PlaySound(SoundID.Zombie66, NPC.Center);
+				MPUtils.NewProjectile(NPC.InheritSource(NPC), NPC.Center, Vector2.Zero, ProjectileType<CircleTelegraph>(), 0, 0, ai1: 0.5f);
+			}
+			NPC.velocity -= new Vector2(NPC.direction * 0.005f * AITimer, 0);
+			FacePlayer();
+			if (AITimer >= 50)
+			{
+				NPC.netUpdate = true;
+				NPC.velocity.X = 0;
+				AITimer = 0;
+				AITimer2 = 0;
+				AIState = State.BigDash;
+				NPC.velocity = Vector2.Zero;
+			}
+		}
+		else if (AIState == State.BigDash)
+		{
+			AnimationStyle = AnimationStyles.Boost;
+			   
+			AITimer++;
+
+			Phase();
+			NPC.damage = 90;
+			NPC.rotation = Lerp(NPC.rotation, 0, 0.35f);
+			if (AITimer == 2)
+				SoundEngine.PlaySound(Sounds.exolDash, NPC.Center);
+			if (AITimer < 12)
+				NPC.velocity += new Vector2(NPC.direction * MathHelper.Lerp(1, 4, AITimer / 110f), 0);
+
+			if (AITimer > 90)
+			{
+				NPC.velocity.X *= 0.93f;
+				AnimationStyle = AnimationStyles.BoostWarning;
+			}
+			else
+				MPUtils.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ProjectileType<GarbageDashFlames>(), 15, 0, ai2: 2);
+            
+			if (AITimer % 12 == 0)
+				for (int i = 0; i < 2; i++)
+					MPUtils.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, new Vector2(-NPC.direction * Main.rand.NextFloat(1, 3), Main.rand.NextFloat(-5, -1)), ProjectileType<GarbageFlame>(), 15, 0);
+			
+            
+			if (AITimer >= 110)
+			{
+				ResetTo(State.OpenLid, State.TrashBags);
+				AITimer = -50;
+			}
+		}
 	}
 }
