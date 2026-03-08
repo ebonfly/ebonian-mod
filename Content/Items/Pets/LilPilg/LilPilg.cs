@@ -10,6 +10,7 @@ using Terraria;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using EbonianMod.Content.Dusts;
+using EbonianMod.Core.Systems.Scenes;
 
 namespace EbonianMod.Content.Items.Pets.LilPilg
 {
@@ -152,7 +153,7 @@ namespace EbonianMod.Content.Items.Pets.LilPilg
                         if (frames.Y < 12 * frames.Height)
                             frames.Y += frames.Height;
                 }
-                else if (!Main.dayTime && Star.starfallBoost > 2f && (player.ZoneOverworldHeight || player.ZoneSkyHeight) && Projectile.ai[2] > 60 * 2)
+                else if (RiverOfStarlight.ActiveConditions && (player.ZoneOverworldHeight || player.ZoneSkyHeight) && Projectile.ai[2] > 60 * 2)
                 {
                     frames.Y = frames.Height;
                 }

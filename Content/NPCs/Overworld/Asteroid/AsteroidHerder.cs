@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EbonianMod.Core.Systems.Scenes;
 using Terraria.GameContent.Bestiary;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
@@ -88,7 +89,7 @@ public class AsteroidHerder : CommonNPC
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
     {
         if (Main.invasionType > 0) return 0;
-        return Star.starfallBoost > 2 && !Main.dayTime && spawnInfo.Player.ZoneNormalSpace ? 0.02f : 0;
+        return RiverOfStarlight.ActiveConditions && spawnInfo.Player.ZoneNormalSpace ? 0.02f : 0;
     }
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {

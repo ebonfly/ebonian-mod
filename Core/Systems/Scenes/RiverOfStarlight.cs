@@ -11,9 +11,10 @@ public class RiverOfStarlight : ModSceneEffect
 {
     public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Meteor");
     public override SceneEffectPriority Priority => SceneEffectPriority.Environment;
+    public static bool ActiveConditions => !Main.dayTime && Star.starfallBoost > 3.2f && !Main.bloodMoon && Main.invasionType == 0;
     public override bool IsSceneEffectActive(Player player)
     {
-        return !Main.dayTime && Star.starfallBoost > 2f && (player.ZoneOverworldHeight || player.ZoneSkyHeight);
+        return ActiveConditions && (player.ZoneOverworldHeight || player.ZoneSkyHeight);
     }
     public override void SpecialVisuals(Player player, bool isActive)
     {
@@ -45,11 +46,11 @@ public class RiverOfStarlightPlayer : ModPlayer
 {
     public override void PostUpdate()
     {
-        if (Star.starfallBoost >= 2 ? Main.rand.NextBool(8500) : false && !Main.dayTime)
+        if (RiverOfStarlight.ActiveConditions ? Main.rand.NextBool(8500) : false)
         {
             MPUtils.NewProjectile(Player.GetSource_FromThis(), Player.Center + new Vector2(1920 * Main.rand.NextFloat() - 960, -3000), new Vector2(Main.rand.NextFloat(-1, 1), 20f), ModContent.ProjectileType<FallingStarBig>(), 2000, 0);
         }
-        if (Star.starfallBoost >= 2 ? Main.rand.NextBool(300) : false && !Main.dayTime)
+        if (RiverOfStarlight.ActiveConditions ? Main.rand.NextBool(300) : false)
         {
             MPUtils.NewProjectile(Player.GetSource_FromThis(), Player.Center + new Vector2(1920 * Main.rand.NextFloat() - 960, -2500), new Vector2(Main.rand.NextFloat(-10, 10), 20f), ModContent.ProjectileType<FallingStarTiny>(), 10, 0);
         }

@@ -4,6 +4,7 @@ using EbonianMod.Content.Items.Weapons.Magic;
 using EbonianMod.Content.Projectiles.VFXProjectiles;
 using System;
 using System.IO;
+using EbonianMod.Core.Systems.Scenes;
 using Terraria.GameContent.Bestiary;
 using Terraria.Map;
 
@@ -145,7 +146,7 @@ public class AsteroidWarden : CommonNPC
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
     {
         if (Main.invasionType > 0) return 0;
-        return (Star.starfallBoost > 2 && !Main.dayTime && spawnInfo.Player.ZoneNormalSpace) ? 0.1f : 0;
+        return (RiverOfStarlight.ActiveConditions && spawnInfo.Player.ZoneNormalSpace) ? 0.1f : 0;
     }
     public override void AI()
     {
