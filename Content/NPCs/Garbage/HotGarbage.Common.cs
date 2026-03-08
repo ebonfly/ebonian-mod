@@ -99,6 +99,17 @@ public partial class HotGarbage : ModNPC
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Garbage");
         }
     }
+
+    public override bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref MultipliableFloat damageMultiplier, ref Rectangle npcHitbox)
+    {
+        npcHitbox.Height = NPC.height - 20;
+        npcHitbox.Y += 24;
+
+        npcHitbox.Width = NPC.width - 26;
+        npcHitbox.X += 13;
+        return base.ModifyCollisionData(victimHitbox, ref immunityCooldownSlot, ref damageMultiplier, ref npcHitbox);
+    }
+
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
