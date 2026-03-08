@@ -39,7 +39,7 @@ public class GarbageTelegraph : ModProjectile
             }
         }
 
-        if (Projectile.ai[0] > 0)
+        if (Projectile.ai[0] > 100)
         {
             Texture2D tex = Assets.Extras.laser4.Value;
             Vector2 start = Projectile.Center;

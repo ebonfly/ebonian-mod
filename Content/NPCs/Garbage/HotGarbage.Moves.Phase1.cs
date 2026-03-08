@@ -111,6 +111,9 @@ public partial class HotGarbage : ModNPC
             
             NPC.noGravity = true;
             NPC.damage = 60;
+            if (AITimer == 2)
+	            SoundEngine.PlaySound(SoundID.Zombie67, NPC.Center);
+            
             if (AITimer < 50)
             {
 	            NPC.velocity = NPC.velocity.RotatedBy(ToRadians(-NPC.direction * 2));
@@ -118,7 +121,7 @@ public partial class HotGarbage : ModNPC
 
             if (AITimer < 200)
                 NPC.noTileCollide = true;
-            if (AITimer >= 50 && AITimer < 181)
+            if (AITimer >= 50 && AITimer < 171)
             {
                 if (AITimer < 176)
                     DisposablePosition = player.Center - new Vector2(-player.velocity.X * 20, 500);
@@ -127,14 +130,12 @@ public partial class HotGarbage : ModNPC
                 if (AITimer % 8 == 0)
                     NPC.velocity = Helper.FromAToB(NPC.Center, DisposablePosition, false) * MathHelper.Lerp(0.025f, 0.056f, Helper.Saturate((AITimer - 50f) / 50f));
             }
-            if (AITimer == 2)
-                SoundEngine.PlaySound(SoundID.Zombie67, NPC.Center);
-            if (AITimer == 181)
+            if (AITimer is > 175 and < 186 && AITimer % 2 == 0)
             {
                 NPC.velocity = Vector2.Zero;
-                MPUtils.NewProjectile(NPC.InheritSource(NPC), NPC.Center, Vector2.UnitY, ProjectileType<GarbageTelegraph>(), 0, 0);
+                MPUtils.NewProjectile(NPC.InheritSource(NPC), NPC.Center + new Vector2(0, -100 + (AITimer - 175) * 35), Vector2.UnitY, ProjectileType<GarbageTelegraph>(), 0, 0, ai0: 1);
             }
-            if (AITimer == 200)
+            if (AITimer == 202)
             {
                 SoundEngine.PlaySound(Sounds.exolDash, NPC.Center);
                 for (int i = -4; i < 4; i++)
