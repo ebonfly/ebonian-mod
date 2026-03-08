@@ -218,8 +218,9 @@ public class ThawGauntletP2 : ModProjectile
         {
             Projectile.direction = Projectile.spriteDirection = Projectile.velocity.X > 0 ? 1 : -1;
 
-            if (Helper.Raycast(Projectile.Center, Vector2.UnitY, 12).RayLength <= 10)
+            if (Helper.Raycast(Projectile.Center, Vector2.UnitY, 12).Success)
             {
+                Collision.StepUp(ref Projectile.position, ref Projectile.velocity, Projectile.width, Projectile.height, ref Projectile.stepSpeed, ref Projectile.gfxOffY);
                 Projectile.velocity.Y = 0;
                 if (Helper.Raycast(Projectile.Center, Vector2.UnitY, 12).RayLength > 2 && Helper.Raycast(Projectile.Center, -Vector2.UnitY, 12).RayLength > 2 && Projectile.ai[2] < 3)
                 {
@@ -241,7 +242,7 @@ public class ThawGauntletP2 : ModProjectile
                     Projectile.velocity.X = vel * Projectile.direction;
                 Projectile.localAI[1]++;
             }
-            if (Helper.Raycast(Projectile.Center, Vector2.UnitY, 12).RayLength > 10)
+            else
             {
                 if (Projectile.ai[2] > 0)
                 {
