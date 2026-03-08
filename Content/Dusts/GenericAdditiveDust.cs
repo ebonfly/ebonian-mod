@@ -82,7 +82,7 @@ public class LineDustFollowPoint : ModDust
     public override bool Update(Dust dust)
     {
         dust.position += dust.velocity;
-        dust.scale -= 0.0025f;
+        dust.scale -= 0.0036f;
         dust.rotation = dust.velocity.ToRotation() - MathHelper.PiOver2;
         if (dust.customData is not null && dust.customData.GetType() == typeof(Vector2))
         {
@@ -103,9 +103,7 @@ public class LineDustFollowPoint : ModDust
         Texture2D tex = Assets.Extras.Extras2.trace_01.Value;
 
         for (float i = 0; i < Clamp(10 * d.fadeIn * d.scale * 5, 0, 5); i++)
-            Main.spriteBatch.Draw(tex, d.position - d.velocity * 2 * i - Main.screenPosition, null, d.color with { A = 0 } * (d.scale * 10 * SmoothStep(1, 0, i / 10f)), d.rotation, tex.Size() / 2, new Vector2(1, Clamp(d.velocity.Length() * 0.25f, 0, 2)) * d.scale * 2, SpriteEffects.None, 0);
-
-        Main.spriteBatch.Draw(tex, d.position - Main.screenPosition, null, d.color with { A = 0 } * (d.scale * 10), d.rotation, tex.Size() / 2, new Vector2(1, Clamp(d.velocity.Length() * 0.25f, 0, 2)) * d.scale * 2, SpriteEffects.None, 0);
+            Main.spriteBatch.Draw(tex, d.position - d.velocity * i - Main.screenPosition, null, d.color with { A = 0 } * (d.scale * 10 * SmoothStep(1, 0, i / 10f)), d.rotation, tex.Size() / 2, new Vector2(1, Clamp(d.velocity.Length() * 0.25f, 0, 1.5f)) * d.scale * 2, SpriteEffects.None, 0);
         return false;
     }
 }

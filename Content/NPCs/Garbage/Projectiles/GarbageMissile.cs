@@ -1,4 +1,5 @@
-﻿using EbonianMod.Content.Dusts;
+﻿using System;
+using EbonianMod.Content.Dusts;
 
 namespace EbonianMod.Content.NPCs.Garbage.Projectiles;
 
@@ -25,24 +26,31 @@ public class GarbageMissile : ModProjectile
     }
     public override void OnKill(int timeLeft)
     {
+        Color lightColor = Lighting.GetColor(Projectile.Center.ToTileCoordinates());
+        byte maximumColorValue = Math.Max(lightColor.R, Math.Max(lightColor.G, lightColor.B));
+        lightColor = new Color(maximumColorValue, maximumColorValue, maximumColorValue, 1);
+        
         SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode.WithPitchOffset(1f), Projectile.Center);
         Collision.HitTiles(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
         
-        for (int i = 0; i < 15; i++) 
+        for (int i = 0; i < 10; i++) 
         {
-            Dust.NewDustPerfect(Projectile.Center, DustType<SmokeDustAkaFireDustButNoGlow2>(), newColor: Color.Gray).customData = 0.5f;
-            Dust.NewDustPerfect(Projectile.Center, DustType<LineDustFollowPoint>(), Main.rand.NextVector2Unit() * Main.rand.NextFloat(3, 15), newColor: Color.Gray, Scale: 0.1f);
+            Dust.NewDustPerfect(Projectile.Center, DustType<SmokeDustAkaFireDustButNoGlow2>(), Main.rand.NextVector2Unit() * Main.rand.NextFloat(1, 5), newColor: lightColor * 0.75f).customData = 0.5f;
+            Dust.NewDustPerfect(Projectile.Center, DustType<LineDustFollowPoint>(), Main.rand.NextVector2Unit() * Main.rand.NextFloat(3, 15), newColor: Color.Gray * 0.5f, Scale: 0.1f);
         }
     }
     public override bool? CanDamage() => Projectile.timeLeft < 300;
     public override Color? GetAlpha(Color lightColor) => Color.White;
     public override void AI()
     {
+        Color lightColor = Lighting.GetColor(Projectile.Center.ToTileCoordinates());
+        byte maximumColorValue = Math.Max(lightColor.R, Math.Max(lightColor.G, lightColor.B));
+        lightColor = new Color(maximumColorValue, maximumColorValue, maximumColorValue, 1);
         Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
         if (Projectile.timeLeft > 300)
         {
             Projectile.velocity = Projectile.velocity.RotatedBy(Projectile.ai[0]) * 0.99f;
-            Dust.NewDustPerfect(Projectile.Center, DustType<SmokeDustAkaFireDustButNoGlow2>(), newColor: Color.Gray).customData = 0.1f;
+            Dust.NewDustPerfect(Projectile.Center, DustType<SmokeDustAkaFireDustButNoGlow2>(), newColor: lightColor).customData = 0.1f;
         }
         else
         {
@@ -50,7 +58,7 @@ public class GarbageMissile : ModProjectile
             
             Projectile.tileCollide = true;
             for (int i = 0; i < 3; i++)
-                Dust.NewDustPerfect(Projectile.Center, DustType<SmokeDustAkaFireDustButNoGlow2>(), newColor: Color.Gray).customData = 0.3f;
+                Dust.NewDustPerfect(Projectile.Center, DustType<SmokeDustAkaFireDustButNoGlow2>(), newColor: lightColor).customData = 0.3f;
             if (Projectile.velocity.Length() < 25)
                 Projectile.velocity *= 1.025f;
         }
