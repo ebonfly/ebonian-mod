@@ -15,7 +15,7 @@ public class BotanistHeadStaff : ModItem
     }
     public override void SetDefaults()
     {
-        Item.damage = 4;
+        Item.damage = 13;
         Item.width = 40;
         Item.height = 40;
         Item.mana = 5;
@@ -52,7 +52,7 @@ public class BotanistHeadStaff : ModItem
         for (int i = 0; i < 30; i++)
             Dust.NewDustPerfect(target + Main.rand.NextVector2Circular(20, 20), DustID.GrassBlades, Main.rand.NextVector2Circular(16, 16)).noGravity = true;
 
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 4; i++)
             Projectile.NewProjectile(null, target, new Vector2(i - 4, velocity.Length() * Main.rand.NextFloat(-0.5f, 1.5f)), type, damage, knockback, player.whoAmI);
 
         Projectile.NewProjectile(null, target, new Vector2(0, velocity.Length()), type, damage, knockback, player.whoAmI);

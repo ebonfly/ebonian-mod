@@ -7,7 +7,7 @@ namespace EbonianMod.Content.Items.Weapons.Magic
         public override string Texture => Helper.AssetPath + "Items/Weapons/Magic/WardingStar";
         public override void SetDefaults()
         {
-            Item.damage = 15;
+            Item.damage = 19;
             Item.DamageType = DamageClass.Magic;
             Item.mana = 7;
             Item.noUseGraphic = true;
