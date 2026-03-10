@@ -77,8 +77,8 @@ public partial class HotGarbage : ModNPC
         NPC.width = 80;
         NPC.height = 74;
         NPC.damage = 30;
-        NPC.defense = 11;
-        NPC.lifeMax = 2250;
+        NPC.defense = 8;
+        NPC.lifeMax = 3200;
         NPC.value = Item.buyPrice(0, 10);
         NPC.knockBackResist = 0f;
         NPC.HitSound = SoundID.NPCHit4;
@@ -98,6 +98,14 @@ public partial class HotGarbage : ModNPC
         {
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Garbage");
         }
+    }
+
+    public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+    {
+        if (Main.expertMode)
+            NPC.lifeMax = 4400;
+        if (Main.masterMode)
+            NPC.lifeMax = 5600;
     }
 
     public override bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref MultipliableFloat damageMultiplier, ref Rectangle npcHitbox)
