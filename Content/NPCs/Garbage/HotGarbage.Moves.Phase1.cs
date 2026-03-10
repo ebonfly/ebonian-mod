@@ -115,9 +115,7 @@ public partial class HotGarbage : ModNPC
 	            SoundEngine.PlaySound(SoundID.Zombie67, NPC.Center);
             
             if (AITimer < 50)
-            {
 	            NPC.velocity = NPC.velocity.RotatedBy(ToRadians(-NPC.direction * 2));
-            }
 
             if (AITimer < 200)
                 NPC.noTileCollide = true;
@@ -316,13 +314,19 @@ public partial class HotGarbage : ModNPC
 		AITimer3++;
 		
 		Phase();
-		NPC.velocity.X = Lerp(NPC.velocity.X, Helper.FromAToB(NPC.Center, player.Center + Helper.FromAToB(player.Center, NPC.Center) * 70, false).X * 0.043f, 0.12f);
 		FacePlayer();
+		
+		if (AITimer > 125)
+			NPC.velocity.X = Lerp(NPC.velocity.X, Helper.FromAToB(NPC.Center, player.Center + Helper.FromAToB(player.Center, NPC.Center) * 70, false).X * 0.043f, 0.12f);
+		else
+			NPC.velocity.X *= 0.99f;
 		
 		if (AITimer < 100)
 			AnimationStyle = AnimationStyles.Open;
-		else
+		else if (AITimer < 125)
 			AnimationStyle = AnimationStyles.Close;
+		else
+			AnimationStyle = AnimationStyles.Idle;
             
 		if (AITimer == 1 && MPUtils.NotMPClient)
 		{

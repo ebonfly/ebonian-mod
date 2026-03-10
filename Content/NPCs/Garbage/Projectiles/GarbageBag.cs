@@ -31,6 +31,8 @@ public class GarbageBag : ModProjectile
         if (Projectile.frame == 0 && Projectile.timeLeft > 100)
         {
             SoundEngine.PlaySound(SoundID.Item177, Projectile.Center);
+            for (int i = 0; i < 15; i++)
+                Dust.NewDustPerfect(Projectile.Center + Vector2.UnitY.RotatedByRandom(1) * Main.rand.NextFloat(5, 10), DustType<GarbageFlameDust>(), Projectile.velocity.SafeNormalize(Vector2.UnitY).RotatedByRandom(1f) * Main.rand.NextFloat(2, 10), 0, Color.OrangeRed, 0.1f).noGravity = true;
             Projectile.timeLeft = 100;
         }
         Projectile.velocity.Y *= 0.5f;
@@ -39,18 +41,17 @@ public class GarbageBag : ModProjectile
         Projectile.netUpdate = true; // TEST
         return false;
     }
-    public override void OnSpawn(IEntitySource source)
-    {
-    }
-    public override Color? GetAlpha(Color lightColor)
-    {
-        return Color.White * Projectile.Opacity;
-    }
     public override void AI()
     {
+        Lighting.AddLight(Projectile.Center, 0.85f, 0.3f, 0.1f);
+        
         if (Projectile.frame == 0)
         {
             Dust.NewDustPerfect(Projectile.Center + Projectile.velocity, DustType<GarbageFlameDust>(), Projectile.velocity.RotatedByRandom(0.3f) * 0.4f, 0, Color.OrangeRed, 0.1f).noGravity = true;
+        }
+        else
+        {
+            Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(7, 7) + new Vector2(0, 10), DustType<GarbageFlameDust>(), new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-5, -1)), 0, Color.OrangeRed, 0.1f).noGravity = true;
         }
         Projectile.tileCollide = Projectile.Center.Y > Main.player[Projectile.owner].Center.Y - 20;
         Projectile.velocity *= 1.01f;
