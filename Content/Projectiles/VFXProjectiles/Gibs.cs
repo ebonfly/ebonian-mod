@@ -178,6 +178,8 @@ public class HostileGibs : ModProjectile
             AIType = -1;
             Projectile.aiStyle = 0;
         }
+        if (Projectile.ai[2] > 0)
+            Projectile.tileCollide = true;
         if (Projectile.timeLeft < 50)
             Projectile.velocity.X *= 0.975f;
         if (Projectile.velocity.Length() > 0.5f)

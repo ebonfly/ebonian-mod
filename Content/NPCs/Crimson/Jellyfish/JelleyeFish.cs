@@ -87,7 +87,7 @@ public class JelleyeFish : ModNPC
         }
         else
         {
-            MPUtils.NewProjectile(null, NPC.Center, -NPC.velocity.RotatedByRandom(PiOver2) * 0.5f, ModContent.ProjectileType<HostileGibs>(), 10, 0);
+            MPUtils.NewProjectile(null, NPC.Center, -NPC.velocity.RotatedByRandom(PiOver2) * 0.5f, ModContent.ProjectileType<HostileGibs>(), 10, 0, ai2: 1);
             if (AITimer2 == 100)
             {
                 NPC.netUpdate = true;

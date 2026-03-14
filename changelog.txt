@@ -34,6 +34,7 @@ v3.0
 - Massive Spectators and Cocoons now show up on the Lifeform Analyzer
 - Moved the Bloodsucker to the Blood Moon
 - Spectators now have a chance to drop lenses
+- Jelleye Fish projectiles no longer go through tiles
 - Decreased the size of the Century Flower's spore hitbox
 - Small Spectators are no longer targeted by minions
 - Starlads now always drop one singular fallen star, and increased the chance for them to drop mushrooms
