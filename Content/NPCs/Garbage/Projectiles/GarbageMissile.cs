@@ -35,7 +35,7 @@ public class GarbageMissile : ModProjectile
         
         for (int i = 0; i < 10; i++) 
         {
-            Dust.NewDustPerfect(Projectile.Center, DustType<SmokeDustAkaFireDustButNoGlow2>(), Main.rand.NextVector2Unit() * Main.rand.NextFloat(1, 5), newColor: lightColor * 0.75f).customData = 0.5f;
+            Dust.NewDustPerfect(Projectile.Center, DustType<SmokeDustAkaFireDustButNoGlow2>(), Main.rand.NextVector2Unit() * Main.rand.NextFloat(1, 5), newColor: lightColor * 0.35f).customData = 0.5f;
             Dust.NewDustPerfect(Projectile.Center, DustType<LineDustFollowPoint>(), Main.rand.NextVector2Unit() * Main.rand.NextFloat(3, 15), newColor: Color.Gray * 0.5f, Scale: 0.1f);
         }
     }
@@ -58,7 +58,10 @@ public class GarbageMissile : ModProjectile
             
             Projectile.tileCollide = true;
             for (int i = 0; i < 3; i++)
-                Dust.NewDustPerfect(Projectile.Center, DustType<SmokeDustAkaFireDustButNoGlow2>(), newColor: lightColor).customData = 0.3f;
+                Dust.NewDustPerfect(Projectile.Center, DustType<SmokeDustAkaFireDustButNoGlow2>(), newColor: lightColor * 0.55f).customData = 0.3f;
+            
+            for (int i = 0; i < 2; i++)
+                Dust.NewDustPerfect(Projectile.Center, DustType<SmokeDustAkaFireDustButNoGlow2>(), Projectile.velocity * Main.rand.NextFloat(0.4f, 0.6f), newColor: lightColor).customData = 0.15f;
             if (Projectile.velocity.Length() < 25)
                 Projectile.velocity *= 1.025f;
         }

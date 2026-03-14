@@ -12,9 +12,10 @@ public partial class HotGarbage : ModNPC
 		{
             AnimationStyle = AnimationStyles.Close;
 			AITimer++;
-			if (AITimer > 20)
-			{
-				AITimer = 0;
+            AITimer2++;
+			if (AITimer2 > 20)
+            {
+                AITimer2 = 0;
 				AIState = State.Idle;
 				NPC.netUpdate = true;
 			}
@@ -28,7 +29,6 @@ public partial class HotGarbage : ModNPC
 			if (AITimer == 1)
 			{
 				SoundEngine.PlaySound(SoundID.DD2_BookStaffCast, NPC.Center);
-				MPUtils.NewProjectile(NPC.InheritSource(NPC), NPC.Center, Vector2.Zero, ProjectileType<GreenShockwave>(), 0, 0);
 			}
 			if (AITimer >= 20)
 			{
