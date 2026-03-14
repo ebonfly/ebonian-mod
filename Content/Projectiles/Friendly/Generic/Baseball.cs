@@ -52,6 +52,9 @@ public class Baseball : ModProjectile
     public override void OnHitNPC(NPC target, NPC.HitInfo hitinfo, int damage)
     {
         Projectile.velocity *= 0.945f;
+        if (Projectile.penetrate == 1)
+            for (int i = 0; i < 25; i++)
+                Dust.NewDustPerfect(Projectile.Center, DustID.Sand, Main.rand.NextVector2Circular(5, 5), Scale: Main.rand.NextFloat(1.2f, 1.9f)).noGravity = true;
     }
     public override void AI()
     {

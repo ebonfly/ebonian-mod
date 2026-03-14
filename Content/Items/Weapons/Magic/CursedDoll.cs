@@ -82,8 +82,8 @@ public class CursedDollProjectile : HeldProjectileGun
                 Vector2 spawnPosition = player.MountedCenter + new Vector2(20, -10 * player.direction).RotatedBy(Projectile.rotation);
                 for (int i = 0; i < 25; i++)
                 {
-                    Dust.NewDustPerfect(mousePosition, DustID.CursedTorch, Main.rand.NextFloat(0, Pi * 2).ToRotationVector2() * Main.rand.NextFloat(0.3f, 6), Scale: Main.rand.NextFloat(1.2f, 1.9f)).noGravity = true;
-                    Dust.NewDustPerfect(spawnPosition, DustID.CursedTorch, Main.rand.NextFloat(0, Pi * 2).ToRotationVector2() * Main.rand.NextFloat(2, 6), Scale: 1.5f).noGravity = true;
+                    Dust.NewDustPerfect(mousePosition, DustID.CursedTorch, Main.rand.NextVector2Circular(5, 5), Scale: Main.rand.NextFloat(1.2f, 1.9f)).noGravity = true;
+                    Dust.NewDustPerfect(spawnPosition, DustID.CursedTorch, Main.rand.NextVector2Circular(2, 2), Scale: 1.5f).noGravity = true;
                 }
                 Projectile.NewProjectile(Projectile.InheritSource(Projectile), mousePosition, Vector2.Zero, ProjectileType<DollPin>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                 Projectile.ai[0] = 0;
