@@ -87,8 +87,8 @@ public class LineDustFollowPoint : ModDust
         if (dust.customData is not null && dust.customData.GetType() == typeof(Vector2))
         {
             dust.velocity = Vector2.Lerp(dust.velocity, Helper.FromAToB(dust.position, (Vector2)dust.customData, false) / 25, 0.05f + dust.scale);
-            if (dust.position.Distance((Vector2)dust.customData) < 100)
-                dust.scale -= 0.01f;
+            if (dust.position.Distance((Vector2)dust.customData) < 20)
+                dust.scale -= 0.015f;
         }
         else
             dust.velocity *= 0.98f;

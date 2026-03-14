@@ -408,4 +408,38 @@ public partial class HotGarbage : ModNPC
 			AITimer = -80;
 		}
 	}
+
+	void DoSatelites()
+	{
+		AITimer++;
+		
+		AnimationStyle = AnimationStyles.Open;
+            
+		if (AITimer == 1 && MPUtils.NotMPClient)
+		{
+			SoundEngine.PlaySound(SoundID.Zombie67, NPC.Center);
+			AITimer3 = Main.rand.Next(10000000);
+                
+			NPC.netUpdate = true;
+		}
+		
+		AITimer3++;
+		UnifiedRandom rand = new((int)AITimer3);
+		if (AITimer >= 20)
+		{
+			if (AITimer % 20 == 0)
+			{
+				MPUtils.NewProjectile(null, NPC.Center, new Vector2(Main.rand.NextFloat(1, 5) * NPC.direction, Main.rand.NextFloat(-5, -3)), ProjectileType<GarbageDrone>(), 20, 0, ai1: Helper.FromAToB(NPC.Center, player.Center + player.velocity * 2, false).X, ai2: rand.NextFloat(0.02f, 0.035f));
+			}
+
+			if (AITimer % 5 == 0)
+				MPUtils.NewProjectile(null, NPC.Center, new Vector2(Main.rand.NextFloat(1, 5) * NPC.direction, Main.rand.NextFloat(-5, -3)), ProjectileType<GarbageDrone>(), 20, 0, ai1: rand.NextFloat(-1500, 1500), ai2: rand.NextFloat(0.02f, 0.035f));
+		}
+
+		if (AITimer >= 100)
+		{
+			ResetTo(State.PipeBombAirstrike, null, true);
+			AITimer = -230;
+		}
+	}
 }

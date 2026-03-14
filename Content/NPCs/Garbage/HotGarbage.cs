@@ -18,7 +18,8 @@ public partial class HotGarbage : ModNPC
 
     public override void AI()
     {
-        NextAttack = State.MailBoxes;
+        NextAttack = State.OpenLid;
+        NextAttack2 = State.SodaMissiles;
         
         AmbientFX();
 
@@ -69,39 +70,10 @@ public partial class HotGarbage : ModNPC
             case State.MailBoxes:
                 DoMailBoxes();
                 break;
-        }
-        if (AIState == State.SateliteLightning)
-        {
-            AnimationStyle = AnimationStyles.Open;
             
-            AITimer++;
-            if (AITimer == 1 && MPUtils.NotMPClient)
-            {
-                AITimer3 = Main.rand.Next(10000000);
-                
-                NPC.netUpdate = true;
-            }
-            AITimer3++;
-            UnifiedRandom rand = new((int)AITimer3);
-            if (AITimer >= 20 && AITimer % 20 == 0)
-            {
-                SoundEngine.PlaySound(SoundID.Zombie67, NPC.Center);
-                MPUtils.NewProjectile(null, NPC.Center, Main.rand.NextVector2Circular(10, 10), ProjectileType<GarbageDrone>(), 20, 0, ai1: Helper.FromAToB(NPC.Center, player.Center + player.velocity * 2, false).X, ai2: rand.NextFloat(0.02f, 0.035f));
-            }
-            if (AITimer > 20 && AITimer % 5 == 0)
-            {
-                MPUtils.NewProjectile(null, NPC.Center, Main.rand.NextVector2Circular(10, 10), ProjectileType<GarbageDrone>(), 20, 0, ai1: rand.NextFloat(-1500, 1500), ai2: rand.NextFloat(0.02f, 0.035f));
-            }
-            if (AITimer >= 100)
-            {
-                AITimer = 0;
-                AITimer3 = 0;
-                NPC.damage = 0;
-                AIState = State.CloseLid;
-                NextAttack = State.PipeBombAirstrike;
-                NPC.velocity = Vector2.Zero;
-                NPC.netUpdate = true;
-            }
+            case State.SateliteLightning:
+                DoSatelites();
+                break;
         }
         if (AIState == State.PipeBombAirstrike)
         {

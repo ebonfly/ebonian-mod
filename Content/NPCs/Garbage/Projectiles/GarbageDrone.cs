@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Terraria.Graphics.CameraModifiers;
 
 namespace EbonianMod.Content.NPCs.Garbage.Projectiles;
 
@@ -39,10 +40,10 @@ public class GarbageDrone : ModProjectile
         for (int i = 0; i < Projectile.oldPos.Count(); i++)
         {
             float mult = (1 - i * fadeMult);
-            Main.spriteBatch.Draw(tex, Projectile.oldPos[i] + Projectile.Size / 2 - Main.screenPosition, null, Color.Cyan * (Projectile.Opacity * mult * 0.8f), Projectile.rotation, tex.Size() / 2, Projectile.scale * 1.1f, SpriteEffects.None, 0);
+            Main.spriteBatch.Draw(tex, Projectile.oldPos[i] + Projectile.Size / 2 - Main.screenPosition, null, Color.Cyan * (mult * 0.8f) * glowAlpha, Projectile.rotation, tex.Size() / 2, Projectile.scale * 1.1f * Projectile.Opacity, SpriteEffects.None, 0);
         }
 
-        Main.spriteBatch.Draw(tex, Projectile.Center - Main.screenPosition, null, Color.Cyan * (0.5f * Projectile.Opacity), Projectile.rotation, tex.Size() / 2, Projectile.scale * (1 + (MathF.Sin(Main.GlobalTimeWrappedHourly * 3f) + 1) * 0.5f), SpriteEffects.None, 0);
+        Main.spriteBatch.Draw(tex, Projectile.Center - Main.screenPosition, null, Color.Cyan * (0.5f) * glowAlpha, Projectile.rotation, tex.Size() / 2, Projectile.scale * (1 + (MathF.Sin(Main.GlobalTimeWrappedHourly * 3f) + 1) * 0.5f) * Projectile.Opacity, SpriteEffects.None, 0);
         Main.spriteBatch.Reload(BlendState.AlphaBlend);
         return true;
     }
@@ -55,37 +56,78 @@ public class GarbageDrone : ModProjectile
     {
         startP = reader.ReadVector2();
     }
+
+    private float glowAlpha = 1, rotationOffset;
     public override void AI()
     {
         if (startP == Vector2.Zero)
         {
             startP = Projectile.Center;
+            rotationOffset = Main.rand.NextFloat(-0.1f, 0.1f);
             Projectile.netUpdate = true;
         }
         Projectile.Opacity = MathHelper.Lerp(Projectile.Opacity, 1, 0.025f);
         Projectile.ai[0]++;
-        if (Projectile.ai[0] < 20)
-            Projectile.velocity *= 1.025f;
-        if (Projectile.ai[0] < 80 && Projectile.ai[0] > 20 && Projectile.ai[0] % 5 == 0)
-            Projectile.velocity = Vector2.Lerp(Projectile.velocity, Helper.FromAToB(Projectile.Center, startP + new Vector2(Projectile.ai[1], -430), false).RotatedBy(MathF.Sin(Projectile.ai[0]) * Projectile.ai[2] * 10) * Projectile.ai[2] * 2, 0.2f);
-        else
-            Projectile.velocity *= 0.98f;
-        if (Projectile.ai[0] > 90 && Projectile.ai[0] % 5 == 0)
-            Projectile.velocity = Vector2.Lerp(Projectile.velocity, Helper.FromAToB(Projectile.Center, startP + new Vector2(Projectile.ai[1], -500), true).RotatedBy(MathF.Sin(Projectile.ai[0]) * Projectile.ai[2] * 10) * Projectile.ai[2] * 200, 0.2f);
 
-        if (Projectile.owner == Main.myPlayer)
-            if (Projectile.ai[0] == 150)
-                Projectile.NewProjectile(null, Projectile.Center, Vector2.UnitY, ProjectileType<GarbageTelegraphSmall>(), 0, 0);
-
-        if (Projectile.owner == Main.myPlayer)
-            if (Projectile.ai[0] == 200)
-            {
-                Projectile.NewProjectile(null, Projectile.Center, Vector2.UnitY, ProjectileType<GarbageLightning>(), Projectile.damage, 0);
-            }
-        if (Projectile.ai[0] > 230)
+        if (Projectile.ai[0] <= 230)
         {
-            Projectile.NewProjectileDirect(Projectile.InheritSource(Projectile), Projectile.Center, Vector2.Zero, ProjectileType<FlameExplosionWSprite>(), 50, 0);
-            Projectile.Kill();
+            if (Projectile.ai[0] < 20)
+                Projectile.velocity *= 1.025f;
+            if (Projectile.ai[0] < 80 && Projectile.ai[0] > 20 && Projectile.ai[0] % 5 == 0)
+                Projectile.velocity = Vector2.Lerp(Projectile.velocity,
+                    Helper.FromAToB(Projectile.Center, startP + new Vector2(Projectile.ai[1], -260), false)
+                        .RotatedBy(MathF.Sin(Projectile.ai[0]) * Projectile.ai[2] * 10) * Projectile.ai[2] * 2, 0.2f);
+            else
+                Projectile.velocity *= 0.98f;
+            if (Projectile.ai[0] > 90 && Projectile.ai[0] % 5 == 0)
+                Projectile.velocity = Vector2.Lerp(Projectile.velocity,
+                    Helper.FromAToB(Projectile.Center, startP + new Vector2(Projectile.ai[1], -350), true)
+                        .RotatedBy(MathF.Sin(Projectile.ai[0]) * Projectile.ai[2] * 10) * Projectile.ai[2] * 200, 0.2f);
+
+            if (Projectile.ai[0] is > 100 and < 200)
+            {
+                float progress = (Projectile.ai[0] - 100) / 100f;
+                Vector2 target = Helper.Raycast(Projectile.Center, Vector2.UnitY, 900).Point;
+                if ((int)Projectile.ai[0] % 2 == 0) 
+                {
+                    Dust.NewDustPerfect(target, DustType<LineDustFollowPoint>(), new Vector2(Main.rand.NextFloat(-2, 2), Main.rand.NextFloat(-6, -1)) * progress, newColor: Color.Cyan, Scale: 0.1f);
+                    Dust.NewDustPerfect(target, DustType<SparkleDust>(), Vector2.Zero, newColor: Color.Cyan * Main.rand.NextFloat(0.5f, 1), Scale: 0.065f);
+                    
+                    Vector2 position = target + Main.rand.NextVector2CircularEdge(50, 50) * progress;
+                    if (Projectile.ai[0] < 180)
+                        Dust.NewDustPerfect(position, DustType<LineDustFollowPoint>(), position.DirectionTo(target) * Main.rand.NextFloat(1.5f, 2.5f), newColor: Color.Cyan * 0.5f, Scale: 0.1f).customData = target;
+                }
+                
+
+                if ((int)Projectile.ai[0] % 5 == 0)
+                    SoundEngine.PlaySound(SoundID.DD2_LightningAuraZap with { Pitch = progress * 2 },
+                        Projectile.Center);
+
+                Dust.NewDustPerfect(Projectile.Center, DustType<LineDustFollowPoint>(), Vector2.UnitY.RotatedByRandom(0.5f) * Main.rand.NextFloat(10, 20) * progress, newColor: Color.Cyan, Scale: 0.1f * progress).customData = target;
+            }
+
+            if (Projectile.owner == Main.myPlayer)
+                if (Projectile.ai[0] == 200)
+                {
+                    Projectile.NewProjectile(null, Projectile.Center, Vector2.UnitY.RotatedByRandom(0.5f),
+                        ProjectileType<GarbageLightning>(), Projectile.damage, 0);
+                }
+        }
+        else if (Projectile.ai[0] < 260)
+        {
+            glowAlpha = MathHelper.Lerp(glowAlpha, 0, 0.1f);
+        }
+        else
+        {
+            Dust.NewDustPerfect(Projectile.Center + new Vector2(Main.rand.NextFloat(-20, 20), Main.rand.NextFloat(-5, 5)).RotatedBy(Projectile.rotation), DustType<GarbageFlameDust>(), Projectile.velocity.RotatedByRandom(0.2f) * 0.5f, newColor: Color.OrangeRed, Scale: 0.1f);
+            
+            Projectile.velocity.Y += .2f + Projectile.ai[2];
+            Projectile.rotation = Utils.AngleLerp(Projectile.rotation, MathHelper.PiOver2 + rotationOffset, 0.05f);
+            
+            if (Projectile.Grounded()) {
+                Projectile.NewProjectileDirect(Projectile.InheritSource(Projectile), Projectile.Center, Vector2.Zero, ProjectileType<FlameExplosionWSpriteHostile>(), 50, 0);
+                Projectile.Kill();
+            }
         }
     }
 }
@@ -198,7 +240,7 @@ public class GarbageLightning : ModProjectile
         Projectile.hostile = true;
         Projectile.ignoreWater = true;
         Projectile.tileCollide = false;
-        Projectile.timeLeft = MAX_TIME;
+        Projectile.timeLeft = 80;
         Projectile.hide = true;
         Projectile.penetrate = -1;
         Projectile.extraUpdates = 1;
@@ -218,87 +260,145 @@ public class GarbageLightning : ModProjectile
     {
         if (!RunOnce || points.Count < 2) return false;
         float a = 0f;
-        bool ye = false;
+        bool colliding = false;
         for (int i = 1; i < points.Count; i++)
         {
-            ye = Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), points[i], points[i - 1], Projectile.width, ref a);
-            if (ye) break;
+            colliding = Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), points[i], points[i - 1], Projectile.width, ref a);
+            if (colliding) break;
         }
-        return ye;
+        return colliding;
     }
     bool RunOnce;
     List<Vector2> points = new List<Vector2>();
+    List<float> alphas = new();
     Vector2 end;
     static SoundStyle sound => SoundID.DD2_LightningAuraZap.WithVolumeScale(0.5f);
+    private float lightningAmplitude, lightningMovement, lightningDirection;
     public override void AI()
     {
         Projectile.direction = end.X > Projectile.Center.X ? 1 : -1;
         Projectile.rotation = Projectile.velocity.ToRotation();
 
-        float progress = Utils.GetLerpValue(0, MAX_TIME, Projectile.timeLeft);
-        Projectile.scale = MathHelper.Clamp((float)Math.Sin(progress * Math.PI), 0, 1);
+        float progress = Utils.GetLerpValue(0, 80, Projectile.timeLeft);
+        if (Projectile.timeLeft < 40)
+            Projectile.scale = MathHelper.Lerp(0, 1, Projectile.timeLeft / 40f);
 
-        int n;
+        int n = (int)MathHelper.Clamp((Projectile.ai[2] <= 0 ? 900 : Projectile.ai[2]) / 60, 5, 20);
 
         Vector2 start = Projectile.Center;
-        Projectile.ai[2] = MathHelper.Min(Projectile.ai[2] + 1f, 20);
-        end = Projectile.Center + Projectile.rotation.ToRotationVector2() * 900;
-
+        end = Helper.Raycast(Projectile.Center, Projectile.velocity.SafeNormalize(Vector2.UnitY), Projectile.ai[2] <= 0 ? 900 : Projectile.ai[2]).Point;
+        
         if (!RunOnce)
         {
-            SoundEngine.PlaySound(SoundID.NPCDeath56, Projectile.Center);
-            n = 15;
+            if (Projectile.ai[2] <= 0)
+                SoundEngine.PlaySound(SoundID.NPCDeath56, Projectile.Center);
             points.Clear();
-            //Vector2 start = Projectile.Center + Helper.FromAToB(player.Center, Main.MouseWorld) * 40;
-            Vector2 dir = (end - start).RotatedBy(MathHelper.PiOver2);
-            dir.Normalize();
-            float x = Main.rand.NextFloat(30, 40);
+            
+            lightningAmplitude = Main.rand.NextFloat(30, 40);
+            
+            lightningMovement = Main.rand.NextFloat(-lightningAmplitude, lightningAmplitude).SafeDivision();
+            lightningDirection = -MathF.Sign(lightningAmplitude);
+            
             for (int i = 0; i < n; i++)
             {
-                if (i == n - 1)
-                    x = 0;
-                float a = Main.rand.NextFloat(-x, x).SafeDivision();
-                if (i < 3)
-                    a = 0;
-                Vector2 point = Vector2.SmoothStep(start, end, i / (float)n) + dir * a;
-                points.Add(point);
-                //Dust.NewDustPerfect(point, DustType<XGoopDustDark>(), Helper.FromAToB(i == 0 ? Projectile.Center : points[i - 1], point) * 4, 0, default, 0.35f);
-                Dust.NewDustPerfect(point, DustType<XGoopDust>(), Helper.FromAToB(i == 0 ? Projectile.Center : points[i - 1], point) * 4, 0, default, 0.25f);
-                x -= i / (float)n;
+                alphas.Add(1f);
             }
             RunOnce = true;
         }
-        else if (points.Count > 2)
+        
+        Vector2 dir = (end - start).RotatedBy(MathHelper.PiOver4).SafeNormalize(Vector2.UnitY);
+
+        if (Projectile.ai[1] < n)
+        {
+            lightningMovement += Main.rand.NextFloat(lightningAmplitude) * 0.5f * lightningDirection;
+            lightningMovement = MathHelper.Clamp(lightningMovement, -lightningAmplitude, lightningAmplitude);
+
+            if (MathF.Abs(lightningMovement + lightningDirection * lightningAmplitude) > 40)
+                lightningDirection = -lightningDirection;
+
+            Vector2 velocity = new Vector2(dir.X * (Projectile.ai[1] < n / 5f ? 0 : lightningMovement), dir.Y).RotatedBy(Projectile.velocity.SafeNormalize(Vector2.UnitY).ToRotation() - MathHelper.PiOver2);
+            Vector2 point = Vector2.SmoothStep(start, end, Projectile.ai[1] / (float)n) + velocity;
+
+            Projectile.velocity.X = MathHelper.Lerp(Projectile.velocity.X, 0, Projectile.ai[1] / n);
+            Projectile.velocity.Y = MathHelper.Lerp(Projectile.velocity.Y, 1, Projectile.ai[1] / n);
+            
+            points.Add(point);
+        }
+
+        if ((int)Projectile.ai[1] == n - 1)
+        {
+            Helper.AddCameraModifier(new PunchCameraModifier(end, Vector2.UnitY, 3, 10, 40, 500));
+            for (int i = 0; i < 25; i++)
+            {
+                Dust.NewDustPerfect(end, DustType<LineDustFollowPoint>(), Main.rand.NextVector2Circular(7.5f, 7.5f), newColor: Color.Cyan * Main.rand.NextFloat(0.5f, 1), Scale: 0.13f);
+                Dust.NewDustPerfect(end, DustType<GarbageFlameDust>(), Main.rand.NextVector2Circular(6, 6), newColor: Color.Cyan * Main.rand.NextFloat(0.5f, 1), Scale: 0.1f);
+                Dust.NewDustPerfect(end, DustID.Smoke, Main.rand.NextVector2Circular(3, 3));
+            }
+
+            Collision.HitTiles(end, Vector2.UnitY, 30, 16);
+        }
+        
+        Projectile.ai[1]++;
+        
+        if (points.Count > 2 && Projectile.ai[1] > n)
         {
             Projectile.ai[0]++;
-
-            if ((int)Projectile.ai[0] % 5 == 0)
-            {
-                float s = 1;
-                for (int i = 0; i < points.Count; i++)
-                {
-                    for (float j = 0; j < 15; j++)
-                    {
-                        Vector2 pos = Vector2.Lerp(i == 0 ? Projectile.Center : points[i - 1], points[i], j / 15f);
-                        if (j % 10 == 0)
-                        {
-                            float velF = Main.rand.NextFloat(1, 5);
-                            //Dust.NewDustPerfect(pos, DustType<XGoopDustDark>(), Helper.FromAToB(pos, points[i]) * velF, 0, default, 0.5f * s);
-                            Dust.NewDustPerfect(pos, DustID.Electric, Helper.FromAToB(pos, points[i]).RotateRandom(MathHelper.PiOver4) * velF, 0, default, 0.6f * s);
-                        }
-                        if (Main.rand.NextBool(4) && j % 6 == 0 && Projectile.ai[0] < 7)
-                            Dust.NewDustPerfect(pos, DustType<SparkleDust>(), Main.rand.NextVector2Unit(), 0, Color.Cyan * s, Main.rand.NextFloat(0.1f, 0.15f) * s);
-                    }
-                    s -= i / (float)points.Count * 0.01f;
-                }
-
-
+            
+            if ((int)Projectile.ai[0] % 5 == 0 && Projectile.ai[2] <= 0) 
                 SoundEngine.PlaySound(sound, Projectile.Center);
-            }
+            
+            if (Projectile.timeLeft < 40)
+                for (int i = 0; i < MathHelper.Clamp(Projectile.ai[0] * 0.15f, 0, points.Count); i++)
+                {
+                    alphas[i] = MathHelper.Lerp(alphas[i], 0, 0.07f);
+                    points[i] = new Vector2(MathHelper.Lerp(points[i].X, Projectile.Center.X, 0.01f), points[i].Y);
+                }
         }
         points[0] = Projectile.Center;
-        points[points.Count - 1] = end;
+        if (Projectile.ai[1] > n)
+            points[points.Count - 1] = end;
+    }
 
+    public override bool PreDraw(ref Color lightColor)
+    {
+        Texture2D tex = Assets.Extras.Ex1.Value;
+        Texture2D tex2 = Assets.Extras.Extras2.spark_08.Value;
+        float s = 0f;
+        List<VertexPositionColorTexture> vertices = new();
+        
+        if (points.Count > 1)
+        {
+            for (int i = 1; i < points.Count; i++)
+            {
+                if (i < points.Count / 2)
+                    s = MathHelper.SmoothStep(0, 1, i / (points.Count / 2f));
+                else
+                    s = MathHelper.SmoothStep(1, 0, (i - (points.Count / 2f)) / (points.Count / 2f));
+
+                float alpha = Projectile.scale;
+
+                Vector2 curPoint = points[i] - Main.screenPosition;
+                Vector2 prevPoint = points[i - 1] - Main.screenPosition;
+                float rot = Helper.FromAToB(curPoint, prevPoint).ToRotation();
+                if (points.Count < 5)
+                    rot = Projectile.velocity.ToRotation();
+                
+                float off = (float)Main.timeForVisualEffects * 0.1f + (float)(i - 1) / points.Count;
+                vertices.Add(Helper.AsVertex(curPoint + new Vector2(Projectile.scale * 20, 0).RotatedBy(rot - MathHelper.PiOver2), Color.CornflowerBlue with { A = 0 } * alpha * 1.5f * alphas[i], new Vector2(off, 0)));
+                vertices.Add(Helper.AsVertex(curPoint + new Vector2(Projectile.scale * 20, 0).RotatedBy(rot + MathHelper.PiOver2), Color.Cyan with { A = 0 } * alpha * 1.5f * alphas[i], new Vector2(off, 1)));
+            }
+        }
+        if (vertices.Count >= 3)
+        {
+            Main.spriteBatch.End(out var ss);
+            Main.spriteBatch.Begin(ss with { samplerState = SamplerState.PointWrap });
+            Helper.DrawTexturedPrimitives(vertices.ToArray(), PrimitiveType.TriangleStrip, tex);
+            Helper.DrawTexturedPrimitives(vertices.ToArray(), PrimitiveType.TriangleStrip, tex2);
+            Main.spriteBatch.End();
+            Main.spriteBatch.Begin(ss);
+        }
+        
+        return false;
     }
 }
 

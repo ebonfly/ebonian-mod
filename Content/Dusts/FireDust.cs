@@ -159,7 +159,10 @@ public class SmokeDustAkaFireDustButNoGlow2 : ModDust
     }
     public override bool Update(Dust dust)
     {
-        dust.position += dust.velocity;
+        if (!Helper.Raycast(dust.position, dust.velocity.SafeNormalize(Vector2.UnitY), 20).Success)
+            dust.position += dust.velocity;
+        else
+            dust.velocity = dust.velocity * -0.6f;
         dust.scale += 0.01f;
         dust.velocity *= 0.95f;
         dust.rotation += new UnifiedRandom(dust.dustIndex).NextFloat(ToRadians(-10), ToRadians(10));
