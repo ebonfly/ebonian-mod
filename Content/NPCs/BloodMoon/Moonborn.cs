@@ -74,7 +74,7 @@ public class Moonborn : ModNPC
             if (xToPlayer > 160 || MathF.Abs(NPC.velocity.X) > 4)
             {
                 NPC.velocity.X += NPC.direction * xToPlayer / (NPC.velocity.X * NPC.direction > 0 ? 7000 : 100);
-                NPC.velocity.X = Clamp(NPC.velocity.X, -10, 10);
+                NPC.velocity.X = Clamp(NPC.velocity.X, -8, 8);
             }
             else NPC.velocity.X = Lerp(NPC.velocity.X, NPC.direction * 2, 0.03f);
             NPC.rotation = NPC.velocity.X / 40;
@@ -86,29 +86,31 @@ public class Moonborn : ModNPC
             if (NPC.ai[0] < 0.5f) NPC.ai[0] += 0.1f;
         }
 
-        for (int i = 0, j = 1; i < 6; i++, j *= -1)
+        for (int i = 0, j = 1; i < 2; i++, j *= -1)
         {
             bool front = j == MovementDirection.X;
+            float multiplier = 1 - (i + 2) / 8f;
+
             if (Legs[i].IsMoving)
             {
                 float distance = Vector2.Distance(Legs[i].RawPosition, Legs[i].TargetPosition);
-                Legs[i].Speed = Max(NPC.velocity.Length(), 3);
+
+                Legs[i].Speed = Max(NPC.velocity.Length() * 2, 2);
                 Legs[i].RawPosition += (Legs[i].TargetPosition - Legs[i].RawPosition).SafeNormalize(Vector2.UnitY) * Legs[i].Speed;
                 if (Legs[i].Range != 0) Legs[i].VerticalOffset = (-MathF.Pow(distance * 2 - Legs[i].Range, 2) / (Legs[i].Range * Legs[i].Range) + 1) * 30;
                 Legs[i].Position = new Vector2(Legs[i].RawPosition.X, Legs[i].RawPosition.Y - Legs[i].VerticalOffset);
+
                 if (distance < Legs[i].Speed)
                 {
-                    Legs[i].ReferenceOffset = Legs[i].TargetPosition - NPC.Center;
                     Legs[i].Position = Legs[i].TargetPosition;
                     Legs[i].IsMoving = false;
                 }
             }
             else
             {
-                float multiplier = 1 - (i + 2) / 8f;
                 if (IsGrounded)
                 {
-                    if (Vector2.Distance(NPC.Center + Legs[i].ReferenceOffset, Legs[i].TargetPosition) > Legs[i].MaxDistance)
+                    if (Vector2.Distance(NPC.Center + Legs[i].ReferenceOffset * new Vector2(MovementDirection.X * j, 1), Legs[i].TargetPosition) > 72)
                     {
                         float chosenLength = (j == 1 ? frontCast : backCast).RayLength;
 
@@ -145,6 +147,7 @@ public class Moonborn : ModNPC
                                 }
                             }
                         }
+                        Legs[i].ReferenceOffset = Legs[i].TargetPosition - NPC.Center;
                         Legs[i].Range = Vector2.Distance(Legs[i].RawPosition, Legs[i].TargetPosition);
                         Legs[i].IsMoving = true;
                     }
@@ -162,6 +165,7 @@ public class Moonborn : ModNPC
                 SpriteEffects flip = j == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically;
                 spriteBatch.Draw(Assets.NPCs.BloodMoon.MoonbornLegSegment1.Value, NPC.Center - screenPos + NPC.GFX(), null, NPC.HunterPotionColor(drawColor), (jointPosition - NPC.Center).ToRotation(), new Vector2(0, 8), NPC.scale, flip, 0);
                 spriteBatch.Draw(Assets.NPCs.BloodMoon.MoonbornLegSegment2.Value, jointPosition - screenPos + NPC.GFX(), null, NPC.HunterPotionColor(drawColor), (Legs[i].Position - jointPosition).ToRotation(), new Vector2(7, 10), NPC.scale, flip, 0);
+                Utils.DrawLine(spriteBatch, Legs[i].RawPosition, NPC.Center + Legs[i].ReferenceOffset * new Vector2(MovementDirection.X * j, 1), Color.Red);
             }
         }
         return true;
