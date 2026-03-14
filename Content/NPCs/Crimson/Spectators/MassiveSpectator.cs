@@ -23,8 +23,8 @@ public class MassiveSpectator : ModNPC
     }
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
     {
-        if (Main.invasionType > 0) return 0;
-        return (spawnInfo.Player.ZoneCrimson && spawnInfo.Player.ZoneOverworldHeight && Main.hardMode && !NPC.AnyNPCs(Type) && !NPC.AnyNPCs(NPCType<Cecitior.Cecitior>())) ? (GetInstance<DownedBossSystem>().downedCecitior ? 0.09f : 0.5f) : 0;
+        if (Main.invasionType > 0 || Main.CurrentFrameFlags.AnyActiveBossNPC) return 0;
+        return (spawnInfo.SpawnTileType == TileID.CrimsonGrass && spawnInfo.Player.ZoneCrimson && spawnInfo.Player.ZoneOverworldHeight && Main.hardMode && !NPC.AnyNPCs(Type) && !NPC.AnyNPCs(NPCType<Cecitior.Cecitior>())) ? (GetInstance<DownedBossSystem>().downedCecitior ? 0.09f : 0.1f) : 0;
     }
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
     {

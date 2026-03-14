@@ -18,8 +18,8 @@ public class TerrortomaBulb : ModNPC
     }
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
     {
-        if (Main.invasionType > 0) return 0;
-        return (spawnInfo.Player.ZoneCorrupt && spawnInfo.Player.ZoneOverworldHeight && Main.hardMode && !NPC.AnyNPCs(Type) && !NPC.AnyNPCs(NPCType<Terrortoma>())) ? (GetInstance<DownedBossSystem>().downedTerrortoma ? 0.09f : 0.5f) : 0;
+        if (Main.invasionType > 0 || Main.CurrentFrameFlags.AnyActiveBossNPC) return 0;
+        return (spawnInfo.SpawnTileType == TileID.CorruptGrass && spawnInfo.Player.ZoneCorrupt && spawnInfo.Player.ZoneOverworldHeight && Main.hardMode && !NPC.AnyNPCs(Type) && !NPC.AnyNPCs(NPCType<Terrortoma>())) ? (GetInstance<DownedBossSystem>().downedTerrortoma ? 0.09f : 0.1f) : 0;
     }
     public override void SetDefaults()
     {

@@ -22,8 +22,8 @@ public class MiniSpectator : ModNPC
     }
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
     {
-        if (Main.invasionType > 0) return 0;
-        return (spawnInfo.Player.ZoneCrimson) ? 0.1f : 0;
+        if (Main.invasionType > 0 || Main.CurrentFrameFlags.AnyActiveBossNPC) return 0;
+        return (spawnInfo.Player.ZoneCrimson && spawnInfo.SpawnTileType is TileID.Crimstone or TileID.CrimsonGrass) ? 0.1f : 0;
     }
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
     {
