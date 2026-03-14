@@ -31,6 +31,7 @@ v3.0
 - Updated the Hookworm's coin drops, bestiary, and added a chance for it to drop a Whoopie Cushion
 - Rotten Spine now only fires if the player is in its line of sight
 - Updated the way Spectators spawn and made Massive Spectators and Cocoons rarer
+- Massive Spectators and Cocoons now show up on the Lifeform Analyzer
 - Moved the Bloodsucker to the Blood Moon
 - Spectators now have a chance to drop lenses
 - Decreased the size of the Century Flower's spore hitbox

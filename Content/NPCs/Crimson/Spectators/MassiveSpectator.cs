@@ -62,6 +62,7 @@ public class MassiveSpectator : ModNPC
         NPC.netAlways = true;
         NPC.hide = true;
         NPC.chaseable = false;
+        NPC.rarity = 1;
     }
     Verlet verlet;
     public override void DrawBehind(int index)

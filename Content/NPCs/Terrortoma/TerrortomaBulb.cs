@@ -34,6 +34,7 @@ public class TerrortomaBulb : ModNPC
         NPC.noTileCollide = true;
         NPC.knockBackResist = 0f;
         NPC.chaseable = false;
+        NPC.rarity = 1;
     }
     public override void OnSpawn(IEntitySource source)
     {
