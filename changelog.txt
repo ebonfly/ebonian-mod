@@ -51,6 +51,7 @@ v3.0
 - Fixed the Defibrillator's VFX being weirdly flat
 - Fixed Cecitior's chomping attack rotating incorrectly
 - Fixed the Cold Touch spawning incorrectly
+- Fixed Fleshformators still allowing you to use items when grabbing you
 - Fixed "Sounds/GenericExplosion" being missing
 - Fixed certain lightning visuals
 - The Hoarfrost Coiler no longer drops out of place loot

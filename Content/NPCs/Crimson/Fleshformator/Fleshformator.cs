@@ -314,7 +314,7 @@ public class Fleshformator : ModNPC
                 player.velocity.X = 0;
                 player.Center += player.Center.FromAToB(endPos[(int)AITimer], false) / 2f;
             }
-            if (player.GetModPlayer<MiscPlayer>().fleshformators > 1)
+            if (player.GetModPlayer<MiscPlayer>().fleshformators > 0)
             {
                 if (player.Center.Distance(endPos[(int)AITimer]) < 10)
                     endPos[(int)AITimer] += endPos[(int)AITimer].FromAToB(NPC.Center - new Vector2(0, 31).RotatedBy(NPC.rotation)) * 1.75f * player.GetModPlayer<MiscPlayer>().fleshformators * Main.rand.NextFloat(0.7f, 3f);
