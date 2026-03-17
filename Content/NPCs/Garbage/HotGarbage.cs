@@ -18,8 +18,7 @@ public partial class HotGarbage : ModNPC
 
     public override void AI()
     {
-        NextAttack = State.OpenLid;
-        NextAttack2 = State.SodaMissiles;
+        NextAttack = State.PipeBombAirstrike;
         
         AmbientFX();
 
@@ -74,71 +73,12 @@ public partial class HotGarbage : ModNPC
             case State.SateliteLightning:
                 DoSatelites();
                 break;
-        }
-        if (AIState == State.PipeBombAirstrike)
-        {
-            AnimationStyle = AnimationStyles.BoostWarning;
-            if (AITimer > 25 && NPC.velocity.Length() > 4f)
-                    AnimationStyle = AnimationStyles.Boost;
             
-            AITimer++;
-            if (AITimer == 2)
-                SoundEngine.PlaySound(SoundID.Zombie67, NPC.Center);
-            if (AITimer <= 25)
-                NPC.rotation += ToRadians(-0.9f * 4 * NPC.direction);
-            if (AITimer < 75 && AITimer > 25)
-            {
-                NPC.noTileCollide = true;
-                NPC.velocity.Y--;
-            }
-            if (AITimer >= 75 && AITimer < 150)
-            {
-                NPC.damage = 60;
-                if (AITimer < 150)
-                    DisposablePosition = player.Center;
-                NPC.direction = NPC.spriteDirection = 1;
-                NPC.rotation = Lerp(NPC.rotation, ToRadians(90), 0.15f);
-                NPC.velocity = Helper.FromAToB(NPC.Center, DisposablePosition - new Vector2(-player.velocity.X * 10, 700), false) * 0.05f;
-            }
-            if (AITimer == 150)
-            {
-                NPC.velocity = Vector2.Zero;
-                MPUtils.NewProjectile(NPC.InheritSource(NPC), NPC.Center, Vector2.UnitY, ProjectileType<GarbageTelegraph>(), 0, 0);
-            }
-            if (AITimer > 170 && AITimer <= 200 && AITimer % 3 == 0)
-            {
-                MPUtils.NewProjectile(null, Main.rand.NextVector2FromRectangle(NPC.getRect()), Vector2.UnitY.RotatedByRandom(PiOver2) * Main.rand.NextFloat(5, 10), ProjectileType<Pipebomb>(), 15, 0);
-            }
-            if (AITimer == 200)
-            {
-                SoundEngine.PlaySound(Sounds.exolDash, NPC.Center);
-                NPC.velocity = new Vector2(0, 50);
-            }
-            if (AITimer > 200 && NPC.Center.Y > player.Center.Y - NPC.width * 0.4f)
-                NPC.noTileCollide = false;
-            if (AITimer > 200 && !NPC.collideY && NPC.noTileCollide)
-            {
-                NPC.position.Y += NPC.velocity.Y;
-            }
-            if (!NPC.noTileCollide && (NPC.collideY || NPC.Grounded(offsetX: 0.5f)) && AITimer2 == 0 && AITimer >= 200)
-            {
-                SoundEngine.PlaySound(SoundID.Item62, NPC.Center);
-                NPC.velocity = -Vector2.UnitY * 3;
-                MPUtils.NewProjectile(NPC.InheritSource(NPC), NPC.Center, Vector2.Zero, ProjectileType<FlameExplosionWSpriteHostile>(), 16, 0);
-                AITimer2 = 1;
-            }
-            if (AITimer2 >= 1)
-            {
-                NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
-                NPC.velocity.Y += 0.1f;
-                AITimer2++;
-            }
-            if (AITimer2 >= 50)
-            {
-                NPC.velocity = Vector2.Zero;
-                ResetTo(State.OpenLid, State.GiantFireball);
-            }
+            case State.PipeBombAirstrike:
+                DoPipebombAirstrike();
+                break;
         }
+        
         if (AIState == State.MassiveLaser)
         {
             AnimationStyle = AnimationStyles.BoostWarning;

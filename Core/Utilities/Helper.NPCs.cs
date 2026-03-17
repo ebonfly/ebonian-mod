@@ -14,11 +14,11 @@ public static partial class Helper
 	/// <summary>
 	/// Laggy grounded check, only use this for stuff like death animations where you absolutely dont want the npc to not be able to detect the ground
 	/// </summary>
-	public static bool Grounded(this Entity entity, float offset = .5f, float offsetX = 1f)
+	public static bool Grounded(this Entity entity, float offset = .5f, float offsetX = 1f, bool skipBasicCollideCheck = false)
 	{
-		if (entity is NPC)
-			if ((entity as NPC).collideY)
-				return true;
+		if (entity is NPC npc && !skipBasicCollideCheck && npc.collideY && !npc.noTileCollide)
+			return true;
+		
 		if ((!Collision.CanHitLine(new Vector2(entity.Center.X, entity.Center.Y), 1, 1
 			     , new Vector2(entity.Center.X, entity.Center.Y + entity.height * offset), 1, 1)
 		     || Collision.FindCollisionDirection(out int dir, entity.Center, 1, entity.height / 2)))

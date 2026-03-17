@@ -442,4 +442,94 @@ public partial class HotGarbage : ModNPC
 			AITimer = -230;
 		}
 	}
+	
+	void DoPipebombAirstrike() 
+	{
+		if (AITimer > 25)
+		{
+			AnimationStyle = AnimationStyles.BoostWarning;
+			if (!NPC.Grounded() && NPC.velocity.Length() > 4f)
+				AnimationStyle = AnimationStyles.Boost;
+		}
+
+		if (AITimer > 200 && NPC.Grounded())
+			AnimationStyle = AnimationStyles.Idle;
+		
+		AITimer++;
+		if (AITimer == 2)
+			SoundEngine.PlaySound(SoundID.Zombie67, NPC.Center);
+		if (AITimer <= 75)
+		{
+			if (AITimer > 25)
+			{
+				NPC.rotation += ToRadians(-0.9f * 2.5f * NPC.direction);
+				float progress = (AITimer - 25f) / 50f;
+				Vector2 velocity = new Vector2(NPC.direction * MathHelper.Lerp(0.5f, 1, progress), 0).RotatedBy(NPC.rotation);
+				Vector2 newVelocity = velocity * progress * 50;
+				NPC.velocity = new Vector2(MathHelper.Lerp(NPC.velocity.X, newVelocity.X, progress), newVelocity.Y);
+
+				NPC.noTileCollide = true;
+			}
+			else
+			{
+				NPC.direction = player.Center.X < NPC.Center.X ? 1 : -1; // Mirrored, don't replace with FacePlayer.
+				NPC.velocity.X = NPC.direction * AITimer * 0.3f;
+				Phase();
+			}
+		}
+		
+		if (AITimer >= 75 && AITimer < 150)
+		{
+			NPC.damage = 60;
+			if (AITimer < 150)
+				DisposablePosition = player.Center;
+			NPC.direction = NPC.spriteDirection = 1;
+			NPC.rotation = Lerp(NPC.rotation, ToRadians(90), 0.15f);
+			NPC.velocity = Helper.FromAToB(NPC.Center, DisposablePosition - new Vector2(-player.velocity.X * 10, 700), false) * 0.05f;
+		}
+		
+		if (AITimer is > 150 and < 165 && AITimer % 2 == 0)
+		{
+			NPC.velocity = Vector2.Zero;
+			MPUtils.NewProjectile(NPC.InheritSource(NPC), NPC.Center + new Vector2(0, -100 + (AITimer - 150) * 35), Vector2.UnitY, ProjectileType<GarbageTelegraph>(), 0, 0, ai0: 1);
+		}
+		if (AITimer > 170 && AITimer <= 200 && AITimer % 3 == 0)
+			MPUtils.NewProjectile(null, Main.rand.NextVector2FromRectangle(NPC.getRect()), Vector2.UnitY.RotatedByRandom(PiOver2) * Main.rand.NextFloat(5, 10), ProjectileType<Pipebomb>(), 15, 0);
+		
+		if (AITimer == 200)
+		{
+			SoundEngine.PlaySound(Sounds.exolDash, NPC.Center);
+			NPC.velocity = new Vector2(0, 30);
+		}
+
+		bool canHitTiles = NPC.Center.Y > player.Center.Y - NPC.width * 0.4f;
+		
+		if (AITimer > 200 && canHitTiles)
+			NPC.noTileCollide = false;
+		
+		if (AITimer > 200 && !canHitTiles)
+		{
+			NPC.velocity.Y += 0.1f;
+			NPC.position.Y += NPC.velocity.Y;
+		}
+		if (!NPC.noTileCollide && (NPC.collideY || NPC.Grounded(offsetX: 0.5f)) && AITimer2 == 0 && AITimer >= 200)
+		{
+			SoundEngine.PlaySound(SoundID.Item62, NPC.Center);
+			NPC.velocity = new Vector2(-NPC.direction * 4, -5);
+			MPUtils.NewProjectile(NPC.InheritSource(NPC), NPC.Center, Vector2.Zero, ProjectileType<FlameExplosionWSpriteHostile>(), 16, 0);
+			AITimer2 = 1;
+		}
+		if (AITimer2 >= 1)
+		{
+			NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
+			NPC.velocity.Y += 0.1f;
+			NPC.velocity.X *= 0.97f;
+			AITimer2++;
+		}
+		if (AITimer2 >= 50)
+		{
+			NPC.velocity = Vector2.Zero;
+			ResetTo(State.OpenLid, State.GiantFireball);
+		}
+	}
 }
