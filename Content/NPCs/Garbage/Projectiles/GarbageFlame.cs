@@ -58,7 +58,7 @@ public class GarbageFlame : ModProjectile
     {
         Projectile.width = 5;
         Projectile.height = 5;
-        Projectile.aiStyle = 14;
+        Projectile.aiStyle = ProjAIStyleID.GroundProjectile;
         AIType = ProjectileID.StickyGlowstick;
         Projectile.friendly = false;
         Projectile.tileCollide = true;
@@ -74,6 +74,11 @@ public class GarbageFlame : ModProjectile
     }
     public override void AI()
     {
+        if (Helper.Raycast(Projectile.Center, Vector2.UnitY, 20).Success && Projectile.velocity.Y > 0)
+        {
+            Projectile.velocity *= 0.9f;
+        }
+
         Projectile.timeLeft--;
 
         Projectile.rotation = Projectile.velocity.ToRotation();
