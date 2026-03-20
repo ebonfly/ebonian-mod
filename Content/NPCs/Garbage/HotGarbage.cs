@@ -18,6 +18,8 @@ public partial class HotGarbage : ModNPC
 
     public override void AI()
     {
+        NextAttack = State.SummonDrones;
+        
         AmbientFX();
 
         TargetingLogic();
@@ -79,21 +81,10 @@ public partial class HotGarbage : ModNPC
             case State.MassiveLaser:
                 DoMassiveLaser();
                 break;
-        }
-        
-        if (AIState == State.SummonDrones)
-        {
-            AITimer++;
-            if (AITimer == 10)
-                SoundEngine.PlaySound(SoundID.Zombie67.WithPitchOffset(-1f), NPC.Center);
             
-            if (AITimer > 10 && AITimer < 30&& AITimer % 2 == 0)
-                MPUtils.NewProjectile(null, NPC.Center + Main.rand.NextVector2Circular(AITimer -10f, AITimer- 10f), Vector2.Zero, ProjectileType<GreenShockwave>(), 0, 0); 
-
-            if (AITimer > 45 && AITimer < 180 && AITimer % 7 == 0)
-            {
-                MPUtils.NewProjectile(null, NPC.Center - new Vector2(850, 600), new Vector2(7, 10) * Main.rand.NextFloat(0.9f, 1.1f), ProjectileType<LaserDrone>(), 10, 0);
-            }
+            case State.SummonDrones:
+                DoSummonDrones();
+                break;
         }
     }
 }

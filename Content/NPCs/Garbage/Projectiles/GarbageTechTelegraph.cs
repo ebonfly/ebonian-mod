@@ -35,7 +35,7 @@ public class GarbageTechTelegraph : ModProjectile
 		{
 			float alpha = MathF.Pow(1 - i / 10f, 0.5f) * MathHelper.Clamp(Projectile.ai[0] * 3, 0, 1f);
 			
-			position += new Vector2(7 + i, 0).RotatedBy(Projectile.velocity.ToRotation()) * MathF.Pow(Projectile.ai[0] + 0.1f, 2) * 3;
+			position += new Vector2(7 + i, 0).RotatedBy(Projectile.velocity.ToRotation()) * MathF.Pow(Projectile.ai[0] + 0.1f, 2) * 3 * Projectile.ai[1];
 			
 			Effects.SpriteRotation.Value.Parameters["scale"].SetValue(scale * (0.6f + i * 0.02f) * (i / 10f) * (1f - Projectile.ai[0]) * Projectile.ai[1]);
 			Effects.SpriteRotation.Value.Parameters["rotation"].SetValue((float)Main.timeForVisualEffects * 0.1f + i * 1.2f);

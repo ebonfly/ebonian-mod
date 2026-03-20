@@ -1,3 +1,5 @@
+using System;
+
 namespace EbonianMod.Content.NPCs.Garbage;
 
 // TODO: clean this
@@ -137,6 +139,9 @@ public partial class HotGarbage : ModNPC
                     break;
                 
                 case AnimationStyles.Close:
+                    if (NPC.frame.X != 160)
+                        NPC.frame.Y = 0;
+                    
                     NPC.frame.X = 160;
                     if (NPC.frame.Y == frameHeight)
                         SoundEngine.PlaySound(SoundID.DrumFloorTom with { Pitch = 0.5f, PitchVariance = 0.1f }, NPC.Center);

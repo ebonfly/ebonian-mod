@@ -671,8 +671,41 @@ public partial class HotGarbage : ModNPC
                     sound.Stop();
                 }
             NPC.velocity = Vector2.Zero;
-            ResetTo(State.WarningForDash);
-            PerformedFullMoveset = true;
+            ResetTo(State.SummonDrones);
         }
+    }
+    
+    void DoSummonDrones()
+    {
+	    AnimationStyle = AnimationStyles.Idle;
+
+	    if (AITimer < 45)
+		    AnimationStyle = AnimationStyles.Close;
+	    
+	    AITimer++;
+	    if (AITimer == 10)
+	    {
+		    if (MPUtils.NotMPClient)
+				AITimer2 = Main.rand.Next([1, -1]);
+		    SoundEngine.PlaySound(SoundID.Zombie67.WithPitchOffset(-1f), NPC.Center);
+		    
+		    NPC.netUpdate = true;
+	    }
+
+	    if (AITimer > 10 && AITimer < 30 && AITimer % 2 == 0) 
+	    {
+		    MPUtils.NewProjectile(null, NPC.Center + new Vector2(AITimer2 * (AITimer - 10) * -60 + AITimer2 * 200, -500), Vector2.UnitY.RotatedBy(-AITimer2), ProjectileType<GarbageTechTelegraph>(), 0, 0, ai1: 2);
+
+		    float rotation = Main.rand.NextFloat(-0.5f, 0.5f);
+		    MPUtils.NewProjectile(null, NPC.Center - new Vector2(0, 40).RotatedBy(rotation), -Vector2.UnitY.RotatedBy(rotation), ProjectileType<GarbageTechTelegraph>(), 0, 0, ai1: .5f);    
+	    }
+
+	    if (AITimer > 45 && AITimer < 180 && AITimer % 7 == 0)
+	    {
+		    MPUtils.NewProjectile(null, NPC.Center - new Vector2(850 * AITimer2, 600), new Vector2(7 * AITimer2, 10) * Main.rand.NextFloat(0.9f, 1.1f), ProjectileType<LaserDrone>(), 10, 0);
+	    }
+	    
+	    if (AITimer > 230) 
+		    ResetTo(State.WarningForDash);
     }
 }

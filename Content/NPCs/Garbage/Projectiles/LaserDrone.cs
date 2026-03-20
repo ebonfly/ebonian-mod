@@ -61,6 +61,10 @@ public class LaserDrone : ModProjectile
 		
 		if (Projectile.velocity.Length() > 0f)
 			Projectile.rotation = Projectile.velocity.ToRotation();
+
+		if (MathF.Sign(Projectile.velocity.X) < 0)
+			Projectile.rotation += MathHelper.Pi;
+		
 		if (Projectile.ai[0] < 70)
 			Projectile.velocity.Y = MathHelper.Lerp(Projectile.velocity.Y, 0, 0.025f);
 
