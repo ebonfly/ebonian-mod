@@ -11,6 +11,8 @@ v3.0
 - Made the River of Starlight's unique fallen stars rarer
 - Toned down the River of Starlight's visuals
 - Made some music tracks quieter
+- Nerfed the Jetpack Boulder movement
+- The Jetpack Boulder now despawns if the player is too far away
 
 ## Changes to Items:
 - Decreased the chance for giant fallen stars to drop special items

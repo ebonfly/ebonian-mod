@@ -40,6 +40,13 @@ public class Misery : ModProjectile
     public override void AI()
     {
         Player player = Main.player[Projectile.owner];
+        
+        
+        if (player.Distance(Projectile.Center) > 1000)
+        {
+            Projectile.Kill();
+        }
+        
         for (int i = -1; i < 2; i++)
         {
             if (i == 0) continue;
@@ -80,14 +87,14 @@ public class Misery : ModProjectile
         if (Projectile.ai[0] > 300 && Projectile.ai[0] < 320)
         {
             Projectile.ai[1] = Lerp(1, 0, InOutCirc.Invoke((Projectile.ai[0] - 300) / 20f));
-            Projectile.velocity.Y = Lerp(Projectile.velocity.Y, -5, InOutCirc.Invoke((Projectile.ai[0] - 300) / 20f));
+            Projectile.velocity.Y = Lerp(Projectile.velocity.Y, -15, InOutCirc.Invoke((Projectile.ai[0] - 300) / 20f));
         }
         if (Projectile.ai[0] > 320)
         {
             if (Projectile.Center.Y > player.Top.Y - 10)
                 Projectile.tileCollide = true;
 
-            Projectile.velocity.Y = Lerp(Projectile.velocity.Y, 30, 0.2f);
+            Projectile.velocity.Y = Lerp(Projectile.velocity.Y, 18, 0.2f);
         }
     }
     public override bool OnTileCollide(Vector2 oldVelocity)
