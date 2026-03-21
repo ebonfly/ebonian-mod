@@ -14,13 +14,6 @@ public class Sheepened : ModBuff
     }
     public override void Update(Player player, ref int buffIndex)
     {
-        foreach (Projectile projectile in Main.ActiveProjectiles)
-        {
-            if (projectile.friendly && projectile.minion && projectile.owner == player.whoAmI && player.whoAmI == Main.myPlayer)
-            {
-                projectile.Kill();
-            }
-        }
         for (int i = 1; i < BuffID.Count; i++)
         {
             if (!Main.buffNoSave[i] && !Main.buffNoTimeDisplay[i] && !Main.debuff[i])
