@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using EbonianMod.Content.Projectiles.VFXProjectiles;
+using Microsoft.Build.Evaluation;
 
 namespace EbonianMod.Content.NPCs.Garbage.Projectiles;
 
@@ -37,14 +38,18 @@ public class LaserDrone : ModProjectile
 		lightColor = Color.White * Projectile.Opacity;
 		Texture2D tex = Assets.Projectiles.Garbage.GarbageDrone_Bloom.Value;
 		Main.spriteBatch.Reload(BlendState.Additive);
+
+		UnifiedRandom rand = new UnifiedRandom(Projectile.projUUID);
+		Color color = Main.hslToRgb((Main.GlobalTimeWrappedHourly * rand.NextFloat(0.5f, 1) + Projectile.whoAmI * rand.NextFloat(0.2f, 0.5f)) % 1f, 1, 0.85f);
+		
 		var fadeMult = 1f / Projectile.oldPos.Length;
 		for (int i = 0; i < Projectile.oldPos.Length; i++)
 		{
 			float mult = (1 - i * fadeMult);
-			Main.spriteBatch.Draw(tex, Projectile.oldPos[i] + Projectile.Size / 2 - Main.screenPosition, null, Color.CornflowerBlue * Projectile.scale* (Projectile.Opacity * mult * 0.8f), Projectile.rotation, tex.Size() / 2, Projectile.scale * 1.1f, SpriteEffects.None, 0);
+			Main.spriteBatch.Draw(tex, Projectile.oldPos[i] + Projectile.Size / 2 - Main.screenPosition, null, color * Projectile.scale* (Projectile.Opacity * mult * 0.8f), Projectile.rotation, tex.Size() / 2, Projectile.scale * 1.1f, SpriteEffects.None, 0);
 		}
 
-		Main.spriteBatch.Draw(tex, Projectile.Center - Main.screenPosition, null, Color.CornflowerBlue * Projectile.scale* (0.5f * Projectile.Opacity), Projectile.rotation, tex.Size() / 2, Projectile.scale * (1 + (MathF.Sin(Main.GlobalTimeWrappedHourly * 3f) + 1) * 0.5f), SpriteEffects.None, 0);
+		Main.spriteBatch.Draw(tex, Projectile.Center - Main.screenPosition, null, color * Projectile.scale* (0.5f * Projectile.Opacity), Projectile.rotation, tex.Size() / 2, Projectile.scale * (1 + (MathF.Sin(Main.GlobalTimeWrappedHourly * 3f) + 1) * 0.5f), SpriteEffects.None, 0);
 		Main.spriteBatch.Reload(BlendState.AlphaBlend);
 
 		lightColor *= Projectile.scale;
@@ -78,10 +83,10 @@ public class LaserDrone : ModProjectile
 			Projectile.velocity.X *= 1.01f;
 		}
 
-		if (Projectile.ai[0] > 40 && (int)Projectile.ai[0] % 25 == 0)
+		if (Projectile.ai[0] is > 50 and < 80 && (int)Projectile.ai[0] % 6 == 0)
 		{
 			SoundEngine.PlaySound(SoundID.Item91 with {MaxInstances = -1}, Projectile.Center);
-			Vector2 velocity = Projectile.velocity.SafeNormalize(Vector2.Zero).RotatedByRandom(0.5f);
+			Vector2 velocity = Projectile.velocity.SafeNormalize(Vector2.Zero).RotatedByRandom(0.1f);
 			MPUtils.NewProjectile(null, Projectile.Center + velocity + Projectile.velocity * 3, velocity, ModContent.ProjectileType<LaserDroneLaser>(), Projectile.damage, 0);
 		}
 	}
@@ -130,7 +135,7 @@ public class LaserDroneLaser : ModProjectile
 			for (int j = -1; j < 2; j += 2)
 			{
 				Vector2 position = basePosition + new Vector2(5f, 0).RotatedBy(Projectile.rotation + MathHelper.PiOver2 * j);
-				Color color = Color.CornflowerBlue * mult * MathF.Sin(mult * MathF.PI) * 4;
+				Color color = Main.hslToRgb((Main.GlobalTimeWrappedHourly * 0.8f + i * new UnifiedRandom(Projectile.whoAmI).NextFloat(0.02f, 0.15f)) % 1f, 1, 0.75f) * mult * MathF.Sin(mult * MathF.PI) * 4;
 				vertices.Add(Helper.AsVertex(position, color, new Vector2(mult + Main.GlobalTimeWrappedHourly*5, j < 0 ? 0 : j)));
 			}	
 		}
