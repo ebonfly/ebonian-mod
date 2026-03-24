@@ -51,7 +51,7 @@ public class RustyWaraxeP : HeldSword
     }
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
     {
-        if (Main.rand.Next(100) < 15)
+        if (hit.Crit)
         {
             //SoundEngine.PlaySound(new SoundStyle("EbonianMod/Assets/Sounds/rustyAxe"), Projectile.Center);
             SoundEngine.PlaySound(SoundID.Item171, Projectile.Center);
