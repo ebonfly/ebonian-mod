@@ -40,13 +40,13 @@ public class LaserDrone : ModProjectile
 		Main.spriteBatch.Reload(BlendState.Additive);
 
 		UnifiedRandom rand = new UnifiedRandom(Projectile.projUUID);
-		Color color = Main.hslToRgb((Main.GlobalTimeWrappedHourly * rand.NextFloat(0.5f, 1) + Projectile.whoAmI * rand.NextFloat(0.2f, 0.5f)) % 1f, 1, 0.85f);
+		Color color = Color.Lerp(Color.Red, Color.CornflowerBlue * 0.5f, MathHelper.Clamp(Projectile.ai[0] - 120, 0, 20) / 20f);
 		
 		var fadeMult = 1f / Projectile.oldPos.Length;
 		for (int i = 0; i < Projectile.oldPos.Length; i++)
 		{
 			float mult = (1 - i * fadeMult);
-			Main.spriteBatch.Draw(tex, Projectile.oldPos[i] + Projectile.Size / 2 - Main.screenPosition, null, color * Projectile.scale* (Projectile.Opacity * mult * 0.8f), Projectile.rotation, tex.Size() / 2, Projectile.scale * 1.1f, SpriteEffects.None, 0);
+			Main.spriteBatch.Draw(tex, Projectile.oldPos[i] + Projectile.Size / 2 - Main.screenPosition, null, color * Projectile.scale * (Projectile.Opacity * mult * 0.8f), Projectile.rotation, tex.Size() / 2, Projectile.scale * 1.1f, SpriteEffects.None, 0);
 		}
 
 		Main.spriteBatch.Draw(tex, Projectile.Center - Main.screenPosition, null, color * Projectile.scale* (0.5f * Projectile.Opacity), Projectile.rotation, tex.Size() / 2, Projectile.scale * (1 + (MathF.Sin(Main.GlobalTimeWrappedHourly * 3f) + 1) * 0.5f), SpriteEffects.None, 0);
@@ -126,6 +126,7 @@ public class LaserDroneLaser : ModProjectile
 	public override bool PreDraw(ref Color lightColor)
 	{
 		List<VertexPositionColorTexture> vertices = new List<VertexPositionColorTexture>();
+		List<VertexPositionColorTexture> verticesWhite = new List<VertexPositionColorTexture>();
 
 		for (int i = 0; i < Projectile.oldPos.Length; i++)
 		{
@@ -135,8 +136,11 @@ public class LaserDroneLaser : ModProjectile
 			for (int j = -1; j < 2; j += 2)
 			{
 				Vector2 position = basePosition + new Vector2(5f, 0).RotatedBy(Projectile.rotation + MathHelper.PiOver2 * j);
-				Color color = Main.hslToRgb((Main.GlobalTimeWrappedHourly * 0.8f + i * new UnifiedRandom(Projectile.whoAmI).NextFloat(0.02f, 0.15f)) % 1f, 1, 0.75f) * mult * MathF.Sin(mult * MathF.PI) * 4;
+				Color color = Color.Red * mult * MathF.Sin(mult * MathF.PI) * 4;
 				vertices.Add(Helper.AsVertex(position, color, new Vector2(mult + Main.GlobalTimeWrappedHourly*5, j < 0 ? 0 : j)));
+					
+				color = Color.White * mult * MathF.Sin(mult * MathF.PI) * 4 * Projectile.localAI[0];
+				verticesWhite.Add(Helper.AsVertex(position, color, new Vector2(mult + Main.GlobalTimeWrappedHourly*5, j < 0 ? 0 : j)));
 			}	
 		}
 
@@ -148,6 +152,10 @@ public class LaserDroneLaser : ModProjectile
 				Assets.Extras.Tentacle.Value);
 			Helper.DrawTexturedPrimitives(vertices.ToArray(), PrimitiveType.TriangleStrip,
 				Assets.Extras.LintyTrail.Value);
+			
+			Helper.DrawTexturedPrimitives(verticesWhite.ToArray(), PrimitiveType.TriangleStrip,
+				Assets.Extras.LintyTrail.Value);
+			
 			Main.spriteBatch.End();
 			Main.spriteBatch.Begin(ss);
 		}
@@ -160,5 +168,8 @@ public class LaserDroneLaser : ModProjectile
 		Projectile.rotation = Projectile.velocity.ToRotation();
 		if (Projectile.velocity.Length() < 15f)
 			Projectile.velocity *= 1.03f;
+
+		if (Projectile.timeLeft < 340)
+			Projectile.localAI[0] = MathHelper.Lerp(Projectile.localAI[0], 1, 0.02f);
 	}
 }
