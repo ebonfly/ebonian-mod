@@ -53,7 +53,6 @@ public class RustyWaraxeP : HeldSword
     {
         if (hit.Crit)
         {
-            //SoundEngine.PlaySound(new SoundStyle("EbonianMod/Assets/Sounds/rustyAxe"), Projectile.Center);
             SoundEngine.PlaySound(SoundID.Item171, Projectile.Center);
             for (int i = 0; i < 40; i++)
                 Dust.NewDust(target.position, target.width, target.height, DustID.Blood, Helper.FromAToB(Projectile.Center, target.Center).X * Main.rand.NextFloat(-10, 10), Helper.FromAToB(Projectile.Center, target.Center).Y * Main.rand.NextFloat(-10, 10), newColor: Color.Brown);
