@@ -11,7 +11,7 @@ namespace EbonianMod.Content.NPCs.Aureus;
 [AutoloadBossHead]
 public class Aureus : ModNPC
 {
-    public override string Texture => Helper.AssetPath + "NPCs/Aureus/"+Name;
+    public override string Texture => Helper.AssetPath + "NPCs/Aureus/" + Name;
     public static SoundStyle chipsSound => new SoundStyle("EbonianMod/Assets/Sounds/Aureus/chips") with { PitchVariance = 0.2f };
     public static SoundStyle deathSound => new SoundStyle("EbonianMod/Assets/Sounds/Aureus/death");
     public static SoundStyle hurtSound => new SoundStyle("EbonianMod/Assets/Sounds/Aureus/hurt") with { MaxInstances = 4, PitchVariance = 0.2f };

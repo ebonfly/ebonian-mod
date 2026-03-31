@@ -47,13 +47,14 @@ public class TBeam : ModProjectile
             Projectile.rotation = Projectile.velocity.ToRotation();
             RunOnce = false;
         }
-        for (int i = 0; i < 5; i++)
-        {
-            int dust = Dust.NewDust(Projectile.position - new Vector2(30, 0) + Projectile.velocity.ToRotation().ToRotationVector2() * Main.rand.NextFloat(Projectile.ai[0]), 60, 60, DustID.CursedTorch, 2f);
-            Main.dust[dust].scale = 2f;
-            Main.dust[dust].velocity = Main.rand.NextVector2Circular(5, 5);
-            Main.dust[dust].noGravity = true;
-        }
+        if (!IsForCeaseless)
+            for (int i = 0; i < 5; i++)
+            {
+                int dust = Dust.NewDust(Projectile.position - new Vector2(30, 0) + Projectile.velocity.ToRotation().ToRotationVector2() * Main.rand.NextFloat(Projectile.ai[0]), 60, 60, DustID.CursedTorch, 2f);
+                Main.dust[dust].scale = 2f;
+                Main.dust[dust].velocity = Main.rand.NextVector2Circular(5, 5);
+                Main.dust[dust].noGravity = true;
+            }
 
         if (Main.zenithWorld)
         {
@@ -77,19 +78,19 @@ public class TBeam : ModProjectile
             }
         }
 
-        Projectile.ai[2] = MathHelper.Lerp(Projectile.ai[2], 1, 0.015f);
+        Projectile.ai[2] = MathHelper.Lerp(Projectile.ai[2], 1 + IsForCeaseless.ToInt() * 2, 0.015f);
 
         Projectile.ai[0] = MathHelper.SmoothStep(Projectile.ai[0], 2048, 0.35f);
 
         Projectile.rotation += ToRadians(2) * Projectile.ai[2];
 
         Projectile.velocity = Projectile.rotation.ToRotationVector2();
-        //Projectile.velocity = -Projectile.velocity.RotatedBy(MathHelper.ToRadians(Projectile.ai[1]));
 
         float progress = Utils.GetLerpValue(0, 165, Projectile.timeLeft);
         Projectile.scale = MathHelper.Clamp((float)Math.Sin(progress * Math.PI) * 4 * (Projectile.scale + 0.5f), 0, 1);
     }
     float visual1, visual2, startSize = 2f;
+    public bool IsForCeaseless => Projectile.ai[1] > 2;
     public override bool PreDraw(ref Color lightColor)
     {
         visual1 -= 0.04f;
@@ -137,7 +138,7 @@ public class TBeam : ModProjectile
             if (__off2 > 1) __off = -__off + 1;
             float _off2 = __off + i;
 
-            Color col = Color.Lerp(Color.LawnGreen, Color.LawnGreen * 1.2f, i) * (s * s * 2f * alphaOffset);
+            Color col = Color.Lerp(IsForCeaseless ? Color.DarkViolet : Color.LawnGreen, IsForCeaseless ? Color.DarkViolet : Color.LawnGreen * 1.2f, i) * (s * s * 2f * alphaOffset);
             vertices.Add(Helper.AsVertex(start + off * i + new Vector2(MathHelper.SmoothStep(MathHelper.Lerp(60, 100, i) * startSize, MathHelper.SmoothStep(120, 400, i), i * 3) * MathHelper.Clamp(startSize, 1, 2), 0).RotatedBy(rot + MathHelper.PiOver2) * i_progress, new Vector2(_off, 1), col * Projectile.scale));
             vertices.Add(Helper.AsVertex(start + off * i + new Vector2(MathHelper.SmoothStep(MathHelper.Lerp(60, 100, i) * startSize, MathHelper.SmoothStep(120, 400, i), i * 3) * MathHelper.Clamp(startSize, 1, 2), 0).RotatedBy(rot - MathHelper.PiOver2) * i_progress, new Vector2(_off, 0), col * Projectile.scale));
 

@@ -168,8 +168,8 @@ public class XLightningBolt : ModProjectile
                     float off = animationOffset + (float)(i - 1) / points.Count;
                     for (float j = 0; j < 5; j++)
                     {
-                        vertices.Add(Helper.AsVertex(start + new Vector2(2 + s * Projectile.scale * 200, 0).RotatedBy(rot + MathHelper.PiOver2), Color.White * alpha * 1.5f, new Vector2(off, 0)));
-                        vertices.Add(Helper.AsVertex(start + new Vector2(2 + s * Projectile.scale * 200, 0).RotatedBy(rot - MathHelper.PiOver2), Color.White * alpha * 1.5f, new Vector2(off, 1)));
+                        vertices.Add(Helper.AsVertex(start + new Vector2(Projectile.scale * 200, 0).RotatedBy(rot + MathHelper.PiOver2), Color.White * alpha * 1.5f * MathHelper.Clamp(s * 3, 0, 1), new Vector2(off, 0)));
+                        vertices.Add(Helper.AsVertex(start + new Vector2(Projectile.scale * 200, 0).RotatedBy(rot - MathHelper.PiOver2), Color.White * alpha * 1.5f * MathHelper.Clamp(s * 3, 0, 1), new Vector2(off, 1)));
                     }
                 }
             }

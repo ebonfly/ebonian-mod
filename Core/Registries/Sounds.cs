@@ -470,6 +470,40 @@ public class Sounds : ModSystem
     {
         SoundPath = path + "shriek"
     };
+    
+    public static SoundStyle CeaselessRoar => Default with
+    {
+        SoundPath = path + "Void/CeaselessRoar"
+    };
+    
+    public static SoundStyle BigDarkLightning => Default with
+    {
+        SoundPath = path + "Void/BigDarkLightning"
+    };
+    
+    public static SoundStyle DarkLightning => Default with
+    {
+        SoundPath = path + "Void/DarkLightning",
+        Variants = [0, 1, 2]
+    };
+    
+    public static SoundStyle CeaselessSuck => Default with
+    {
+        SoundPath = path + "Void/CeaselessSuck",
+        PitchVariance = 0f
+    };
+    public static SoundStyle CeaselessSuckShort => Default with
+    {
+        SoundPath = path + "Void/CeaselessSuckShort",
+        PitchVariance = 0f
+    };
+    
+    public static SoundStyle CeaselessIdle => Default with
+    {
+        SoundPath = path + "Void/CeaselessIdle",
+        IsLooped = true,
+        PitchVariance = 0f
+    };
 
 
     public static SoundStyle vaccum => Default with
@@ -506,6 +540,14 @@ public class Sounds : ModSystem
     public static SoundStyle xareusOutro => Default with
     {
         SoundPath = outroPath + "xareusOutro",
+        PitchVariance = 0,
+        MaxInstances = 1,
+        Type = SoundType.Music
+    };
+    
+    public static SoundStyle voidtitledrop => Default with
+    {
+        SoundPath = path + "Void/voidtitledrop",
         PitchVariance = 0,
         MaxInstances = 1,
         Type = SoundType.Music

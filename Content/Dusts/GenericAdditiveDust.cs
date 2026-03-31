@@ -84,10 +84,16 @@ public class LineDustFollowPoint : ModDust
         dust.position += dust.velocity;
         dust.scale -= 0.0036f;
         dust.rotation = dust.velocity.ToRotation() - MathHelper.PiOver2;
-        if (dust.customData is not null && dust.customData.GetType() == typeof(Vector2))
+        if (dust.customData is Vector2)
         {
             dust.velocity = Vector2.Lerp(dust.velocity, Helper.FromAToB(dust.position, (Vector2)dust.customData, false) / 25, 0.05f + dust.scale);
             if (dust.position.Distance((Vector2)dust.customData) < 20)
+                dust.scale -= 0.015f;
+        }
+        else if (dust.customData is NPC npc && npc.active)
+        {
+            dust.velocity = Vector2.Lerp(dust.velocity, Helper.FromAToB(dust.position, npc.Center, false).RotatedBy(1f - dust.scale) / 25, (1 - dust.fadeIn) + 0.05f + dust.scale);
+            if (dust.position.Distance(npc.Center) < 20)
                 dust.scale -= 0.015f;
         }
         else
@@ -100,10 +106,17 @@ public class LineDustFollowPoint : ModDust
 
     public override bool PreDraw(Dust d)
     {
+        if (d.fadeIn < 0.3f && d.customData is NPC)
+            return false;
+        
         Texture2D tex = Assets.Extras.Extras2.trace_01.Value;
+        float alpha = 1;
+
+        if (d.customData is NPC)
+            alpha *= MathHelper.Clamp(d.fadeIn * 3, 0, 1f);
 
         for (float i = 0; i < Clamp(10 * d.fadeIn * d.scale * 5, 0, 5); i++)
-            Main.spriteBatch.Draw(tex, d.position - d.velocity * i - Main.screenPosition, null, d.color with { A = 0 } * (d.scale * 10 * SmoothStep(1, 0, i / 10f)), d.rotation, tex.Size() / 2, new Vector2(1, Clamp(d.velocity.Length() * 0.25f, 0, 1.5f)) * d.scale * 2, SpriteEffects.None, 0);
+            Main.spriteBatch.Draw(tex, d.position - d.velocity * i - Main.screenPosition, null, d.color with { A = 0 } * (d.scale * 10 * SmoothStep(1, 0, i / 10f)) * alpha, d.rotation, tex.Size() / 2, new Vector2(1, Clamp(d.velocity.Length() * 0.25f, 0, 1.5f)) * d.scale * 2, SpriteEffects.None, 0);
         return false;
     }
 }
