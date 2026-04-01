@@ -137,7 +137,7 @@ public class CBeam : ModProjectile
     }
     void DrawVertices(Vector2 pos, float rotation, Texture2D texture, Texture2D texture2, float i_progress, float alphaOffset, float quality = 0.002f, float max = 1, float visOff = 0)
     {
-        /*offsetShake = Vector2.Lerp(offsetShake, Vector2.Zero, 0.2f);
+        offsetShake = Vector2.Lerp(offsetShake, Vector2.Zero, 0.2f);
         SpritebatchParameters sbParams = Main.spriteBatch.Snapshot();
         List<VertexPositionColorTexture> vertices = new List<VertexPositionColorTexture>();
         List<VertexPositionColorTexture> vertices2 = new List<VertexPositionColorTexture>();
@@ -171,7 +171,7 @@ public class CBeam : ModProjectile
             float sinFac = InOutCirc.Invoke((MathF.Sin(Main.GlobalTimeWrappedHourly * 16) + 1) * 0.5f);
             float a = SmoothStep(3 * s, 0.5f, i);
             float a2 = Clamp(Lerp(Projectile.scale * 2, Projectile.scale, i), 0, 1) * Lerp(1.5f, s * 0.7f, i);
-            Color col = Color.Lerp(Color.White * s, Color.Red * (s * s * 4f * alphaOffset) * a, Clamp(i * 9, 0, 1)) * a2;
+            Color col = Color.Lerp(Color.White * s, Color.DarkViolet * (s * s * 4f * alphaOffset) * a, Clamp(i * 9, 0, 1)) * a2;
             float endSize = SmoothStep(420 + sinFac * 50, 600, InOutQuint.Invoke(i));
 
             vertices.Add(Helper.AsVertex(position + new Vector2(SmoothStep(Lerp(60 + sinFac * 10, 100 + sinFac * 50, i) * startSize, endSize, i * 3) * Clamp(startSize, 1, 2), 0).RotatedBy(rot + PiOver2) * i_progress, new Vector2(_off, 0), col * Projectile.scale));
@@ -204,26 +204,17 @@ public class CBeam : ModProjectile
         Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         if (vertices.Count >= 3 && vertices2.Count >= 3 && (Type != ProjectileType<CBeamSmall>() ? vertices3.Count >= 3 : true))
         {
-            InvisibleMaskRendering.AffectedDrawCache.Add(() =>
-            {
-                Main.spriteBatch.End();
-                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
-                Helper.DrawTexturedPrimitives(vertices2.ToArray(), PrimitiveType.TriangleStrip, Assets.Extras.swirlyNoise.Value, false);
-                Helper.DrawTexturedPrimitives(vertices2.ToArray(), PrimitiveType.TriangleStrip, Assets.Extras.vein.Value, false);
+                Helper.DrawTexturedPrimitives(vertices2.ToArray(), PrimitiveType.TriangleStrip, Assets.Extras.Tentacle.Value, false);
+                Helper.DrawTexturedPrimitives(vertices2.ToArray(), PrimitiveType.TriangleStrip, Assets.Extras.Tentacle.Value, false);
                 for (int i = 0; i < 2; i++)
                 {
                     Helper.DrawTexturedPrimitives(vertices.ToArray(), PrimitiveType.TriangleStrip, texture, false);
                     Helper.DrawTexturedPrimitives(vertices.ToArray(), PrimitiveType.TriangleStrip, texture2, false);
                 }
-            });
-            InvisibleMaskRendering.DrawCache.Add(() =>
-            {
-                Helper.DrawTexturedPrimitives(vertices3.ToArray(), PrimitiveType.TriangleStrip, Assets.Extras.laserMask.Value, false);
-                Helper.DrawTexturedPrimitives(vertices3.ToArray(), PrimitiveType.TriangleStrip, Assets.Extras.swirlyNoise.Value, false);
-            }); for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 2; i++)
                 Helper.DrawTexturedPrimitives(vertices.ToArray(), PrimitiveType.TriangleStrip, texture, false);
         }
-        Main.spriteBatch.ApplySaved(sbParams);*/
+        Main.spriteBatch.ApplySaved(sbParams);
     }
 }
 public class CBeamSmall : ModProjectile

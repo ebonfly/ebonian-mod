@@ -1,4 +1,5 @@
 using EbonianMod.Content.NPCs.Aureus;
+using EbonianMod.Content.NPCs.Void;
 using EbonianMod.Content.Skies;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
@@ -22,6 +23,9 @@ public class FilterSystem : ModSystem
 		SkyManager.Instance["EbonianMod:Conglomerate"] = new ConglomerateSky();
 		Filters.Scene["EbonianMod:Aureus"] = new Filter(new BasicScreenTint("FilterMiniTower").UseColor(.1f, .1f, .5f).UseOpacity(0.45f), EffectPriority.Medium);
 		SkyManager.Instance["EbonianMod:Aureus"] = new AureusSky();
+		
+		Filters.Scene["EbonianMod:Void"] = new Filter(new BasicScreenTint("FilterMiniTower").UseColor(.2f, .1f, .5f).UseOpacity(0.45f), EffectPriority.Medium);
+		SkyManager.Instance["EbonianMod:Void"] = new VoidSky();
 
 		Filters.Scene["EbonianMod:HellTint"] = new Filter(new BasicScreenTint("FilterMiniTower").UseColor(2.55f, .97f, .31f).UseOpacity(0.1f), EffectPriority.Medium);
 		SkyManager.Instance["EbonianMod:HellTint"] = new BasicTint();

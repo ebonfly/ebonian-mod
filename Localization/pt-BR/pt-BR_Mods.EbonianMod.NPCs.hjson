@@ -411,4 +411,15 @@ Fanatic: {
 // Cryptid.DisplayName: Cryptid
 // Moonborn.DisplayName: Moonborn
 // Humorist.DisplayName: Humorist
-// Ceaseless.DisplayName: Ceaseless
+
+Ceaseless: {
+	// DisplayName: Ceaseless
+	// Title: Warden of the Unending Abyss
+	// Name: Ceaseless Void
+}
+
+RAVAGER: {
+	// DisplayName: The Eravager
+	// Title: FORLORN HYPER-CONGLOMERATE OF DIVINE-BORN ERRATUM, RAVAGED FROM A CEASELESS, STARLESS EON FAR BEYOND
+	// Name: REINCARNIFICATION OF PUTREFACTION
+}

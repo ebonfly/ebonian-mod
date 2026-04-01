@@ -933,3 +933,8 @@ CorruptEyeMaterial: {
 	DisplayName: Infected Eye
 	Tooltip: ""
 }
+
+VoidSpawnItem: {
+	DisplayName: Void Spawn Item
+	Tooltip: ""
+}

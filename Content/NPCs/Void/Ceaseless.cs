@@ -7,6 +7,7 @@ using EbonianMod.Content.Projectiles.ArchmageX;
 using EbonianMod.Content.Projectiles.Terrortoma;
 using EbonianMod.Content.Projectiles.VFXProjectiles;
 using ReLogic.Utilities;
+using Terraria.Graphics.Effects;
 
 namespace EbonianMod.Content.NPCs.Void;
 
@@ -80,11 +81,6 @@ public class Ceaseless : CommonNPC
 		return false;
 	}
 
-	public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-	{
-		
-	}
-
 	void LineDustRing(float radius) 
 	{
 		Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(radius, radius) * Main.rand.NextFloat(0.7f, 1.4f);
@@ -124,6 +120,14 @@ public class Ceaseless : CommonNPC
 
 	private float enrageAlpha;
 
+	public override bool CheckDead()
+	{
+		SoundEngine.PlaySound(Sounds.voidtitledrop);
+		TitledropSystem.SetStyle(RavagerTitledrop.Instance);
+		MPUtils.NewNPC(NPC.Center, ModContent.NPCType<RAVAGER>(), true);
+		return base.CheckDead();
+	}
+
 	public override void AI()
 	{
 		if (!Main.dedServ)
@@ -141,15 +145,6 @@ public class Ceaseless : CommonNPC
 
 		AITimer++;
 		NPC.rotation = NPC.velocity.X * 0.01f;
-
-		if (Main.mouseRight)
-		{
-			NPC.velocity = (Main.MouseWorld - NPC.Center) * 0.05f;
-			AITimer = 0;
-			AIState = 0;
-			enrageAlpha = 0;
-			AITimer2 = 0;
-		}
 
 		NPC.velocity *= 0.9f;
 
@@ -643,16 +638,81 @@ public class VoidBlade : ModProjectile
 
 	public override void SetDefaults()
 	{
-		Projectile.CloneDefaults(ProjectileID.BulletDeadeye);
+		Projectile.hostile = true;
+		Projectile.friendly = false;
+		Projectile.penetrate = -1;
+		Projectile.tileCollide = false;
+		Projectile.Size = new Vector2(114, 126);
+		Projectile.aiStyle = -1;
 	}
 
 	public override bool PreDraw(ref Color lightColor)
 	{
+		lightColor = Color.White;
+		Utils.DrawLine(Main.spriteBatch, Projectile.Center, Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.UnitX) * 1000, Color.DarkViolet, Color.DarkViolet, 2);
+		
 		return base.PreDraw(ref lightColor);
 	}
 
 	public override void AI()
 	{
-		base.AI();
+		Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+
+		Projectile.velocity *= 1.05f;
 	}
 }
+
+internal class VoidSky : CustomSky
+{
+	private bool isActive;
+	private float intensity;
+
+	public override void Update(GameTime gameTime)
+	{
+		if (isActive && intensity < 1f)
+		{
+			intensity += 0.01f;
+		}
+		else if (!isActive && intensity > 0)
+		{
+			intensity -= 0.01f;
+		}
+	}
+	public override void Draw(SpriteBatch spriteBatch, float minDepth, float maxDepth)
+	{
+		GraphicsDevice gd = Main.graphics.GraphicsDevice;
+		SpriteBatch sb = Main.spriteBatch;
+		Rectangle rect = Helper.ScreenRect;
+		sb.Draw(Assets.NPCs.Void.VoidBackground.Value, rect, Color.White * intensity);
+	}
+
+	public override float GetCloudAlpha()
+	{
+		return 0f;
+	}
+	public override Color OnTileColor(Color inColor)
+	{
+		return inColor * 0.5f;
+	}
+
+	public override void Activate(Vector2 position, params object[] args)
+	{
+		isActive = true;
+	}
+
+	public override void Deactivate(params object[] args)
+	{
+		isActive = false;
+	}
+
+	public override void Reset()
+	{
+		isActive = false;
+	}
+
+	public override bool IsActive()
+	{
+		return isActive || intensity > 0;
+	}
+}
+
