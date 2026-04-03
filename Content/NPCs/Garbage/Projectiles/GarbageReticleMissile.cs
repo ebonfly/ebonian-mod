@@ -67,7 +67,7 @@ public class GarbageReticleMissile : ModProjectile
 			Projectile.velocity *= 1.05f;
 		
 		if (ShouldBeep && Projectile.ai[2] % (Projectile.ai[2] < 140 ? 10 : 5) == 0 && Projectile.ai[2] > 50)
-			SoundEngine.PlaySound(Sounds.garbageBeep.WithVolumeScale(0.6f), Target);
+			SoundEngine.PlaySound(Sounds.garbageBeep.WithVolumeScale(0.4f).WithPitchOffset(-0.2f), Target);
 		
 		if (Projectile.ai[2] > 80)
 		{
@@ -85,9 +85,10 @@ public class GarbageReticleMissile : ModProjectile
 					ReticleRotation = MathHelper.SmoothStep(OldReticleRotation, OldReticleRotation + MathHelper.PiOver4, (Projectile.ai[2] % 30 - 10) / 20f);
 			}
 
+			UnifiedRandom rand = new UnifiedRandom(Projectile.identity);
 			float progress = MathF.Sin(Utils.GetLerpValue(80, 200, Projectile.ai[2], true) * MathF.PI);
-			Projectile.ai[0] += new UnifiedRandom(Projectile.identity).NextFloat(-14, 14) * progress;
-			Projectile.ai[1] += new UnifiedRandom(Projectile.identity).NextFloat(-1, 1) * progress;
+			Projectile.ai[0] += rand.NextFloat(-30, 30) * progress;
+			Projectile.ai[1] += rand.NextFloat(-1, 1) * progress * rand.NextBool().ToInt();
 		}
 
 		if ((int)Projectile.ai[2] == 185)
