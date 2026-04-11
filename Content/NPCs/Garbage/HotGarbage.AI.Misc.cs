@@ -60,12 +60,24 @@ public partial class HotGarbage : ModNPC
         float velocityX = Helper.FromAToB(NPC.Center, player.Center + Helper.FromAToB(player.Center, NPC.Center) * 70, false).X * 0.033f;
         velocityX = MathHelper.Clamp(velocityX, -15f, 15f);
         NPC.velocity.X = Lerp(NPC.velocity.X, velocityX, 0.12f);
-        if (player.Distance(NPC.Center) < 70)
+        float dist = player.Distance(NPC.Center);
+        if (dist < 70)
             AITimer++;
-        if (player.Distance(NPC.Center) < 40)
+        
+        if (dist < 40)
             AITimer++;
+        
         if (MathF.Abs(player.Center.X - NPC.Center.X) < 50 && player.Center.Y < NPC.Center.Y - 100)
             AITimer += 2;
+
+        if (NPC.life < 1500 && dist < 250)
+            AITimer++;
+        
+        if (NPC.life < 1000 && dist < 200)
+            AITimer++;
+        
+        if (PerformedFullMoveset && dist < 50)
+            AITimer++;
 
         if (AITimer > 150)
             NPC.velocity.X *= 0.98f;
@@ -89,6 +101,8 @@ public partial class HotGarbage : ModNPC
     }
     
 	void DoDeath() {
+            if (!Main.dedServ && AITimer > -74)
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/GarbageSiren");
             NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
             NPC.noTileCollide = false;
             NPC.noGravity = false;
@@ -99,8 +113,6 @@ public partial class HotGarbage : ModNPC
                 {
                     NPC.netUpdate = true;
                     DisposablePosition = NPC.Center;
-                    if (!Main.dedServ)
-                        Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/GarbageSiren");
                     CameraSystem.ChangeCameraPos(NPC.Center - new Vector2(0, 50), 130, null, 1.4f, InOutQuart);
                 }
                 if (AITimer == -30)
@@ -235,6 +247,8 @@ public partial class HotGarbage : ModNPC
         
         if (!NPC.collideY && AITimer2 < 150)
         {
+            if (AITimer2 < 10)
+                FacePlayer();
             if (Helper.Raycast(NPC.Center, Vector2.UnitY, 80).RayLength > 50)
                 NPC.position.Y += NPC.velocity.Y * 0.5f;
         }
@@ -269,6 +283,10 @@ public partial class HotGarbage : ModNPC
         }
         if (AITimer > 130)
         {
+            if (!Main.dedServ)
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Garbage");
+            }
             NPC.Center += new Vector2(2 * NPC.direction, 0);
             NPC.frame.X = 80;
             NPC.frame.Y = 0;

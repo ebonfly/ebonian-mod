@@ -19,7 +19,7 @@ public partial class HotGarbage : ModNPC
 			NPC.velocity.X *= 0.99f;
 			if (AITimer == 20)
 			{
-				SoundEngine.PlaySound(SoundID.Zombie66, NPC.Center);
+				SoundEngine.PlaySound(Sounds.garbageIgnite.WithPitchOffset(0.5f), NPC.Center);
 				MPUtils.NewProjectile(NPC.InheritSource(NPC), NPC.Center, Vector2.Zero, ProjectileType<CircleTelegraph>(), 0, 0);
 			}
 			if (AITimer >= 55)
@@ -111,8 +111,6 @@ public partial class HotGarbage : ModNPC
             
             NPC.noGravity = true;
             NPC.damage = 60;
-            if (AITimer == 2)
-	            SoundEngine.PlaySound(SoundID.Zombie67, NPC.Center);
             
             if (AITimer < 50)
 	            NPC.velocity = NPC.velocity.RotatedBy(ToRadians(-NPC.direction * 2));
@@ -180,7 +178,7 @@ public partial class HotGarbage : ModNPC
 			NPC.velocity.X = Helper.FromAToB(NPC.Center, player.Center).X * -1;
 			if (AITimer == 10)
 			{
-				SoundEngine.PlaySound(SoundID.Zombie66, NPC.Center);
+				SoundEngine.PlaySound(Sounds.garbageIgnite.WithPitchOffset(0.4f), NPC.Center);
 				MPUtils.NewProjectile(NPC.InheritSource(NPC), NPC.Center, Vector2.Zero, ProjectileType<CircleTelegraph>(), 0, 0, ai1: 0.5f);
 			}
 			NPC.velocity -= new Vector2(NPC.direction * 0.005f * AITimer, 0);
@@ -255,6 +253,7 @@ public partial class HotGarbage : ModNPC
         }
         else if (AIState == State.SpewFire2)
         {
+	        FacePlayer();
             NPC.velocity.X = Lerp(NPC.velocity.X, Helper.FromAToB(NPC.Center, player.Center).X * 2.5f, 0.15f);
             if (AITimer % 6 == 0 && AITimer > 30)
             {
@@ -456,8 +455,6 @@ public partial class HotGarbage : ModNPC
 			AnimationStyle = AnimationStyles.Idle;
 		
 		AITimer++;
-		if (AITimer == 2)
-			SoundEngine.PlaySound(SoundID.Zombie67, NPC.Center);
 		if (AITimer <= 75)
 		{
 			if (AITimer > 25)
@@ -677,11 +674,13 @@ public partial class HotGarbage : ModNPC
     
     void DoSummonDrones()
     {
-	    FacePlayer();
 	    AnimationStyle = AnimationStyles.Idle;
 
+	    if (AITimer < 10)
+		    FacePlayer();
+	    
 	    if (AITimer < 45)
-		    AnimationStyle = AnimationStyles.Close;
+		    AnimationStyle = AnimationStyles.Constipated;
 	    
 	    AITimer++;
 	    if (AITimer == 10)
@@ -702,7 +701,7 @@ public partial class HotGarbage : ModNPC
 		    MPUtils.NewProjectile(null, NPC.Center - new Vector2(850 * NPC.direction, 600), new Vector2(7 * NPC.direction, 10) * Main.rand.NextFloat(0.9f, 1.1f), ProjectileType<LaserDrone>(), 10, 0);
 	    }
 	    
-	    if (AITimer > 230) 
+	    if (AITimer > 190) 
 		    ResetTo(State.OpenLid, State.ReticleMissiles);
     }
 
@@ -732,6 +731,9 @@ public partial class HotGarbage : ModNPC
 	    if (AITimer > 100)
 	    {
 		    Phase();
+		    
+		    if (AITimer == 101)
+			    SoundEngine.PlaySound(Sounds.garbageIgnite.WithPitchOffset(0.5f), NPC.Center);
 
 		    if (AITimer < 130)
 			    NPC.velocity.X -= NPC.direction * 0.1f;
@@ -755,6 +757,9 @@ public partial class HotGarbage : ModNPC
 		    FacePlayer();
 
 	    if (AITimer > 300)
-		    ResetTo(State.WarningForDash, null, true);
+	    {
+		    PerformedFullMoveset = true;
+		    ResetTo(State.WarningForDash);
+	    }
     }
 }

@@ -245,6 +245,12 @@ public class Sounds : ModSystem
         PitchVariance = 0
     };
     
+    public static SoundStyle garbageIgnite => Default with
+    {
+        SoundPath = path + "HotGarbage/garbageIgnite",
+        PitchVariance = 0
+    };
+    
     public static SoundStyle GarbageThrusterLoop => Default with
     {
         SoundPath = path + "HotGarbage/GarbageThrusterLoop",

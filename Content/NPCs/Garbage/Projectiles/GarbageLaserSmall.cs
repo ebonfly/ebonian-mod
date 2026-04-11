@@ -39,7 +39,7 @@ public class GarbageLaserSmall1 : ModProjectile
             if (npc.active && npc.type == NPCType<HotGarbage>())
             {
                 Projectile.Center = npc.Center + new Vector2(-7 * npc.direction, npc.height * 0.4f);
-                Projectile.velocity = -npc.rotation.ToRotationVector2();
+                Projectile.velocity = npc.rotation.ToRotationVector2() * -npc.direction;
                 if ((int)npc.ai[0] == (int)HotGarbage.State.Death)
                     Projectile.Kill();
             }

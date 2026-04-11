@@ -125,7 +125,7 @@ public class GarbageDrone : ModProjectile
             Projectile.rotation = Utils.AngleLerp(Projectile.rotation, MathHelper.PiOver2 + rotationOffset, 0.05f);
             
             if (Projectile.Grounded()) {
-                Projectile.NewProjectileDirect(Projectile.InheritSource(Projectile), Projectile.Center, Vector2.Zero, ProjectileType<FlameExplosionWSpriteHostile>(), 50, 0);
+                Projectile.NewProjectileDirect(Projectile.InheritSource(Projectile), Projectile.Center, Vector2.Zero, ProjectileType<FlameExplosionWSpriteHostile>(), 15, 0);
                 Projectile.Kill();
             }
         }

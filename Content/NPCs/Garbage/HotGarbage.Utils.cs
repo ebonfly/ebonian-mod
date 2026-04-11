@@ -25,9 +25,9 @@ public partial class HotGarbage : ModNPC
     };
     
     public readonly List<State> AttackPool = new List<State>() { 
-        State.WarningForDash, State.WarningForBigDash,  State.SlamPreperation, State.MailBoxes, State.PipeBombAirstrike, State.MassiveLaser,
+        State.WarningForDash, State.WarningForBigDash,  State.SlamPreperation, State.MailBoxes, State.PipeBombAirstrike, State.MassiveLaser, State.ReticleMissiles, State.SummonDrones,
         
-        State.OpenLid, State.OpenLid, State.OpenLid, State.OpenLid, State.OpenLid, State.OpenLid, 
+        State.OpenLid, State.OpenLid, State.OpenLid, State.OpenLid, State.OpenLid, State.OpenLid
     };
     public readonly List<State> OpenAttackPool = new List<State>()
     {

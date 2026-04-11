@@ -67,7 +67,7 @@ public class GarbageReticleMissile : ModProjectile
 			Projectile.velocity *= 1.05f;
 		
 		if (ShouldBeep && Projectile.ai[2] % (Projectile.ai[2] < 140 ? 10 : 5) == 0 && Projectile.ai[2] > 50)
-			SoundEngine.PlaySound(Sounds.garbageBeep.WithVolumeScale(0.4f).WithPitchOffset(-0.2f), Target);
+			SoundEngine.PlaySound(Sounds.garbageBeep.WithVolumeScale(0.3f).WithPitchOffset(-0.2f), Target);
 		
 		if (Projectile.ai[2] > 80)
 		{

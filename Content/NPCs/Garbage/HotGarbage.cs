@@ -18,9 +18,6 @@ public partial class HotGarbage : ModNPC
 
     public override void AI()
     {
-        NextAttack = State.OpenLid;
-        NextAttack2 = State.ReticleMissiles;
-        
         AmbientFX();
 
         TargetingLogic();
@@ -30,13 +27,16 @@ public partial class HotGarbage : ModNPC
         switch (AIState)
         {
             case State.Death:
-                DoDeath(); break;
+                DoDeath(); 
+                break;
             
             case State.Intro: 
-                DoIntro(); break;
+                DoIntro(); 
+                break;
             
             case State.Idle:
-                DoIdle(); break;
+                DoIdle(); 
+                break;
             
             case State.WarningForDash:
             case State.Dash:

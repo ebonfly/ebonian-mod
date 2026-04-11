@@ -19,6 +19,7 @@ using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using EbonianMod.Content.Buffs;
 using Terraria.GameContent.Bestiary;
 using Terraria.Graphics.CameraModifiers;
 
@@ -89,6 +90,7 @@ public partial class HotGarbage : ModNPC
         NPC.buffImmune[BuffID.Frostburn] = true;
         NPC.buffImmune[BuffID.Frostburn2] = true;
         NPC.buffImmune[BuffID.Confused] = true;
+        NPC.buffImmune[ModContent.BuffType<RustyCut>()] = true;
         NPC.aiStyle = -1;
         NPC.noGravity = false;
         NPC.waterMovementSpeed = 1f;
@@ -96,10 +98,7 @@ public partial class HotGarbage : ModNPC
         NPC.noTileCollide = false;
         NPC.boss = true;
         NPC.netAlways = true;
-        if (!Main.dedServ)
-        {
-            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Garbage");
-        }
+        Music = 0;
     }
 
     public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
