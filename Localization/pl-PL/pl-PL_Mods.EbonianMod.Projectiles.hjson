@@ -280,7 +280,6 @@ VerletBeam.DisplayName: Promień Verlet
 CrimsonBall.DisplayName: Szkarłatna Kula
 BallLauncherSprite.DisplayName: Pocisk Wyrzutni Kul
 CorruptionBalls.DisplayName: Kule Zepsucia
-// CorruptionBall.DisplayName: Corruption Ball
 BallLauncherSprite2.DisplayName: Wyrzutnia Kul Sprite2
 BallLauncherCharge.DisplayName: Ładowanie Wyrzutni Kul
 Ball.DisplayName: Kula
@@ -375,7 +374,6 @@ SheepeningPlayerProjectile.DisplayName: Owca
 XLargeAmethystAlt.DisplayName: Wielki Ametyst X (Alternatywny)
 CorebreakerProjectile.DisplayName: Pocisk Kodołamacza
 FangnumProjectile.DisplayName: Pocisk Zębognata
-// Fang.DisplayName: Fang
 LobberProjectile.DisplayName: Pocisk Lobbera
 LobberProjectile2.DisplayName: Pocisk Lobbera 2
 SalvagedThrusterProjectile.DisplayName: Pocisk Napędu Odzyskanego
@@ -416,9 +414,3 @@ StarcallerShotVFX.DisplayName: Strzał Przywoływacza Gwiazd
 // GarbageThrusterBeam.DisplayName: Garbage Thruster Beam
 // CrimsonSpearPro.DisplayName: Crimson Spear Pro
 // MeleeGoldenShower.DisplayName: Melee Golden Shower
-// LobberProjectile0.DisplayName: Lobber Projectile0
-// LobberProjectile1.DisplayName: Lobber Projectile1
-// SpudCannonProjectile.DisplayName: Spud Cannon Projectile
-// VileMusketProjectile.DisplayName: Vile Musket Projectile
-// CursedDollCast.DisplayName: Cursed Doll Cast
-// CursedExplosion.DisplayName: Cursed Explosion
