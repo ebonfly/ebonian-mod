@@ -943,3 +943,8 @@ bladeofyeetz: {
 	DisplayName: bladeofyeetz
 	Tooltip: ""
 }
+
+VileMusket: {
+	DisplayName: Vile Musket
+	Tooltip: ""
+}

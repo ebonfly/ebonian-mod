@@ -3,9 +3,9 @@ using EbonianMod.Content.Projectiles.Friendly.Corruption;
 
 namespace EbonianMod.Content.Items.Weapons.Ranged
 {
-    public class EbonianGun : ModItem
+    public class VileMusket : ModItem
     {
-        public override string Texture => Helper.AssetPath + "Items/Weapons/Ranged/EbonianGun";
+        public override string Texture => Helper.AssetPath + "Items/Weapons/Ranged/VileMusket";
 
         public override void SetDefaults()
         {
@@ -18,7 +18,7 @@ namespace EbonianMod.Content.Items.Weapons.Ranged
             Item.shootSpeed = 10;
 
             Item.value = Item.sellPrice(gold: 5);
-            Item.shoot = ProjectileType<EbonianGunProjectile>();
+            Item.shoot = ProjectileType<VileMusketProjectile>();
             Item.useAmmo = AmmoID.Bullet;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
@@ -32,7 +32,7 @@ namespace EbonianMod.Content.Items.Weapons.Ranged
 
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            type = ProjectileType<EbonianGunProjectile>();
+            type = ProjectileType<VileMusketProjectile>();
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -47,9 +47,9 @@ namespace EbonianMod.Content.Items.Weapons.Ranged
             CreateRecipe().AddIngredient(ItemID.ShadowScale, 15).AddIngredient(ItemID.RottenChunk, 20).AddIngredient(ItemID.Musket).AddTile(TileID.DemonAltar).Register();
         }
     }
-    public class EbonianGunProjectile : HeldProjectileGun
+    public class VileMusketProjectile : HeldProjectileGun
     {
-        public override string Texture => Helper.AssetPath + "Items/Weapons/Ranged/EbonianGun";
+        public override string Texture => Helper.AssetPath + "Items/Weapons/Ranged/VileMusket";
 
         public override bool? CanDamage() => false;
 
@@ -59,7 +59,7 @@ namespace EbonianMod.Content.Items.Weapons.Ranged
 
             Projectile.Size = new(72, 24);
 
-            ItemType = ItemType<EbonianGun>();
+            ItemType = ItemType<VileMusket>();
             RotationSpeed = 0.25f;
             HoldOffset.Y = -6;
             AimingOffset = 10;

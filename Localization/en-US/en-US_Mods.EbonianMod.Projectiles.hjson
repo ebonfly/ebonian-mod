@@ -280,6 +280,7 @@ VerletBeam.DisplayName: Verlet Beam
 CrimsonBall.DisplayName: Crimson Ball
 BallLauncherSprite.DisplayName: Ball Launcher Sprite
 CorruptionBalls.DisplayName: Corruption Balls
+CorruptionBall.DisplayName: Corruption Ball
 BallLauncherSprite2.DisplayName: Ball Launcher Sprite2
 BallLauncherCharge.DisplayName: Ball Launcher Charge
 Ball.DisplayName: Ball
@@ -374,6 +375,7 @@ SheepeningPlayerProjectile.DisplayName: Sheep
 XLargeAmethystAlt.DisplayName: X Large Amethyst Alt
 CorebreakerProjectile.DisplayName: Corebreaker Projectile
 FangnumProjectile.DisplayName: Fangnum Projectile
+Fang.DisplayName: Fang
 LobberProjectile.DisplayName: Lobber Projectile
 LobberProjectile2.DisplayName: Lobber Projectile2
 SalvagedThrusterProjectile.DisplayName: Salvaged Thruster Projectile
@@ -414,3 +416,9 @@ bladeofyeetzswing.DisplayName: bladeofyeetzswing
 GarbageThrusterBeam.DisplayName: Garbage Thruster Beam
 CrimsonSpearPro.DisplayName: Crimson Spear Pro
 MeleeGoldenShower.DisplayName: Melee Golden Shower
+LobberProjectile0.DisplayName: Lobber Projectile0
+LobberProjectile1.DisplayName: Lobber Projectile1
+SpudCannonProjectile.DisplayName: Spud Cannon Projectile
+VileMusketProjectile.DisplayName: Vile Musket Projectile
+CursedDollCast.DisplayName: Cursed Doll Cast
+CursedExplosion.DisplayName: Cursed Explosion
