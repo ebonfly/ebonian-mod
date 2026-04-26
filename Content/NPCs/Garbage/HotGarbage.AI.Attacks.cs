@@ -3,6 +3,7 @@ using EbonianMod.Content.Dusts;
 using EbonianMod.Content.NPCs.Garbage.Projectiles;
 using EbonianMod.Content.Projectiles.VFXProjectiles;
 using EbonianMod.Core.Systems.Cinematic;
+using Terraria.Graphics.CameraModifiers;
 
 namespace EbonianMod.Content.NPCs.Garbage;
 
@@ -619,6 +620,7 @@ public partial class HotGarbage : ModNPC
         if (AITimer == 80)
         {
             SoundEngine.PlaySound(Sounds.eruption.WithVolumeScale(0.8f), NPC.Center);
+            SoundEngine.PlaySound(Sounds.garbageLaserFire.WithVolumeScale(1.35f), NPC.Center);
             if (!Main.dedServ)
                 LaserSoundSlot = SoundEngine.PlaySound(Sounds.garbageLaser.WithVolumeScale(1.35f), NPC.Center);
             CameraSystem.ScreenShakeAmount = 5;
@@ -758,8 +760,54 @@ public partial class HotGarbage : ModNPC
 
 	    if (AITimer > 300)
 	    {
-		    PerformedFullMoveset = true;
+		    ResetTo(State.ThrusterFlash);
+	    }
+    }
+
+    void DoThrusterFlash()
+    {
+	    AITimer++;
+	    
+	    if (AITimer < 50)
+			AnimationStyle = AnimationStyles.BoostWarning;
+	    else if (AITimer < 70)
+		    AnimationStyle = AnimationStyles.Boost;
+	    else
+		    AnimationStyle = AnimationStyles.Idle;
+	    FacePlayer();
+	    NPC.direction = -NPC.direction;
+	    NPC.spriteDirection = NPC.direction;
+
+	    if (AITimer < 50)
+	    {
+		    thrusterFlareAlpha = Lerp(0, 1, AITimer / 50f);
+		    NPC.velocity.X = NPC.direction * Lerp(1, 0, AITimer / 50f);
+	    }
+	    else
+	    {
+		    NPC.velocity.X *= 0.9f;
+		    thrusterFlareAlpha *= 0.9f;
+		    if (thrusterFlareAlpha < 0.1f)
+			    thrusterFlareAlpha = 0;
+	    }
+
+	    if (AITimer == 45)
+		    SoundEngine.PlaySound(Sounds.garbageJetBlast.WithPitchOffset(0.2f), NPC.Center);
+
+	    if (AITimer == 50)
+	    {
+		    thrusterFlareAlpha = 2;
+		    MPUtils.NewProjectile(null, NPC.Center + new Vector2(0, 6), new Vector2(-NPC.direction, 0), ModContent.ProjectileType<GarbageThrusterBeam>(), 15, 0, ai2: NPC.whoAmI);
+	    }
+
+	    if (AITimer == 56)
+		    NPC.velocity.X = NPC.direction * 15;
+
+	    if (AITimer > 65)
+	    {
+		    thrusterFlareAlpha = 0;
 		    ResetTo(State.WarningForDash);
+		    PerformedFullMoveset = true;
 	    }
     }
 }

@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using EbonianMod.Content.Dusts;
+using Terraria.Graphics.CameraModifiers;
 
 namespace EbonianMod.Content.NPCs.Garbage.Projectiles;
 
@@ -23,27 +25,47 @@ public class GarbageThrusterBeam : ModProjectile
 		return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center, Projectile.Center + Projectile.velocity.ToRotation().ToRotationVector2() * Projectile.ai[1], 30, ref a) && Projectile.scale > 0.5f;
 	}
 
+	public override bool ShouldUpdatePosition() => false;
+
 	public override void AI()
 	{
-		Projectile.ai[0] = Utils.GetLerpValue(30, 0, Projectile.timeLeft, true);
-		Projectile.ai[1] = MathHelper.SmoothStep(0, 400, Projectile.ai[0]);
+		Projectile.ai[0] = MathF.Pow(Utils.GetLerpValue(30, 0, Projectile.timeLeft, true), 1.5f);
+		Projectile.ai[1] = MathHelper.SmoothStep(0, 1300, Projectile.ai[0]);
+		
+		if (Projectile.timeLeft == 20) 
+		{
+			for (int i = 0; i < 60; i++) 
+			{
+				Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(10, 10), DustType<LineDustFollowPoint>(), Projectile.velocity.RotatedByRandom(0.2f) * Main.rand.NextFloat(15, 70), newColor: Color.OrangeRed, Scale: Main.rand.NextFloat(0.1f, 0.17f));
+				Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(10, 10), DustType<GarbageFlameDust>(), Projectile.velocity.RotatedByRandom(0.2f) * Main.rand.NextFloat(10, 75), newColor: Color.OrangeRed, Scale: Main.rand.NextFloat(0.05f, 0.17f));
+			}
+			
+			Helper.AddCameraModifier(new PunchCameraModifier(Projectile.Center, Projectile.velocity, 8, 15, 30, 1000));
+		}
+
+		NPC npc = Main.npc[(int)Projectile.ai[2]];
+
+		if (npc.active && npc.type == ModContent.NPCType<HotGarbage>())
+			Projectile.Center = npc.Center + new Vector2(0, 6);
 	}
 
 	public override bool PreDraw(ref Color lightColor)
 	{	
 		GarbageFlameRendering.DrawCache.Add(() =>
 		{
-			float length = Clamp(Projectile.ai[1], 10, 400);
+			float length = Clamp(Projectile.ai[1], 10, 1300);
 			List<VertexPositionColorTexture>[] vertices = [new(), new() ];
 
+			float size = Main.rand.NextFloat(10, 40);
+			float rotationOffset = Main.rand.NextFloat(-0.02f, 0.02f);
 			for (int k = 0; k < 2; k++)
-			for (float i = 0; i < 1f; i += 0.1f)
+			for (float i = 0; i < 1f; i += 0.05f)
 			{
-				Vector2 position = Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.UnitX) * length * i - Main.screenPosition;
-				Color color = Color.Lerp(Color.White * (1f - i) * 0.7f, Color.OrangeRed, k) * MathF.Pow(MathF.Sin(i * MathF.PI) * MathF.Sin(Projectile.ai[0] * MathF.PI), 2);
+				Vector2 position = Projectile.Center + Projectile.velocity.RotatedBy(rotationOffset * (1 - k)).SafeNormalize(Vector2.UnitX) * length * i - Main.screenPosition;
+				Color color = Color.Lerp(Color.White * (1f - i) * 0.7f, Color.OrangeRed, k) * MathF.Pow(MathF.Sin(i * MathF.PI) * MathF.Sin(Projectile.ai[0] * MathF.PI), 1);
 				for (int j = -1; j < 2; j += 2)
 				{
-					Vector2 vPosition = position + new Vector2(Projectile.ai[0] * 20 + 40 * i * k, 0).RotatedBy(Projectile.velocity.ToRotation() + MathHelper.PiOver2 * j);
+					Vector2 vPosition = position + new Vector2(Projectile.ai[0] * size + Lerp(20, 80, Projectile.ai[0]) * i * k, 0).RotatedBy(Projectile.velocity.ToRotation() + MathHelper.PiOver2 * j);
 					vertices[k].Add(Helper.AsVertex(vPosition, color, new Vector2(i - Main.GlobalTimeWrappedHourly * 3, j < 0 ? 0 : 1)));
 				}
 			}

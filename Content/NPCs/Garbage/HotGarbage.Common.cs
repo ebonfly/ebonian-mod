@@ -44,7 +44,6 @@ public partial class HotGarbage : ModNPC
         CloseLid,
         FallOver,
         SpewFire2, 
-        BouncingBarrels,
         TrashBags,
         SodaMissiles,
         PipeBombAirstrike,
@@ -53,7 +52,8 @@ public partial class HotGarbage : ModNPC
         MailBoxes,
         GiantFireball,
         SummonDrones,
-        ReticleMissiles
+        ReticleMissiles,
+        ThrusterFlash
     }
 
     public enum AnimationStyles

@@ -58,25 +58,25 @@ public partial class HotGarbage : ModNPC
         Phase();
         
         float velocityX = Helper.FromAToB(NPC.Center, player.Center + Helper.FromAToB(player.Center, NPC.Center) * 70, false).X * 0.033f;
-        velocityX = MathHelper.Clamp(velocityX, -15f, 15f);
+        velocityX = MathHelper.Clamp(velocityX, -7f, 7f);
         NPC.velocity.X = Lerp(NPC.velocity.X, velocityX, 0.12f);
         float dist = player.Distance(NPC.Center);
-        if (dist < 70)
+        if (dist < 170)
             AITimer++;
         
-        if (dist < 40)
+        if (dist < 140)
             AITimer++;
         
         if (MathF.Abs(player.Center.X - NPC.Center.X) < 50 && player.Center.Y < NPC.Center.Y - 100)
             AITimer += 2;
 
-        if (NPC.life < 1500 && dist < 250)
+        if (NPC.life < 1500 && dist < 350)
             AITimer++;
         
-        if (NPC.life < 1000 && dist < 200)
+        if (NPC.life < 1000)
             AITimer++;
         
-        if (PerformedFullMoveset && dist < 50)
+        if (PerformedFullMoveset)
             AITimer++;
 
         if (AITimer > 150)
@@ -119,6 +119,7 @@ public partial class HotGarbage : ModNPC
                 {
                     CameraSystem.ChangeZoom(80, new ZoomInfo(2.5f, 1f, InOutElastic, InOutCirc));
                     MPUtils.NewProjectile(null, NPC.Center, Vector2.Zero, ProjectileType<ChargeUp>(), 0, 0);
+                    SoundEngine.PlaySound(Sounds.garbageNukeArm);
                 }
                 if (AITimer > -30)
                     AITimer2++;

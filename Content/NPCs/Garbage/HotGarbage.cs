@@ -18,6 +18,7 @@ public partial class HotGarbage : ModNPC
 
     public override void AI()
     {
+        NextAttack = State.ThrusterFlash;
         AmbientFX();
 
         TargetingLogic();
@@ -89,6 +90,10 @@ public partial class HotGarbage : ModNPC
             
             case State.ReticleMissiles:
                 DoReticleMissiles();
+                break;
+            
+            case State.ThrusterFlash:
+                DoThrusterFlash();
                 break;
         }
     }

@@ -9,7 +9,6 @@ namespace EbonianMod.Content.NPCs.Garbage.Projectiles;
 public class GarbageLaserSmall1 : ModProjectile
 {
     public override string Texture => Helper.Empty;
-    const int maxTime = 200;
     public override void SetStaticDefaults()
     {
         ProjectileID.Sets.DrawScreenCheckFluff[Type] = 1500;
